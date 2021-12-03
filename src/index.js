@@ -8,7 +8,7 @@ import reportWebVitals from './reportWebVitals'
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <Kinetic/>
+      <Kinetic />
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root'));
