@@ -11,6 +11,15 @@ export const NavBar = () => {
                 <Link className="navbar__link" to="/home">Home</Link>
             </li>
             <li className="navbar__item active">
+                <Link className="navbar__link" to="/myevents">Event Calendar</Link>
+            </li>
+            <li className="navbar__item active">
+                <Link className="navbar__link" to="/events">Events</Link>
+            </li>
+            <li className="navbar__item active">
+                <Link className="navbar__link" to="/profile">Profile</Link>
+            </li>
+            <li className="navbar__item active">
                 <button className="nav-link fakeLink"
                     onClick={() => {
                         localStorage.removeItem("kinetic_token")
