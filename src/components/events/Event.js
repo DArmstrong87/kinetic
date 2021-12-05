@@ -8,7 +8,8 @@ export const Event = () => {
     const [eventSports, setEventSports] = useState([])
     const { eventId } = useParams()
     const date = new Date(event.date).toDateString()
-    const [, time] = event.date.split(" ")
+    const time = event.date?.split(" ")[1]
+
 
     useEffect(
         () => {
