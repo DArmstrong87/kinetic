@@ -2,7 +2,7 @@ import React from "react";
 
 export const CourseMap = ({ event }) => {
     // const url = event.course_url
-    const url = "https://www.strava.com/activities/6064408236/embed/1061e2a9f10fa3f505997d7cb495d372bd07a9c5"
+    const url = event.course_url
 
     const handleCourseUrl = () => {
         const [, path] = url.split("//")
