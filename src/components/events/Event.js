@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { CourseMap } from "./CourseMap";
-import { getEvent, getEventSports } from "./EventsProvider";
+import { getAthleteEvent, getEvent, getEventSports, leaveEvent, signUp } from "./EventsProvider";
 
 export const Event = () => {
     const [event, setEvent] = useState([])
     const [eventSports, setEventSports] = useState([])
+    const [athleteEvent, setAE] = useState([])
     const { eventId } = useParams()
     const date = new Date(event.date).toDateString()
     const time = event.date?.split(" ")[1]
@@ -15,8 +16,22 @@ export const Event = () => {
         () => {
             getEvent(eventId).then(event => setEvent(event))
             getEventSports(eventId).then(es => setEventSports(es))
+            getAthleteEvent(eventId, setAE).then(ae => setAE(ae))
         }, []
     )
+    const eventSignUp = (id) => {
+        signUp(id)
+            .then((res) => {
+                if (res) {
+                    getAthleteEvent(eventId).then(ae => setAE(ae))
+                }
+            })
+    }
+    const eventLeave = (id) => {
+        leaveEvent(id)
+            .then(setAE([]))
+    }
+
 
     return (
         <>
@@ -39,11 +54,22 @@ export const Event = () => {
                 There are {event.spots_remaining} spots remaining!
             </p>
             {event.spots_remaining !== 0 ?
-                <div>
-                    <button>
-                        Sign Up!
-                    </button>
-                </div>
+                <>
+                    {athleteEvent?.length === 0 ?
+                        <div>
+                            <button onClick={() => eventSignUp(event.id)}>
+                                Sign Up!
+                            </button>
+                        </div>
+                        :
+                        <>
+                            You are signed up for {event.name}!
+                            < button onClick={() => eventLeave(event.id)}>
+                                Leave Event
+                            </button>
+                        </>
+                    }
+                </>
                 :
                 "Event registration closed. Maximum participants met."
             }
