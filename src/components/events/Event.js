@@ -7,7 +7,8 @@ export const Event = () => {
     const [event, setEvent] = useState([])
     const [eventSports, setEventSports] = useState([])
     const { eventId } = useParams()
-
+    const date = new Date(event.date).toDateString()
+    const [, time] = event.date.split(" ")
 
     useEffect(
         () => {
@@ -21,6 +22,10 @@ export const Event = () => {
             <h1>{event.name}</h1>
             <img src={event.event_logo} alt="Event logo" />
             <p>
+                {date} | {event.city}, {event.state}<br />
+                Start time: {time}{time >= 12 ? 'pm' : 'am'}
+            </p>
+            <p>
                 Distance: {event.total_distance}mi
             </p>
             <p>
@@ -32,11 +37,15 @@ export const Event = () => {
             <p>
                 There are {event.spots_remaining} spots remaining!
             </p>
-            <div>
-                <button>
-                    Sign Up!
-                </button>
-            </div>
+            {event.spots_remaining !== 0 ?
+                <div>
+                    <button>
+                        Sign Up!
+                    </button>
+                </div>
+                :
+                "Event registration closed. Maximum participants met."
+            }
 
             <div>
                 {event?.course_url ?
