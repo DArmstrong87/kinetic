@@ -27,6 +27,8 @@ export const Login = () => {
             .then(res => {
                 if ("valid" in res && res.valid && "token" in res) {
                     localStorage.setItem("kinetic_token", res.token)
+                    if (res.is_athlete){localStorage.setItem("is_athlete", true)}
+                    else {localStorage.setItem("is_athlete", false)}
                     history.push("/")
                 }
                 else {
