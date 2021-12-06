@@ -4,6 +4,7 @@ import { EventCalendar } from "./components/eventCalendar/EventCalendar";
 import { Event } from "./components/events/Event";
 import { Events } from "./components/events/Events";
 import { AthleteProfile } from "./components/profile/AthleteProfile";
+import { VO2maxTest } from "./components/profile/trainingTools/VO2maxTest";
 
 export const ApplicationViews = () => {
     return <>
@@ -18,6 +19,9 @@ export const ApplicationViews = () => {
         </Route>
         <Route path="/profile">
             <AthleteProfile />
+        </Route>
+        <Route path="/vo2max">
+            <VO2maxTest />
         </Route>
     </>
 }
