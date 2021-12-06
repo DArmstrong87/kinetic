@@ -34,15 +34,6 @@ export const getAthleteEvent = (id) => {
         .then(res => res.json())
 }
 
-export const getEventSports = (id) => {
-    return fetch(`http://localhost:8000/eventsports?event=${id}`, {
-        headers: {
-            "Authorization": `Token ${localStorage.getItem("kinetic_token")}`
-        }
-    })
-        .then(res => res.json())
-}
-
 export const signUp = (id) => {
     return fetch(`http://localhost:8000/events/${id}/signup`, {
         headers: {
@@ -61,4 +52,38 @@ export const leaveEvent = (id) => {
         method: "DELETE"
     })
         .then(res => res.json())
+}
+
+export const getSports = () => {
+    return fetch(`http://localhost:8000/sports`, {
+        headers: {
+            "Authorization": `Token ${localStorage.getItem("kinetic_token")}`
+        }
+    })
+        .then(res => res.json())
+
+}
+
+export const createEvent = (event) => {
+    return fetch(`http://localhost:8000/events`, {
+        headers: {
+            "Authorization": `Token ${localStorage.getItem("kinetic_token")}`,
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        method: "POST",
+        body: JSON.stringify(event)
+    })
+}
+
+export const createEventSport = (es) => {
+    return fetch(`http://localhost:8000/eventsports`, {
+        headers: {
+            "Authorization": `Token ${localStorage.getItem("kinetic_token")}`,
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        method: "POST",
+        body: JSON.stringify(es)
+    })
 }

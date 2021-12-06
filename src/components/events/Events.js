@@ -35,7 +35,14 @@ export const Events = () => {
                                 </Link>
                                 <td>{date}</td>
                                 <td>{time}</td>
-                                <td>{event.event_sport.sport.name}</td>
+                                {/* <td>            {
+                                    event.event_sports?.length > 1 ?
+                                        event.event_sports?.map(es => {
+                                            return es.sport?.name
+                                        }).join(", ")
+                                        :
+                                        event.event_sport[0]?.sport.name
+                                }</td> */}
                                 <td>{event.total_distance}mi</td>
                                 <td>{event.total_elev_gain}ft</td>
                             </tr>

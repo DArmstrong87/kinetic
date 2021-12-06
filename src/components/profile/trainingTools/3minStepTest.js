@@ -10,7 +10,6 @@ export const QC3minStep = ({ a, setVo2max, setResults, results }) => {
 
     const getVO2 = () => {
         // VO2max 132.853 - (0.0769 * weight(lbs)) - (0.3877 * age) + (6.315 * gender factor) - (3.2649 * time to complete 1min walk) - (0.1565 * 10s hr)
-        const time = results.min + (results.sec / 60)
         const hr = results.hr * 4
         let vo2max = 0
         if (a.sex === "M") { vo2max = 111.33 - (0.42 * hr) }

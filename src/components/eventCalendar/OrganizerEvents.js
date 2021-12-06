@@ -2,7 +2,7 @@ import React from "react";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
 
-export const OrganizerEvents = ({events}) => {
+export const OrganizerEvents = ({ events }) => {
     const history = useHistory()
 
     return (
@@ -15,9 +15,9 @@ export const OrganizerEvents = ({events}) => {
                     "Events you create will display here!"}
             </h3>
 
-                    <button>
-                        Create Event
-                    </button>
+            <button onClick={() => history.push("/createevent")}>
+                Create Event
+            </button>
 
             {events.length > 0 ?
                 <table>
@@ -43,7 +43,16 @@ export const OrganizerEvents = ({events}) => {
                                     </Link>
                                     <td>{date}</td>
                                     <td>{time}</td>
-                                    <td>{event.event_sport.sport.name}</td>
+                                    <td>
+                                        {
+                                            event.event_sports.length > 1 ?
+                                                event.event_sports.map(es => {
+                                                    return es.sport?.name
+                                                }).join(", ")
+                                                :
+                                                event.event_sport[0]?.sport.name
+                                        }
+                                    </td>
                                     <td>{event.total_distance}mi</td>
                                     <td>{event.total_elev_gain}ft</td>
                                     <td>{event.days_until}</td>
