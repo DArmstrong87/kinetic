@@ -11,7 +11,7 @@ export const Login = () => {
 
     const handleLogin = (e) => {
         e.preventDefault()
-
+        console.log('test')
         return fetch("http://127.0.0.1:8000/login", {
             method: "POST",
             headers: {

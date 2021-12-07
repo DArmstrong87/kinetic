@@ -1,6 +1,7 @@
 import React from "react";
 import { Route } from "react-router-dom"
 import { EventCalendar } from "./components/eventCalendar/EventCalendar";
+import { CreateEvent } from "./components/events/CreateEvent";
 import { Event } from "./components/events/Event";
 import { Events } from "./components/events/Events";
 import { AthleteProfile } from "./components/profile/AthleteProfile";
@@ -22,6 +23,9 @@ export const ApplicationViews = () => {
         </Route>
         <Route path="/vo2max">
             <VO2maxTest />
+        </Route>
+        <Route path="/createevent">
+            <CreateEvent />
         </Route>
     </>
 }

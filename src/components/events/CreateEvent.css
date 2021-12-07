@@ -1,0 +1,49 @@
+.create-event-input {
+    height: 2em;
+}
+
+.input-label {
+    width: 10em;
+    text-align: right;
+    margin-right: 1em;
+}
+
+.event-field {
+    display: flex;
+    padding: 0.5em;
+    align-items: center;
+}
+
+.multiSportForm {
+    display: flex;
+    width: fit-content;
+    flex-wrap: wrap;
+    /* border: 1px solid black; */
+    margin-left: 11em;
+    flex-basis: content;
+    flex-direction: column;
+}
+
+.multiSportForm fieldset {
+    display: flex;
+    flex-wrap: wrap;
+    width: fit-content;
+    align-items: center;
+    /* border: 1px red solid; */
+    padding: 0px;
+    margin: 0 0.5em 0.2em 0;
+}
+
+.ms-input {
+    margin-right: 1em;
+    width: 9.5em;
+}
+
+.sport-label {
+    width: 6em;
+    font-weight: bold;
+}
+
+.ms-label {
+    margin-right: 0.3em;
+}
