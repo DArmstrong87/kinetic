@@ -34,39 +34,31 @@ export const CreateEvent = () => {
     const handleEvent = (e) => {
         e.preventDefault()
         // Before event creation, confirm if a sport has been selected and that all fields are filled out.
-        if ((eventSport.sportId !== 0 && multiSport === false) ||
-            (eventSports.some(es => es.hasOwnProperty('sportId')))
-            && eventSports.some(es => es.hasOwnProperty('distance'))
-            && eventSports.some(es => es.hasOwnProperty('elevGain'))
-            && multiSport === true) {
-            createEvent(newEvent)
-                .then(res => res.json())
-                .then(createdEvent => {
-                    // Confirm event was created by checking for an id.
-                    // if multisport
-                    if (createdEvent.hasOwnProperty("id") && multiSport === false) {
-                        const es = { ...eventSport }
-                        es.eventId = createdEvent.id
-                        createEventSport(es).then(
-                            history.push(`/events/${createdEvent.id}`)
-                        )
-                    } else if (createdEvent.hasOwnProperty("id") && multiSport === true) {
-                        for (const es of eventSports) {
-                            if (es.hasOwnProperty('sportId')) {
-                                const e = { ...es }
-                                e.eventId = createdEvent.id
-                                createEventSport(e).then(createdEventSport => {
-                                    if (createdEventSport.sport.id === eventSports[eventSports.length - 1].sportId) {
-                                        history.push(`/events/${createdEvent.id}`)
-                                    }
-                                })
-                            }
+        createEvent(newEvent)
+            .then(res => res.json())
+            .then(createdEvent => {
+                // Confirm event was created by checking for an id.
+                // if multisport
+                if (createdEvent.hasOwnProperty("id") && multiSport === false) {
+                    const es = { ...eventSport }
+                    es.eventId = createdEvent.id
+                    createEventSport(es).then(
+                        history.push(`/events/${createdEvent.id}`)
+                    )
+                } else if (createdEvent.hasOwnProperty("id") && multiSport === true) {
+                    for (const es of eventSports) {
+                        if (es.hasOwnProperty('sportId')) {
+                            const e = { ...es }
+                            e.eventId = createdEvent.id
+                            createEventSport(e).then(createdEventSport => {
+                                if (createdEventSport.sport.id === eventSports[eventSports.length - 1].sportId) {
+                                    history.push(`/events/${createdEvent.id}`)
+                                }
+                            })
                         }
                     }
-                })
-        } else {
-            // Display modal for selecting a sport or sports.
-        }
+                }
+            })
     }
 
 
@@ -149,7 +141,8 @@ export const CreateEvent = () => {
                             return <>
                                 <fieldset>
                                     <input type="checkbox" value={sport.id} checked={fields[`f${sport.id}`]}
-                                        name="sport" className="create-event-input" required={fields.hasOwnProperty(`f${sport.id}`)}
+                                        name="sport" className="create-event-input"
+                                        required={!Object.values(fields).some(val => val === true)}
                                         onChange={() => {
                                             /*
                                             1. Copy fields object
@@ -161,7 +154,15 @@ export const CreateEvent = () => {
                                             const field = { ...fields }
                                             let fvalue = field[`f${sport.id}`]
                                             // debugger
-                                            if (!fvalue) { field[`f${sport.id}`] = true }
+                                            if (!fvalue) {
+                                                field[`f${sport.id}`] = true
+                                                const es = [...eventSports]
+                                                const index = sport.id - 1
+                                                if (es[index]) {
+                                                    es[index] = { sportId: sport.id }
+                                                    setEventSports(es)
+                                                }
+                                            }
                                             else if (fvalue === false) {
                                                 field[`f${sport.id}`] = true
                                             }
@@ -185,7 +186,6 @@ export const CreateEvent = () => {
                                                         onChange={(e) => {
                                                             const es = [...eventSports]
                                                             const index = sport.id - 1
-                                                            if (!es[index]) { es[index] = { sportId: sport.id } }
                                                             es[index]['distance'] = parseInt(e.target.value)
                                                             setEventSports(es)
                                                         }} />
