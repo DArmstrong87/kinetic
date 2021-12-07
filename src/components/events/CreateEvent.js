@@ -24,7 +24,6 @@ export const CreateEvent = () => {
     const [sportIds, setSportIds] = useState([])
     const [fields, toggleFields] = useState({})
     const [eventSports, setEventSports] = useState([])
-    console.log(eventSports)
     const history = useHistory()
 
     useEffect(() => {
@@ -113,135 +112,98 @@ export const CreateEvent = () => {
                     <input type="radio" checked={multiSport === true} name="yes" className="create-event-input" required onChange={() => setMulti(true)} />Yes
                     <input type="radio" checked={multiSport === false} name="no" className="create-event-input" required onChange={() => { setMulti(false) }} />No
                 </fieldset>
+            </form>
 
-                {!multiSport ?
-                    <>
-                        <fieldset className="event-field">
-                            <label className="input-label" htmlFor="sport">Sport </label>
-                            {sports.map(sport => {
-                                return <>
-                                    <input type="radio" checked={eventSport.sportId === sport.id} name={sport.name} value={sport.id} className="create-event-input" required onChange={(e) => handleSports(e)} />{sport.name}
-                                </>
-                            })}
-                        </fieldset>
-                        <fieldset className="event-field">
-                            <label className="input-label" htmlFor="distance">Distance</label>
-                            <input type="number" name="distance" className="create-event-input" required onChange={handleSports} />
-                        </fieldset>
-                        <fieldset className="event-field">
-                            <label className="input-label" htmlFor="elevGain">Elevation Gain</label>
-                            <input type="number" name="elevGain" className="create-event-input" required onChange={handleSports} />
-                        </fieldset>
-                    </>
-                    :
+            {!multiSport ?
+                <>
+                    {/* RADIOS FOR SINGLE SPORT */}
                     <fieldset className="event-field">
                         <label className="input-label" htmlFor="sport">Sport </label>
-                        {sports?.map(sport => {
+                        {sports.map(sport => {
                             return <>
-                                <input type="checkbox" value={sport.id} checked={fields[`f${sport.id}`]}
-                                    name="sport" className="create-event-input" required
-                                    onChange={() => {
-                                        /*
-                                        1. Copy fields object
-                                        2. Check if current field key exists, if not, create one and set value to false.
-                                        3. If the value exists and is false, set to true.
-                                        4. If true, set to false and set the eventSport object to empty. 
-                                        5. Set toggle fields.
-                                        */
-                                        const field = { ...fields }
-                                        let fvalue = field[`f${sport.id}`]
-                                        // debugger
-                                        if (!fvalue) { field[`f${sport.id}`] = true }
-                                        else if (fvalue === false) {
-                                            field[`f${sport.id}`] = true
-                                        }
-                                        else {
-                                            field[`f${sport.id}`] = false;
-                                            let es = [...eventSports]
-                                            es[sport.id - 1] = {}
-                                            setEventSports(es)
-                                        }
-                                        toggleFields(field)
-                                    }} />{sport.name}
-                                {fields[`f${sport.id}`] ?
-                                    <>
-                                        <label className="input-label" htmlFor="distance">Distance</label>
-                                        <input type="number" name="distance" className="create-event-input" required onChange={(e) => {
-                                            const es = [...eventSports]
-                                            const index = sport.id - 1
-                                            if (!es[index]) { es[index] = {sportId: sport.id} }
-                                            es[index]['distance'] = parseInt(e.target.value)
-                                            setEventSports(es)
-                                        }} />
-                                        <label className="input-label" htmlFor="elevGain">Elevation Gain</label>
-                                        <input type="number" name="elevGain"
-                                            className="create-event-input" required onChange={(e) => {
-                                                const es = [...eventSports]
-                                                const index = sport.id - 1
-                                                if (!es[index]) { es[index] = {} }
-                                                es[index]['elevGain'] = parseInt(e.target.value)
-                                                setEventSports(es)
-                                            }} />
-                                    </>
-                                    : ""}
+                                <input type="radio" checked={eventSport.sportId === sport.id} name={sport.name} value={sport.id} className="create-event-input" required onChange={(e) => handleSports(e)} />{sport.name}
                             </>
                         })}
-                    </fieldset>}
+                    </fieldset>
+                    <fieldset className="event-field">
+                        <label className="input-label" htmlFor="distance">Distance</label>
+                        <input type="number" name="distance" className="create-event-input" required onChange={handleSports} />
+                    </fieldset>
+                    <fieldset className="event-field">
+                        <label className="input-label" htmlFor="elevGain">Elevation Gain</label>
+                        <input type="number" name="elevGain" className="create-event-input" required onChange={handleSports} />
+                    </fieldset>
+                </>
+                :
+                <>
+                    {/* CHECKBOXES FOR MULTI SPORT */}
+                    <div className="input-label" htmlFor="sport">
+                        {multiSport ? "Sports" : "Sport"} </div>
+                    < form className="multiSportForm">
+                        {sports?.map(sport => {
+                            return <>
+                                <fieldset>
+                                    <input type="checkbox" value={sport.id} checked={fields[`f${sport.id}`]}
+                                        name="sport" className="create-event-input" required
+                                        onChange={() => {
+                                            /*
+                                            1. Copy fields object
+                                            2. Check if current field key exists, if not, create one and set value to false.
+                                            3. If the value exists and is false, set to true.
+                                            4. If true, set to false and set the eventSport object to empty. 
+                                            5. Set toggle fields.
+                                            */
+                                            const field = { ...fields }
+                                            let fvalue = field[`f${sport.id}`]
+                                            // debugger
+                                            if (!fvalue) { field[`f${sport.id}`] = true }
+                                            else if (fvalue === false) {
+                                                field[`f${sport.id}`] = true
+                                            }
+                                            else {
+                                                field[`f${sport.id}`] = false;
+                                                let es = [...eventSports]
+                                                es[sport.id - 1] = {}
+                                                setEventSports(es)
+                                            }
+                                            toggleFields(field)
+                                        }} />
+                                    <label htmlFor="sport" className="sport-label">{sport.name}</label>
+                                    {
+                                        fields[`f${sport.id}`] ?
+                                            <>
+                                                <fieldset>
+                                                    <input type="number" name="distance" className="create-event-input ms-input" placeholder="Distance (mi)" required onChange={(e) => {
+                                                        const es = [...eventSports]
+                                                        const index = sport.id - 1
+                                                        if (!es[index]) { es[index] = { sportId: sport.id } }
+                                                        es[index]['distance'] = parseInt(e.target.value)
+                                                        setEventSports(es)
+                                                    }} />
+                                                </fieldset>
+                                                <fieldset>
+                                                    <input type="number" name="elevGain"
+                                                        className="create-event-input ms-input" placeholder="Elevation Gain (ft)" required onChange={(e) => {
+                                                            const es = [...eventSports]
+                                                            const index = sport.id - 1
+                                                            if (!es[index]) { es[index] = {} }
+                                                            es[index]['elevGain'] = parseInt(e.target.value)
+                                                            setEventSports(es)
+                                                        }} />
+                                                </fieldset>
+                                            </>
+                                            : ""
+                                    }
+                                </fieldset>
+                            </>
+                        })}
+                    </form>
+                </>
+            }
 
-                {/* Dynamically render distance and elevation gain fields
+
+            {/* Dynamically render distance and elevation gain fields
                         // Each fieldset should save as its own object with dist, elevGain and sportId, then saved to the eventSports array.*/}
-
-                {fields.f1 ?
-                    <>
-                        <fieldset className="event-field">
-                            <label className="input-label" htmlFor="distance">Distance</label>
-                            <input type="number" name="distance" className="create-event-input" required onChange={(e) => {
-                                const es = [...eventSports]
-                                if (!es[0]) { es[0] = {} }
-                                es[0]['distance'] = parseInt(e.target.value)
-                                setEventSports(es)
-                            }} />
-                        </fieldset>
-                        <fieldset className="event-field">
-                            <label className="input-label" htmlFor="elevGain">Elevation Gain</label>
-                            <input type="number" name="elevGain"
-                                className="create-event-input" required onChange={(e) => {
-                                    const es = [...eventSports]
-                                    if (!es[0]) { es[0] = {} }
-                                    es[0]['elevGain'] = parseInt(e.target.value)
-                                    setEventSports(es)
-                                }} />
-                        </fieldset>
-                    </>
-                    : ""}
-                {fields.f2 ?
-                    <>
-                        <fieldset className="event-field">
-                            <label className="input-label" htmlFor="distance">Distance</label>
-                            <input type="number" name="distance"
-                                className="create-event-input" required onChange={(e) => {
-                                    const es = [...eventSports]
-                                    if (!es[1]) { es[1] = {} }
-                                    es[1]['distance'] = parseInt(e.target.value)
-                                    setEventSports(es)
-                                }} />
-                        </fieldset>
-                        <fieldset className="event-field">
-                            <label className="input-label" htmlFor="elevGain">Elevation Gain</label>
-                            <input type="number" name="elevGain" className="create-event-input" required onChange={(e) => {
-                                const es = [...eventSports]
-                                if (!es[1]) { es[1] = {} }
-                                es[1]['elevGain'] = parseInt(e.target.value)
-                                setEventSports(es)
-                            }} />
-                        </fieldset>
-                    </>
-                    : ""}
-
-
-
-
-            </form>
 
             <button onClick={submitEvent}>Create</button>
         </>
