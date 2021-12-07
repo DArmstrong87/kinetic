@@ -86,6 +86,7 @@ export const createEventSport = (es) => {
         method: "POST",
         body: JSON.stringify(es)
     })
+    .then(res=>res.json())
 }
 
 export const statesList = () => {

@@ -43,9 +43,10 @@ export const Event = () => {
             </p>
             <p>Distance: {event.total_distance}mi</p>
             <p>Elevation Gain: {event.total_elev_gain}ft</p>
+
             {event.event_sports?.length > 1 ? <>
                 <h4>Multi-Sport Event</h4>
-                {event?.event_sports.map(es => {
+                {event.event_sports?.map(es => {
                     return <>
                         <div>
                             {es.sport.name} | Distance: {es.distance}mi | Elevation Gain: {es.elev_gain}ft
@@ -54,6 +55,7 @@ export const Event = () => {
                 })}
             </>
                 : ""}
+            
             <p>{event.description}</p>
 
             {localStorage.getItem("is_athlete") === "true" ?
