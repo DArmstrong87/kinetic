@@ -16,9 +16,11 @@ export const NavBar = () => {
             <li className="navbar__item active">
                 <Link className="navbar__link" to="/events">Events</Link>
             </li>
-            <li className="navbar__item active">
-                <Link className="navbar__link" to="/profile">Profile</Link>
-            </li>
+            {localStorage.getItem("is_athlete") === "true" ?
+                <li className="navbar__item active">
+                    <Link className="navbar__link" to="/profile">Profile</Link>
+                </li>
+                : ""}
             <li className="navbar__item active">
                 <button className="nav-link fakeLink"
                     onClick={() => {

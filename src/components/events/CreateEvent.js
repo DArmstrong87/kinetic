@@ -139,72 +139,75 @@ export const CreateEvent = () => {
 
                         {sports?.map(sport => {
                             return <>
-                                <fieldset>
-                                    <input type="checkbox" value={sport.id} checked={fields[`f${sport.id}`]}
-                                        name="sport" className="create-event-input"
-                                        required={!Object.values(fields).some(val => val === true)}
-                                        onChange={() => {
-                                            /*
-                                            1. Copy fields object
-                                            2. Check if current field key exists, if not, create one and set value to false.
-                                            3. If the value exists and is false, set to true.
-                                            4. If true, set to false and set the eventSport object to empty. 
-                                            5. Set toggle fields.
-                                            */
-                                            const field = { ...fields }
-                                            let fvalue = field[`f${sport.id}`]
-                                            // debugger
-                                            if (!fvalue) {
-                                                field[`f${sport.id}`] = true
-                                                const es = [...eventSports]
-                                                const index = sport.id - 1
-                                                if (es[index]) {
-                                                    es[index] = { sportId: sport.id }
+                                <div className="sport-checkboxes">
+
+                                    <fieldset className="multisport-fields">
+                                        <input type="checkbox" value={sport.id} checked={fields[`f${sport.id}`]}
+                                            name="sport" className="create-event-input"
+                                            required={!Object.values(fields).some(val => val === true)}
+                                            onChange={() => {
+                                                /*
+                                                1. Copy fields object
+                                                2. Check if current field key exists, if not, create one and set value to false.
+                                                3. If the value exists and is false, set to true.
+                                                4. If true, set to false and set the eventSport object to empty. 
+                                                5. Set toggle fields.
+                                                */
+                                                const field = { ...fields }
+                                                let fvalue = field[`f${sport.id}`]
+                                                // debugger
+                                                if (!fvalue) {
+                                                    field[`f${sport.id}`] = true
+                                                    const es = [...eventSports]
+                                                    const index = sport.id - 1
+                                                    if (es[index]) {
+                                                        es[index] = { sportId: sport.id }
+                                                        setEventSports(es)
+                                                    }
+                                                }
+                                                else if (fvalue === false) {
+                                                    field[`f${sport.id}`] = true
+                                                }
+                                                else {
+                                                    field[`f${sport.id}`] = false;
+                                                    let es = [...eventSports]
+                                                    es[sport.id - 1] = {}
                                                     setEventSports(es)
                                                 }
-                                            }
-                                            else if (fvalue === false) {
-                                                field[`f${sport.id}`] = true
-                                            }
-                                            else {
-                                                field[`f${sport.id}`] = false;
-                                                let es = [...eventSports]
-                                                es[sport.id - 1] = {}
-                                                setEventSports(es)
-                                            }
-                                            toggleFields(field)
-                                        }} />
-                                    <label htmlFor="sport" className="sport-label">{sport.name}</label>
-                                    {
-                                        /* Dynamically render distance and elevation gain fields
-                                        // Each fieldset should save as its own object with distance, elevGain and sportId, then saved to the eventSports array.*/
-                                        fields[`f${sport.id}`] ?
-                                            <>
-                                                <fieldset>
-                                                    <input type="number" name="distance" className="create-event-input ms-input" placeholder="Distance (mi)"
-                                                        required={eventSports.some(es => es.hasOwnProperty('sportId') && es.sportId === sport.id)}
-                                                        onChange={(e) => {
-                                                            const es = [...eventSports]
-                                                            const index = sport.id - 1
-                                                            es[index]['distance'] = parseInt(e.target.value)
-                                                            setEventSports(es)
-                                                        }} />
-                                                </fieldset>
-                                                <fieldset>
-                                                    <input type="number" name="elevGain"
-                                                        className="create-event-input ms-input" placeholder="Elevation Gain (ft)" required={eventSports.some(es => es.hasOwnProperty('sportId') && es.sportId === sport.id)}
-                                                        onChange={(e) => {
-                                                            const es = [...eventSports]
-                                                            const index = sport.id - 1
-                                                            if (!es[index]) { es[index] = {} }
-                                                            es[index]['elevGain'] = parseInt(e.target.value)
-                                                            setEventSports(es)
-                                                        }} />
-                                                </fieldset>
-                                            </>
-                                            : ""
-                                    }
-                                </fieldset>
+                                                toggleFields(field)
+                                            }} />
+                                        <label htmlFor="sport" className="sport-label">{sport.name}</label>
+                                        {
+                                            /* Dynamically render distance and elevation gain fields
+                                            // Each fieldset should save as its own object with distance, elevGain and sportId, then saved to the eventSports array.*/
+                                            fields[`f${sport.id}`] ?
+                                                <>
+                                                    <fieldset className="multisport-fields">
+                                                        <input type="number" name="distance" className="create-event-input ms-input" placeholder="Distance (mi)"
+                                                            required={eventSports.some(es => es?.hasOwnProperty('sportId') && es.sportId === sport.id)}
+                                                            onChange={(e) => {
+                                                                const es = [...eventSports]
+                                                                const index = sport.id - 1
+                                                                es[index]['distance'] = parseInt(e.target.value)
+                                                                setEventSports(es)
+                                                            }} />
+                                                    </fieldset>
+                                                    <fieldset className="multisport-fields">
+                                                        <input type="number" name="elevGain"
+                                                            className="create-event-input ms-input" placeholder="Elevation Gain (ft)" required={eventSports.some(es => es?.hasOwnProperty('sportId') && es.sportId === sport.id)}
+                                                            onChange={(e) => {
+                                                                const es = [...eventSports]
+                                                                const index = sport.id - 1
+                                                                if (!es[index]) { es[index] = {} }
+                                                                es[index]['elevGain'] = parseInt(e.target.value)
+                                                                setEventSports(es)
+                                                            }} />
+                                                    </fieldset>
+                                                </>
+                                                : ""
+                                        }
+                                    </fieldset>
+                                </div>
                             </>
                         })}
 

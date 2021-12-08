@@ -14,17 +14,7 @@
     align-items: center;
 }
 
-.multiSportForm {
-    display: flex;
-    width: fit-content;
-    flex-wrap: wrap;
-    /* border: 1px solid black; */
-    margin-left: 11em;
-    flex-basis: content;
-    flex-direction: column;
-}
-
-.multiSportForm fieldset {
+.multisport-fields {
     display: flex;
     flex-wrap: wrap;
     width: fit-content;
@@ -46,4 +36,8 @@
 
 .ms-label {
     margin-right: 0.3em;
+}
+
+.sport-checkboxes {
+    margin-left: 11em;
 }
