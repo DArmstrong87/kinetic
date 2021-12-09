@@ -7,15 +7,6 @@ export const getEvents = () => {
         .then(res => res.json())
 }
 
-export const getOrganizerEvents = () => {
-    return fetch("http://localhost:8000/organizerevents", {
-        headers: {
-            "Authorization": `Token ${localStorage.getItem("kinetic_token")}`
-        }
-    })
-        .then(res => res.json())
-}
-
 export const getEvent = (id) => {
     return fetch(`http://localhost:8000/events/${id}`, {
         headers: {

@@ -16,7 +16,7 @@ export const AthleteProfile = () => {
 
     return (
         <>
-            <h2>{athlete.user?.first_name} {athlete.user?.last_name} // Athlete Profile</h2>
+            <h2>{athlete.user?.first_name} {athlete.user?.last_name} {`// Athlete Profile`}</h2>
 
             <div>
                 About me: {athlete.bio}
