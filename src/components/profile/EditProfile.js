@@ -39,9 +39,7 @@ export const EditProfile = () => {
     const handleUpdate = () => {
         const a = { ...athlete }
         updateAthlete(a, a.id).then(res => {
-            if (res.ok) {
-                history.push('/myprofile')
-            }
+            if (res.ok) { history.push('/profile') }
         })
     }
 

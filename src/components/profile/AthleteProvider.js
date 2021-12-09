@@ -19,6 +19,7 @@ export const patchAthlete = (id, obj) => {
 }
 
 export const updateAthlete = (athlete, id) => {
+    // debugger
     return fetch(`http://localhost:8000/athletes/${id}`, {
         method: "PUT",
         headers: {
