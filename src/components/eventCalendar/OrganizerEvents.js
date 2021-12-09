@@ -35,7 +35,7 @@ export const OrganizerEvents = ({ events }) => {
                     </thead>
                     <tbody>
                         {events.map(event => {
-                            const [date, time] = event.date.split(" ")
+                            const [date, time] = event.date?.split(" ")
                             return <>
                                 <tr>
                                     <Link to={`events/${event.id}`}>

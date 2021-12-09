@@ -22,7 +22,7 @@ export const AthleteProfile = () => {
                 About me: {athlete.bio}
             </div>
             <div>
-                <button>
+                <button onClick={()=>history.push("/editProfile")}>
                     Edit Profile
                 </button>
             </div>

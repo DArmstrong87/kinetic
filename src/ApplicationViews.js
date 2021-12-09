@@ -5,6 +5,7 @@ import { CreateEvent } from "./components/events/CreateEvent";
 import { Event } from "./components/events/Event";
 import { Events } from "./components/events/Events";
 import { AthleteProfile } from "./components/profile/AthleteProfile";
+import { EditProfile } from "./components/profile/EditProfile";
 import { VO2maxTest } from "./components/profile/trainingTools/VO2maxTest";
 
 export const ApplicationViews = () => {
@@ -20,6 +21,9 @@ export const ApplicationViews = () => {
         </Route>
         <Route path="/profile">
             <AthleteProfile />
+        </Route>
+        <Route path="/editprofile">
+            <EditProfile />
         </Route>
         <Route path="/vo2max">
             <VO2maxTest />

@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getEvents, getSports, monthsList, searchEvents, statesList } from "./EventsProvider";
+import { getEvents, monthsList, searchEvents, statesList } from "./EventsProvider";
 
 export const Events = () => {
     const [events, setEvents] = useState([])
-    const [sports, setSports] = useState([])
     const states = statesList()
     const months = monthsList()
     useEffect(
         () => {
             getEvents().then(events => setEvents(events))
-            getSports().then(sports => setSports(sports))
         }, []
     )
 

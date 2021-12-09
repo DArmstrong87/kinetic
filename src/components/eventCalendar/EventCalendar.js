@@ -18,7 +18,7 @@ export const EventCalendar = () => {
 
     return (
         <>
-        {athlete === true ? 
+        {athlete === "true" ? 
             <AthleteEvents athleteEvents={events} />
         : <OrganizerEvents events={events}/>
         }
