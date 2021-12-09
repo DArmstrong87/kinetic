@@ -5,27 +5,32 @@ export const CourseMap = ({ event }) => {
     const url = event.course_url
 
     const handleCourseUrl = () => {
-        const [, path] = url.split("//")
-        const [domain,] = path.split("/")
-        if (domain === "ridewithgps.com") {
-            const style = {
-                height: '30em',
-                width: '50%',
-                borderWidth: '0px'
+        try {
+            const newUrl = new URL(url)
+            const [, path] = newUrl.split("//")
+            const [domain,] = path?.split("/")
+            if (domain === "ridewithgps.com") {
+                const style = {
+                    height: '30em',
+                    width: '50%',
+                    borderWidth: '0px'
+                }
+                return <iframe src={url} style={style} title="RideWithGPS"></iframe>
             }
-            return <iframe src={url} style={style} title="RideWithGPS"></iframe>
-        }
-        else if (domain === "www.strava.com") {
-            const style = {
-                height: '30em',
-                width: '30em',
-                borderWidth: '0px',
-                allowtransparency: "true",
-                scrolling: "no"
+            else if (domain === "www.strava.com") {
+                const style = {
+                    height: '30em',
+                    width: '30em',
+                    borderWidth: '0px',
+                    allowtransparency: "true",
+                    scrolling: "no"
+                }
+                return <iframe src={url} style={style} title="Strava"></iframe>
             }
-            return <iframe src={url} style={style} title="Strava"></iframe>
         }
-        else { return <a href={url}>{url}</a> }
+        catch (_) {
+            return <a href={url}>{url}</a>
+        }
     }
 
     const courseWidget = handleCourseUrl()

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getOrganizerEvents } from "../events/EventsProvider";
+import { getOrganizerEvents } from "./EventCalendarProvider";
 import { AthleteEvents } from "./AthleteEvents";
 import { getAthleteEvents } from "./EventCalendarProvider";
 import { OrganizerEvents } from "./OrganizerEvents";
@@ -13,15 +13,16 @@ export const EventCalendar = () => {
             if (localStorage.getItem("is_athlete") === "false") {
                 getOrganizerEvents().then(e => setEvents(e))
             } else { getAthleteEvents().then(ae => setEvents(ae)) }
-        }, []
+        },
+        []
     )
 
     return (
         <>
-        {athlete === "true" ? 
-            <AthleteEvents athleteEvents={events} />
-        : <OrganizerEvents events={events}/>
-        }
+            {athlete === "true" ?
+                <AthleteEvents athleteEvents={events} />
+                : <OrganizerEvents events={events} setEvents={setEvents} />
+            }
         </>
     )
 }

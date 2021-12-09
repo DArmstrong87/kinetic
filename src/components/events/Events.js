@@ -85,7 +85,7 @@ export const Events = () => {
                                             return es.sport?.name
                                         }).join(", ")
                                         :
-                                        event.event_sport[0]?.sport.name
+                                        event.event_sports[0]?.sport.name
                                 }</td>
                                 <td>{event.total_distance}mi</td>
                                 <td>{event.total_elev_gain}ft</td>
