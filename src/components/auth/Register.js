@@ -46,17 +46,19 @@ export const Register = () => {
                 .then(res => {
                     if ("token" in res) {
                         localStorage.setItem("kinetic_token", res.token)
+                        localStorage.setItem("is_athlete", true)
                         history.push("/")
                     }
                 })
-        }
-        else if (newUser.password === newUser.verifyPassword && !isAthlete) {
-            const new_user = { ...newUser }
-            new_user.isAthlete = false
-            registerUser(new_user)
+            }
+            else if (newUser.password === newUser.verifyPassword && !isAthlete) {
+                const new_user = { ...newUser }
+                new_user.isAthlete = false
+                registerUser(new_user)
                 .then(res => {
                     if ("token" in res) {
                         localStorage.setItem("kinetic_token", res.token)
+                        localStorage.setItem("is_athlete", false)
                         history.push("/")
                     }
                 })

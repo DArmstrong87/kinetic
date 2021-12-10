@@ -27,6 +27,7 @@ export const Login = () => {
             .then(res => {
                 if ("valid" in res && res.valid && "token" in res) {
                     localStorage.setItem("kinetic_token", res.token)
+                    localStorage.setItem("kinetic_username", username.current.value)
                     if (res.is_athlete){localStorage.setItem("is_athlete", true)}
                     else {localStorage.setItem("is_athlete", false)}
                     history.push("/")
@@ -48,8 +49,8 @@ export const Login = () => {
                     <h1>Kinetic</h1>
                     <h2>Please sign in</h2>
                     <fieldset>
-                        <label htmlFor="inputUsername"> Username address </label>
-                        <input ref={username} type="username" id="username" className="form-control" placeholder="Username address" required autoFocus />
+                        <label htmlFor="inputUsername"> Username  </label>
+                        <input ref={username} type="username" id="username" className="form-control" placeholder="Username " required autoFocus />
                     </fieldset>
                     <fieldset>
                         <label htmlFor="inputPassword"> Password </label>

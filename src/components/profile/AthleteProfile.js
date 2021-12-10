@@ -3,6 +3,7 @@ import { useHistory } from "react-router";
 import { getAthlete } from "./AthleteProvider";
 import { HRZones } from "./trainingTools/HeartRateZones";
 import { HRR } from "./trainingTools/HRR";
+import "./AthleteProfile.css"
 
 export const AthleteProfile = () => {
     const [athlete, setAthlete] = useState({})
@@ -16,7 +17,7 @@ export const AthleteProfile = () => {
 
     return (
         <>
-            <h2>{athlete.user?.first_name} {athlete.user?.last_name} {`// Athlete Profile`}</h2>
+            <h1 className="athlete-title">{athlete.user?.first_name} {athlete.user?.last_name} {`// Athlete Profile`}</h1>
 
             <div>
                 About me: {athlete.bio}
