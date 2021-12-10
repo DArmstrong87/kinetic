@@ -60,7 +60,8 @@ export const OrganizerEvents = ({ events, setEvents }) => {
                                     <td>{event.days_until}</td>
                                     <td>{event.max_participants - event.spots_remaining}</td>
                                     <td>
-                                        <button>⚙️</button>
+                                        <button onClick={() => history.push(`/editEvent/${event.id}`)}>
+                                            ⚙️</button>
                                         <button onClick={() => {
                                             deleteEvent(event.id).then(res => {
                                                 if (res.ok) {
