@@ -248,7 +248,7 @@ export const EventForm = ({ editMode }) => {
                             return <>
                                 <div className="sport-checkboxes">
                                     <fieldset className="multisport-fields">
-                                        <input type="checkbox" value={sport.id} checked={fields[`f${sport.id}`] || existingSport(sport.id)}
+                                        <input type="checkbox" value={sport.id} checked={fields[`f${sport.id}`] === true}
                                             name="sport" className="create-event-input"
                                             required={!Object.values(fields).some(val => val === true)}
                                             onChange={() => {

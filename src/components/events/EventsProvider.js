@@ -1,5 +1,5 @@
 export const getEvents = () => {
-    return fetch("http://localhost:8000/events", {
+    return fetch("https://kinetic--server.herokuapp.com/events", {
         headers: {
             "Authorization": `Token ${localStorage.getItem("kinetic_token")}`
         }
@@ -8,7 +8,7 @@ export const getEvents = () => {
 }
 
 export const getEvent = (id) => {
-    return fetch(`http://localhost:8000/events/${id}`, {
+    return fetch(`https://kinetic--server.herokuapp.com/events/${id}`, {
         headers: {
             "Authorization": `Token ${localStorage.getItem("kinetic_token")}`
         }
@@ -17,7 +17,7 @@ export const getEvent = (id) => {
 }
 
 export const getAthleteEvent = (id) => {
-    return fetch(`http://localhost:8000/athleteevents/${id}`, {
+    return fetch(`https://kinetic--server.herokuapp.com/athleteevents/${id}`, {
         headers: {
             "Authorization": `Token ${localStorage.getItem("kinetic_token")}`
         }
@@ -26,27 +26,25 @@ export const getAthleteEvent = (id) => {
 }
 
 export const signUp = (id) => {
-    return fetch(`http://localhost:8000/events/${id}/signup`, {
+    return fetch(`https://kinetic--server.herokuapp.com/events/${id}/signup`, {
         headers: {
             "Authorization": `Token ${localStorage.getItem("kinetic_token")}`
         },
         method: "POST"
     })
-        .then(res => res.json())
 }
 
 export const leaveEvent = (id) => {
-    return fetch(`http://localhost:8000/events/${id}/signup`, {
+    return fetch(`https://kinetic--server.herokuapp.com/events/${id}/signup`, {
         headers: {
             "Authorization": `Token ${localStorage.getItem("kinetic_token")}`
         },
         method: "DELETE"
     })
-        .then(res => res.json())
 }
 
 export const getSports = () => {
-    return fetch(`http://localhost:8000/sports`, {
+    return fetch(`https://kinetic--server.herokuapp.com/sports`, {
         headers: {
             "Authorization": `Token ${localStorage.getItem("kinetic_token")}`
         }
@@ -56,7 +54,7 @@ export const getSports = () => {
 }
 
 export const createEvent = (event) => {
-    return fetch(`http://localhost:8000/events`, {
+    return fetch(`https://kinetic--server.herokuapp.com/events`, {
         headers: {
             "Authorization": `Token ${localStorage.getItem("kinetic_token")}`,
             "Content-Type": "application/json",
@@ -68,7 +66,7 @@ export const createEvent = (event) => {
 }
 
 export const createEventSport = (es) => {
-    return fetch(`http://localhost:8000/eventsports`, {
+    return fetch(`https://kinetic--server.herokuapp.com/eventsports`, {
         headers: {
             "Authorization": `Token ${localStorage.getItem("kinetic_token")}`,
             "Content-Type": "application/json",
@@ -81,7 +79,7 @@ export const createEventSport = (es) => {
 }
 
 export const updateEvent = (event) => {
-    return fetch(`http://localhost:8000/events/${event.id}`, {
+    return fetch(`https://kinetic--server.herokuapp.com/events/${event.id}`, {
         headers: {
             "Authorization": `Token ${localStorage.getItem("kinetic_token")}`,
             "Content-Type": "application/json",
@@ -93,7 +91,7 @@ export const updateEvent = (event) => {
 }
 
 export const updateEventSport = (es) => {
-    return fetch(`http://localhost:8000/eventsports/${es.id}`, {
+    return fetch(`https://kinetic--server.herokuapp.com/eventsports/${es.id}`, {
         headers: {
             "Authorization": `Token ${localStorage.getItem("kinetic_token")}`,
             "Content-Type": "application/json",
@@ -106,7 +104,7 @@ export const updateEventSport = (es) => {
 }
 
 export const deleteEventSport = (id) => {
-    return fetch(`http://localhost:8000/eventsports/${id}`, {
+    return fetch(`https://kinetic--server.herokuapp.com/eventsports/${id}`, {
         headers: {
             "Authorization": `Token ${localStorage.getItem("kinetic_token")}`
         },
@@ -136,7 +134,7 @@ export const monthsList = () => {
 }
 
 export const searchEvents = (q, term) => {
-    return fetch(`http://localhost:8000/events?${q}=${term}`, {
+    return fetch(`https://kinetic--server.herokuapp.com/events?${q}=${term}`, {
         headers: {
             "Authorization": `Token ${localStorage.getItem("kinetic_token")}`
         }

@@ -1,5 +1,5 @@
 export const getAthlete = () => {
-    return fetch(`http://localhost:8000/athletes`, {
+    return fetch(`https://kinetic--server.herokuapp.com/athletes`, {
         headers: {
             "Authorization": `Token ${localStorage.getItem("kinetic_token")}`
         }
@@ -8,7 +8,7 @@ export const getAthlete = () => {
 }
 
 export const patchAthlete = (id, obj) => {
-    return fetch(`http://localhost:8000/athletes/${id}`, {
+    return fetch(`https://kinetic--server.herokuapp.com/athletes/${id}`, {
         method: "PATCH",
         headers: {
             "Authorization": `Token ${localStorage.getItem("kinetic_token")}`,
@@ -20,7 +20,7 @@ export const patchAthlete = (id, obj) => {
 
 export const updateAthlete = (athlete, id) => {
     // debugger
-    return fetch(`http://localhost:8000/athletes/${id}`, {
+    return fetch(`https://kinetic--server.herokuapp.com/athletes/${id}`, {
         method: "PUT",
         headers: {
             "Authorization": `Token ${localStorage.getItem("kinetic_token")}`,
