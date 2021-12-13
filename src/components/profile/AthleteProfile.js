@@ -3,9 +3,11 @@ import { useHistory } from "react-router";
 import { getAthlete } from "./AthleteProvider";
 import { HRZones } from "./trainingTools/HeartRateZones";
 import { HRR } from "./trainingTools/HRR";
+import "./AthleteProfile.css"
 
 export const AthleteProfile = () => {
     const [athlete, setAthlete] = useState({})
+    const [hrTable, setHRtable] = useState({})
     const history = useHistory()
 
     useEffect(() => {
@@ -16,46 +18,75 @@ export const AthleteProfile = () => {
 
     return (
         <>
-            <h2>{athlete.user?.first_name} {athlete.user?.last_name} {`// Athlete Profile`}</h2>
+            <article className="profile">
 
-            <div>
-                About me: {athlete.bio}
-            </div>
-            <div>
-                <button onClick={() => history.push("/editProfile")}>
-                    Edit Profile
-                </button>
-            </div>
+                <h1 className="athlete-title">{athlete.user?.first_name} {athlete.user?.last_name} {`// Athlete Profile`}
+                    <button className="gear-button" onClick={() => history.push("/editProfile")}> ⚙️
+                    </button>
+                </h1>
 
-            <div>
+                <div className="profile-div">
+                    <h3>About me</h3>
+                    {athlete.bio}
+                </div>
+
+                <hr />
                 <h3>Training Tools</h3>
-                <div>
-                    {"VO2 Max: "}
-                    {athlete.VO2_max !== "" ?
-                        <>
-                            {athlete.VO2_max} mL/kg/min
-                            <button onClick={() => { history.push("/vo2max") }}>
-                                Take Test
-                            </button>
-                        </>
-                        :
-                        <button>
-                            Take Test
-                        </button>
-                    }
-                </div>
-                <div>
-                    Fluid Loss: {athlete.fluid_loss} L/hr
-                </div>
-                <div>
-                    Sodium Loss: {athlete.sodium_loss} mg/hr
-                </div>
+                <section className="profile-div training-tools">
+                    <div className="training-stats">
+                        <div>
+                            <b className="profile-detail">{"VO2 Max: "}</b>
+                            {athlete.VO2_max !== "" ?
+                                <>
+                                    {athlete.VO2_max} mL/kg/min
+                                    <button className="take-test" 
+                                    onClick={() => { history.push("/vo2max") }}>
+                                        Take Test
+                                    </button>
+                                </>
+                                :
+                                <button>
+                                    Take Test
+                                </button>
+                            }
+                        </div>
+                        <div>
+                            <b className="profile-detail">Fluid Loss: </b>
+                            {athlete.fluid_loss} L/hr
+                        </div>
+                        <div>
+                            <b className="profile-detail">Sodium Loss: </b>
+                            {athlete.sodium_loss} mg/hr
+                        </div>
+                        <div>
+                            <b className="profile-detail">Resting heart rate: </b>
+                            {athlete.rhr} bpm
+                        </div>
+                        <div>
+                            <b className="profile-detail">HRmax: </b>
+                            {220 - athlete.age} bpm
+                        </div>
+                    </div>
 
+                    <div className="HR-div">
+                        <div>
+                            Training or racing by heart rate zones, combined with perceived exertion is a more objective way of gauging exercise intensity.
+                        </div>
 
-                <HRZones age={athlete.age} />
-                <HRR age={athlete.age} rhr={athlete.rhr} />
+                        <div className="HR-radio-div">
+                            <input type="radio" className="HR-radio" checked={hrTable.hr} onChange={() => setHRtable({ hr: true })} />
+                            <label htmlFor="HR">Standard HR Zones</label>
+                            <input type="radio" className="HR-radio" checked={hrTable.hrr} onChange={() => setHRtable({ hrr: true })} />
+                            <label htmlFor="HRR">Heart Rate Reserve Target Zones</label>
+                        </div>
 
-            </div>
+                        {hrTable.hr ? <HRZones age={athlete.age} /> : ""}
+                        {hrTable.hrr ? <HRR age={athlete.age} rhr={athlete.rhr} /> : ""}
+                    </div>
+
+                </section>
+
+            </article>
         </>
     )
 }

@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react"
 import { Link, useHistory } from "react-router-dom"
 import "./Auth.css"
+import "../nav/NavBar.css"
 import { registerUser } from "./AuthProvider"
 import { RegisterAthlete } from "./RegisterAthlete"
 import { RegisterOrganizer } from "./RegisterOrganizer"
@@ -46,6 +47,7 @@ export const Register = () => {
                 .then(res => {
                     if ("token" in res) {
                         localStorage.setItem("kinetic_token", res.token)
+                        localStorage.setItem("is_athlete", true)
                         history.push("/")
                     }
                 })
@@ -57,6 +59,7 @@ export const Register = () => {
                 .then(res => {
                     if ("token" in res) {
                         localStorage.setItem("kinetic_token", res.token)
+                        localStorage.setItem("is_athlete", false)
                         history.push("/")
                     }
                 })
@@ -67,13 +70,17 @@ export const Register = () => {
     return (
         <main style={{ textAlign: "center" }}>
 
+            <h2 className="kinetic">Kinetic</h2>
+
             <dialog className="dialog dialog--password" ref={passwordDialog}>
                 <div>Passwords do not match</div>
                 <button className="button--close" onClick={e => passwordDialog.current.close()}>Close</button>
             </dialog>
 
             <form className="form--login" onSubmit={handleRegister}>
-                <h1 className="h3 mb-3 font-weight-normal">Register {isAthlete === true ? "Athlete" : "Event Organizer"}</h1>
+
+                <h1 className="h3 mb-3 font-weight-normal">
+                    Register {isAthlete === true ? "Athlete" : "Event Organizer"}</h1>
                 <div className="user_type">
                     <fieldset>
                         <input type="radio" name="athlete" checked={isAthlete === true ? true : false} onChange={handleRadios} />

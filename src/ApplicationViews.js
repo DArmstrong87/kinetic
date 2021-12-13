@@ -7,6 +7,7 @@ import { Events } from "./components/events/Events";
 import { AthleteProfile } from "./components/profile/AthleteProfile";
 import { EditProfile } from "./components/profile/EditProfile";
 import { VO2maxTest } from "./components/profile/trainingTools/VO2maxTest";
+import { Home } from "./components/home/Home";
 
 export const ApplicationViews = () => {
     return <>
@@ -33,6 +34,9 @@ export const ApplicationViews = () => {
         </Route>
         <Route path="/createevent">
             <EventForm />
+        </Route>
+        <Route exact path="/">
+            <Home />
         </Route>
     </>
 }

@@ -134,14 +134,9 @@ export const EventForm = ({ editMode }) => {
 
         for (const es of eventSports) {
             if (eventSportIds.includes(es.id)) {
-                updateEventSport(es).then(createdEventSport => {
-                    debugger
-                    // Redirect after the last event sport is created
-                    if (createdEventSport.sport.id ===
-                        eventSports[eventSports.length - 1].sportId) {
-                        history.push(`/events/${eventId}`)
-                    }
-                })
+                updateEventSport(es).then(
+                    history.push(`/events/${eventId}`)
+                )
             }
         }
     }

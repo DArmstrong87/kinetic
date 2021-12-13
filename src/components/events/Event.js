@@ -41,7 +41,7 @@ export const Event = () => {
                 {date} | {event.city}, {event.state}<br />
                 Start time: {time}{time >= 12 ? 'pm' : 'am'}
             </p>
-            <p>Distance: {event.total_distance}mi</p>
+            <p>Distance: {event.total_distance?.toFixed(1)}mi</p>
             <p>Elevation Gain: {event.total_elev_gain}ft</p>
 
             {event.event_sports?.length > 1 ? <>
@@ -91,15 +91,6 @@ export const Event = () => {
                     </>
                     : ""}
             </div>
-
-            {
-                event.event_sports?.length > 1 ?
-                    event.event_sports?.map(es => {
-                        return es.sport?.name
-                    }).join(", ")
-                    :
-                    event.event_sports?.[0].sport.name
-            }
         </>
     )
 }

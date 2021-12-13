@@ -1,0 +1,48 @@
+.hr-zones {
+    /* background-color: ; */
+    color: black;
+}
+
+.hr-zones td {
+    border: 1px solid white;
+    padding: 0.3em;
+    
+}
+.hr-zones th {
+    color: white;
+    border: 1px solid white;
+    padding: 0.3em;
+    background-color: slategray;
+}
+.hr-heading{
+    background-color: slategray;
+    color: white;
+}
+
+.z5 {
+    background-color: lightcoral;
+}
+.z4{
+    background-color: orange;
+}
+.z3{
+    background-color: rgb(255, 255, 154);
+}
+.z2{
+    background-color: lightgreen;
+}
+.z1{
+    background-color: lightskyblue;
+}
+
+.HR-table-about {
+    display: flex;
+}
+
+.HR-table {
+    margin-right: 1em;
+}
+
+.HR-about {
+    width:40%;
+}

@@ -17,51 +17,59 @@ export const HRR = ({ age, rhr }) => {
 
     return (
         <>
-            <table>
-                <thead>
-                    <th colSpan="4">
-                            Target Zones - Heart Rate Reserve
-                    </th>
-                    <tr>
-                        <td>Zone</td>
-                        <td>Intensity</td>
-                        <td>HR range</td>
-                        <td>Percentage of HRmax</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Zone 1</td>
-                        <td> Very light</td>
-                        <td>{z1_min} - {z1_max} bpm</td>
-                        <td>50-60%</td>
-                    </tr>
-                    <tr>
-                        <td>Zone 2</td>
-                        <td>Light</td>
-                        <td>{z2_min} - {z2_max} bpm</td>
-                        <td>61-70%</td>
-                    </tr>
-                    <tr>
-                        <td>Zone 3</td>
-                        <td>Moderate</td>
-                        <td>{z3_min} - {z3_max} bpm</td>
-                        <td>71-80%</td>
-                    </tr>
-                    <tr>
-                        <td>Zone 4</td>
-                        <td>Hard</td>
-                        <td>{z4_min} - {z4_max} bpm</td>
-                        <td>81-90%</td>
-                    </tr>
-                    <tr>
-                        <td>Zone 5</td>
-                        <td>Maximum Effort</td>
-                        <td>{z5_min} - {z5_max} bpm</td>
-                        <td>91-100%</td>
-                    </tr>
-                </tbody>
-            </table>
+            <section className="HR-table-about">
+                <div className="HR-table">
+                    <table className="hr-zones">
+                        <thead>
+                            <th colSpan="4">
+                                Target Zones - Heart Rate Reserve
+                            </th>
+                            <tr className="hr-heading">
+                                <td>Zone</td>
+                                <td>Intensity</td>
+                                <td>HR range</td>
+                                <td>% of HRR</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr className="z1">
+                                <td>Zone 1</td>
+                                <td> Very light</td>
+                                <td>{z1_min} - {z1_max} bpm</td>
+                                <td>50-60%</td>
+                            </tr>
+                            <tr className="z2">
+                                <td>Zone 2</td>
+                                <td>Light</td>
+                                <td>{z2_min} - {z2_max} bpm</td>
+                                <td>61-70%</td>
+                            </tr>
+                            <tr className="z3">
+                                <td>Zone 3</td>
+                                <td>Moderate</td>
+                                <td>{z3_min} - {z3_max} bpm</td>
+                                <td>71-80%</td>
+                            </tr>
+                            <tr className="z4">
+                                <td>Zone 4</td>
+                                <td>Hard</td>
+                                <td>{z4_min} - {z4_max} bpm</td>
+                                <td>81-90%</td>
+                            </tr>
+                            <tr className="z5">
+                                <td>Zone 5</td>
+                                <td>Max Effort</td>
+                                <td>{z5_min} - {z5_max} bpm</td>
+                                <td>91-100%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div className="HR-about">
+                <b>Heart Rate Reserve</b> accounts for resting HR along with max HR and is a more accurate measure of training intensity vs standard HR zones.
+                <br/>Heart Rate Reserve (HRR) = HRmax - HRrest
+                </div>
+            </section>
         </>
     )
 }

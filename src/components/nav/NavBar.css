@@ -1,6 +1,15 @@
+.kinetic-header {
+    display: flex;
+    justify-content: space-between;
+    margin-right: 1.5em;
+    align-items: center;
+}
+
 .navbar {
     display: flex;
     justify-content: space-between;
+    font-size: 1.5em;
+    margin-right: 1.5em;
 }
 
 .navbar__item {
@@ -9,4 +18,32 @@
 
 .navbar__link {
     text-decoration: none;
+}
+
+.kinetic {
+    font-family: 'Permanent Marker', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    color: royalblue;
+    margin: 0.5em 1.5em 0.5em 1em;
+    font-size: 3em;
+    /* -webkit-text-stroke-width: 0.01px;
+    -webkit-text-stroke-color: white; */
+}
+
+.logout {
+    background-color: gray;
+    border-radius: 5px;
+    border: none;
+}
+
+.logout {
+    cursor: pointer;
+    color: whitesmoke
+}
+
+.logout:hover {
+    color: orange;
+}
+
+.welcome-logout {
+    text-align: right;
 }
