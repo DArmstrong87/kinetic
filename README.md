@@ -8,7 +8,7 @@
 ## Live Site URL: https://kinetic-da.herokuapp.com/
 
 ## About
-Endurance athletes require an individualized and evidence-based approach to training for endurance events and often must go to multiple event organizer pages to sign up for events. Kinetic organizes these events into a centralized location, showing events, a user event calendar and how many days until the next race day. Kinetic provides tools for the athlete to improve their training based on VO2 max, individual sodium and fluid needs and food intake. Kinetic is targeted at both athletes and event organizers. Event organizers can create their own profile and create multiple events.## Tech Stack
+Endurance athletes require an individualized and evidence-based approach to training for endurance events and often must go to multiple event organizer pages to sign up for events. Kinetic organizes these events into a centralized location, showing events, a user event calendar and how many days until the next race day. Kinetic provides tools for the athlete to improve their training based on VO2 max, individual sodium and fluid needs and food intake. Kinetic is targeted at both athletes and event organizers. Event organizers can create their own profile and create multiple events.
 
 ## Tech Stack
 **Client:** React, HTML, CSS
