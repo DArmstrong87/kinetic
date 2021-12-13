@@ -1,5 +1,5 @@
 export const getAthleteEvents = () => {
-    return fetch("http://localhost:8000/athleteevents", {
+    return fetch("https://kinetic--server.herokuapp.com/athleteevents", {
         headers: {
             "Authorization": `Token ${localStorage.getItem("kinetic_token")}`
         }
@@ -8,7 +8,7 @@ export const getAthleteEvents = () => {
 }
 
 export const deleteEvent = (id) => {
-    return fetch(`http://localhost:8000/events/${id}`, {
+    return fetch(`https://kinetic--server.herokuapp.com/events/${id}`, {
         headers: {
             "Authorization": `Token ${localStorage.getItem("kinetic_token")}`
         },
@@ -17,7 +17,7 @@ export const deleteEvent = (id) => {
 }
 
 export const getOrganizerEvents = () => {
-    return fetch("http://localhost:8000/organizerevents", {
+    return fetch("https://kinetic--server.herokuapp.com/organizerevents", {
         headers: {
             "Authorization": `Token ${localStorage.getItem("kinetic_token")}`
         }

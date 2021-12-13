@@ -15,21 +15,29 @@ export const Event = () => {
         () => {
             getEvent(eventId).then(event => setEvent(event))
             if (localStorage.getItem("is_athlete") === "true") {
-                getAthleteEvent(eventId, setAE).then(ae => setAE(ae))
+                getAthleteEvent(eventId).then(ae => setAE(ae))
             }
         }, [eventId]
     )
     const eventSignUp = (id) => {
         signUp(id)
-            .then((res) => {
-                if (res) {
-                    getAthleteEvent(eventId).then(ae => setAE(ae))
+            .then(res => {
+                if (res.ok) {
+                    getEvent(eventId).then(e => setEvent(e)).then(
+                        getAthleteEvent(eventId).then(ae => setAE(ae))
+                    )
                 }
             })
     }
     const eventLeave = (id) => {
         leaveEvent(id)
-            .then(setAE([]))
+            .then(res => {
+                if (res.ok) {
+                    getEvent(eventId).then(e => setEvent(e)).then(
+                        setAE([])
+                    )
+                }
+            })
     }
 
 
@@ -55,7 +63,7 @@ export const Event = () => {
                 })}
             </>
                 : ""}
-            
+
             <p>{event.description}</p>
 
             {localStorage.getItem("is_athlete") === "true" ?
@@ -72,7 +80,8 @@ export const Event = () => {
                                 :
                                 <>
                                     You are signed up for {event.name}!
-                                    < button onClick={() => eventLeave(event.id)}>Leave Event</button>
+                                    <button onClick={() => eventLeave(event.id)}>
+                                        Leave Event</button>
                                 </>
                             }
                         </>

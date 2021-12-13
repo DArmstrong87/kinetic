@@ -79,7 +79,7 @@ export const Events = () => {
             </div>
 
             <article className="events">
-                {events.map(event => {
+                {events?.map(event => {
                     const date = new Date(event.date).toDateString()
                     const time = event.date?.split(" ")[1]
                     return <>
