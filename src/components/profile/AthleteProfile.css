@@ -27,7 +27,45 @@
     margin-bottom: 2em;
 }
 
+.training-tools {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 1em;
+}
+
+.training-stats {
+    border: 1px solid whitesmoke;
+    border-radius: 10px;
+    padding: 1em;
+    height: fit-content;
+}
 
 .profile-detail {
     color: orange;
+}
+
+.HR-div {
+    width: 60%;
+    /* border: 1px solid red; */
+}
+
+.HR-radio {
+    width: 1.5em;
+    height: 1.5em;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+.HR-radio-div {
+    display: flex;
+    align-content: center;
+    margin: 1em 0 1em 0;
+}
+
+.take-test {
+    background: none;
+    color: rgb(180, 180, 180);
+    font-size: 1em;
+    border: none;
+    cursor: pointer;
 }

@@ -1,7 +1,6 @@
 .hr-zones {
     /* background-color: ; */
     color: black;
-    width: 35%;
 }
 
 .hr-zones td {
@@ -34,4 +33,16 @@
 }
 .z1{
     background-color: lightskyblue;
+}
+
+.HR-table-about {
+    display: flex;
+}
+
+.HR-table {
+    margin-right: 1em;
+}
+
+.HR-about {
+    width:40%;
 }
