@@ -1,70 +1,42 @@
-# Getting Started with Create React App
+# Kinetic
+## Live Site URL: https://kinetic-da.herokuapp.com/
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## About
+Endurance athletes require an individualized and evidence-based approach to training for endurance events and often must go to multiple event organizer pages to sign up for events. Kinetic organizes these events into a centralized location, showing events, a user event calendar and how many days until the next race day. Kinetic provides tools for the athlete to improve their training based on VO2 max, individual sodium and fluid needs and food intake. Kinetic is targeted at both athletes and event organizers. Event organizers can create their own profile and create multiple events.
 
-## Available Scripts
+## Registering, Log In, Log Out
+1. Register either an athlete or event organizer user.
+2. Login with your credentials.
+3. Logout on button click in the header.
 
-In the project directory, you can run:
+## Features
+## Events List
+- Events are listed in order of closest upcoming date for both user types.
+- Users can filter these events by distance, state and month.
+- Users can search by event name, description, city and state.
 
-### `npm start`
+## Event Details
+- Users can click on event details to view a description, distance and elevation breakdown by sport and course url.
+- Athletes can view how many spots are remaining.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Event Sign Up
+- Athletes can sign up for and leave events.
+- When the participant limit is met, the sign up option becomes unavailable.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Event Calendar
+- Athletes can view their upcoming races in the event calendar.
+- The closest upcoming race displays at the top with.
+- Displays how many days until race day.
 
-### `npm test`
+## Event Create, Edit, Delete
+- Organizers can create, edit and delete events.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Profile
+- Athletes can view their profile.
+- The athlete profile includes stats such as VO2max, fluid and sodium loss, resting heart rate and heart rate max.
+- The user can view their standard HR zones based or based on heart rate reserve.
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## VO2max Testing
+- Athletes can take VO2 max tests.
+- When athletes get their results, they can save the value to their profile.
+- The athlete can view and FAQ and standards on VO2max.
