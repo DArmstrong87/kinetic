@@ -1,4 +1,5 @@
 import React from "react";
+import "./HRZones.css"
 
 export const HRZones = ({ age }) => {
 
@@ -16,46 +17,46 @@ export const HRZones = ({ age }) => {
 
     return (
         <>
-            <table>
+            <table className="hr-zones">
                 <thead>
                     <th colSpan="4">
                         Standard HR Zones
                     </th>
-                    <tr>
+                    <tr className="hr-heading">
                         <td>Zone</td>
                         <td>Intensity</td>
                         <td>HR range</td>
-                        <td>Percentage of HRmax</td>
+                        <td>% of HRmax</td>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    <tr className="z1">
                         <td>Zone 1</td>
                         <td> Very light</td>
                         <td>{z1_min} - {z1_max} bpm</td>
                         <td>50-60%</td>
                     </tr>
-                    <tr>
+                    <tr className="z2">
                         <td>Zone 2</td>
                         <td>Light</td>
                         <td>{z2_min} - {z2_max} bpm</td>
                         <td>61-70%</td>
                     </tr>
-                    <tr>
+                    <tr className="z3">
                         <td>Zone 3</td>
                         <td>Moderate</td>
                         <td>{z3_min} - {z3_max} bpm</td>
                         <td>71-80%</td>
                     </tr>
-                    <tr>
+                    <tr className="z4">
                         <td>Zone 4</td>
                         <td>Hard</td>
                         <td>{z4_min} - {z4_max} bpm</td>
                         <td>81-90%</td>
                     </tr>
-                    <tr>
+                    <tr className="z5">
                         <td>Zone 5</td>
-                        <td>Maximum Effort</td>
+                        <td>Max Effort</td>
                         <td>{z5_min} - {z5_max} bpm</td>
                         <td>91-100%</td>
                     </tr>

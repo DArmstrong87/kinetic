@@ -1,3 +1,33 @@
 .athlete-title {
     text-align: center;
 }
+
+.profile {
+    margin: 0 3em 0 3em; 
+}
+.profile h3{
+    margin: 0px;
+    padding: 0px;
+    text-align: center;
+}
+
+.gear-button {
+    margin-left: 0.5em;
+    background: none;
+    border: none;
+    font-size: 0.5em;
+    cursor: pointer;
+}
+.gear-button:hover {
+    background-color: orange;
+    border-radius: 25px;
+}
+
+.profile-div {
+    margin-bottom: 2em;
+}
+
+
+.profile-detail {
+    color: orange;
+}

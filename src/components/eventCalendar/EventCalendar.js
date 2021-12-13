@@ -3,6 +3,7 @@ import { getOrganizerEvents } from "./EventCalendarProvider";
 import { AthleteEvents } from "./AthleteEvents";
 import { getAthleteEvents } from "./EventCalendarProvider";
 import { OrganizerEvents } from "./OrganizerEvents";
+import "./EventCalendar.css"
 
 export const EventCalendar = () => {
     const [events, setEvents] = useState([])
@@ -18,11 +19,12 @@ export const EventCalendar = () => {
     )
 
     return (
-        <>
+        <><article className="event-calendar">
             {athlete === "true" ?
                 <AthleteEvents athleteEvents={events} />
                 : <OrganizerEvents events={events} setEvents={setEvents} />
             }
+        </article>
         </>
     )
 }

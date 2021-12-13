@@ -65,27 +65,27 @@ export const EditProfile = () => {
             </fieldset>
             <fieldset>
                 <label htmlFor="bio">Bio </label>
-                <textarea name="bio" className="form-control" placeholder={athlete.bio} required onChange={handleUser} />
+                <textarea name="bio" className="form-control" className="form-control" placeholder={athlete.bio} required onChange={handleUser} />
             </fieldset>
             <fieldset>
                 <label htmlFor="rhr">Resting Heart Rate </label>
-                <input type="number" name="rhr" placeholder={athlete.rhr} onChange={handleUser} /> bpm
+                <input type="number" name="rhr" className="form-control" placeholder={athlete.rhr} onChange={handleUser} /> bpm
             </fieldset>
             <fieldset>
                 <label htmlFor="vo2"> Vo2Max </label>
-                <input type="number" placeholder={athlete.VO2max} name="VO2max" step="0.01" onChange={handleUser} />
+                <input type="number" placeholder={athlete.VO2max} className="form-control" name="VO2max" step="0.01" onChange={handleUser} />
             </fieldset>
             <fieldset>
                 <label htmlFor="fluidLoss">Fluid loss</label>
-                <input type="number" placeholder={athlete.fluidLoss} name="fluidLoss" step="0.01" onChange={handleUser} /> L/hr
+                <input type="number" placeholder={athlete.fluidLoss} className="form-control" name="fluidLoss" step="0.01" onChange={handleUser} /> L/hr
             </fieldset>
             <fieldset>
                 <label htmlFor="sodiumLoss">Sodium Loss</label>
-                <input type="number" placeholder={athlete.sodiumLoss} name="sodiumLoss" onChange={handleUser} /> mg/hr
+                <input type="number" placeholder={athlete.sodiumLoss} className="form-control" name="sodiumLoss" onChange={handleUser} /> mg/hr
             </fieldset>
             <fieldset>
                 <label htmlFor="weight">Weight </label>
-                <input type="number" placeholder={athlete.weight} name="weight" onChange={handleUser} /> lbs
+                <input type="number" placeholder={athlete.weight} className="form-control" name="weight" onChange={handleUser} /> lbs
             </fieldset>
             <fieldset style={{
                 textAlign: "center"

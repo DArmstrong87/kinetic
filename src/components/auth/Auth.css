@@ -15,8 +15,8 @@ fieldset {
     text-align: left;
 }
 
-.form--login > fieldset > input[type="email"],
-.form--login > fieldset > input[type="password"] {
+.form--login>fieldset>input[type="email"],
+.form--login>fieldset>input[type="password"] {
     width: 25em;
 }
 
@@ -26,8 +26,8 @@ fieldset {
 }
 
 .form-control {
-    display: block;
-    width: 94%;
+    display: flex;
+    width: 100%;
     height: calc(1.5em + .75rem + 2px);
     padding: .375rem .75rem;
     font-size: 1rem;
@@ -38,8 +38,17 @@ fieldset {
     background-clip: padding-box;
     border: 1px solid #ced4da;
     border-radius: .25rem;
-    -webkit-transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    -webkit-transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+.user-pass {
+    display: flex;
+    width: 25em;
+    height: calc(1.5em + .75rem + 2px);
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
 }
 
 .container--login {
@@ -57,6 +66,20 @@ fieldset {
     background-repeat: no-repeat;
 }
 
+.dob {
+    width: 14em;
+}
+
+.bio{
+    width: 14em;
+    height: 8em;
+}
+
+.dob-bio {
+    margin-left: 1.6em;
+}
+
+
 .button--close {
     position: relative;
     bottom: -2rem;
@@ -65,4 +88,68 @@ fieldset {
 .dialog {
     min-width: 15rem;
     min-height: 5rem;
+}
+
+.register-form {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    padding: 0px;
+    margin: 0px;
+    margin-left: -12em;
+
+}
+
+.reg-row {
+    display: flex;
+    flex-basis: 100%;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.sex-radios {
+    display: flex;
+    height: calc(1.5em + .75rem + 2px);
+}
+
+.sex-radios input {
+    width: 2em;
+    height: 2em;
+}
+
+.last {
+    justify-content: space-evenly;
+    display: flex;
+    margin: 0 0em 0 -1em;
+    align-items: flex-end;
+}
+
+.register-submit {
+    font-size: 2em;
+    border-radius: 5px;
+    background-color: royalblue;
+    color: whitesmoke;
+    cursor: pointer;
+}
+
+.user-radios {
+    display: flex;
+    align-items: center;
+    height: calc(1.5em + .75rem + 2px);
+}
+
+.user-radios input {
+    width: 2em;
+    height: 2em;
+}
+
+.user_type {
+    display: flex;
+    font-size: 2em;
+    align-items: center;
+}
+
+.user_type input{
+    width: 2em;
+    height: 2em;
 }

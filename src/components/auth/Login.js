@@ -28,8 +28,8 @@ export const Login = () => {
                 if ("valid" in res && res.valid && "token" in res) {
                     localStorage.setItem("kinetic_token", res.token)
                     localStorage.setItem("kinetic_username", username.current.value)
-                    if (res.is_athlete){localStorage.setItem("is_athlete", true)}
-                    else {localStorage.setItem("is_athlete", false)}
+                    if (res.is_athlete) { localStorage.setItem("is_athlete", true) }
+                    else { localStorage.setItem("is_athlete", false) }
                     history.push("/")
                 }
                 else {
@@ -45,21 +45,21 @@ export const Login = () => {
                 <button className="button--close" onClick={e => invalidDialog.current.close()}>Close</button>
             </dialog>
             <section>
+                <h1 className="kinetic">Kinetic</h1>
                 <form className="form--login" onSubmit={handleLogin}>
-                    <h1>Kinetic</h1>
                     <h2>Please sign in</h2>
                     <fieldset>
                         <label htmlFor="inputUsername"> Username  </label>
-                        <input ref={username} type="username" id="username" className="form-control" placeholder="Username " required autoFocus />
+                        <input ref={username} type="username" id="username" className="user-pass" placeholder="Username " required autoFocus />
                     </fieldset>
                     <fieldset>
                         <label htmlFor="inputPassword"> Password </label>
-                        <input ref={password} type="password" id="password" className="form-control" placeholder="Password" required />
+                        <input ref={password} type="password" id="password" className="user-pass" placeholder="Password" required />
                     </fieldset>
                     <fieldset style={{
                         textAlign: "center"
                     }}>
-                        <button className="btn btn-1 btn-sep icon-send" type="submit">Sign In</button>
+                        <button className="register-submit" type="submit">Sign In</button>
                     </fieldset>
                 </form>
             </section>
