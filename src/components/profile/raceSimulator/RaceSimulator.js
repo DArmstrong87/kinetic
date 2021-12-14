@@ -233,7 +233,7 @@ export const RaceSimulator = () => {
 
             <h2 className="results-h2">Acknowledgements</h2>
             <section className="acknowledgements">
-                <p>Calculations created by Johnathan Toker, Founder of <a href="https://saltstick.com/" target="_blank">SaltStick</a></p>
+                <p>Calculations created by Jonathan Toker, Founder of <a href="https://saltstick.com/" target="_blank">SaltStick</a></p>
                 <div className="saltStick">
                     <a href="https://saltstick.com/" target="_blank">
                         <img src="https://cdn.shopify.com/s/files/1/0510/6660/1644/files/SALT6234_Logo_Primary.png?height=628&pad_color=ffffff&v=1607410346&width=1200" alt="SaltStick" />
