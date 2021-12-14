@@ -39,8 +39,8 @@ export const AthleteProfile = () => {
                             {athlete.VO2_max !== "" ?
                                 <>
                                     {athlete.VO2_max} mL/kg/min
-                                    <button className="take-test" 
-                                    onClick={() => { history.push("/vo2max") }}>
+                                    <button className="take-test"
+                                        onClick={() => { history.push("/vo2max") }}>
                                         Take Test
                                     </button>
                                 </>
@@ -69,6 +69,15 @@ export const AthleteProfile = () => {
                     </div>
 
                     <div className="HR-div">
+                        <div>
+                            <h3>
+                                Upcoming Race?
+                                <br />Discover fueling and hydration strategies using Kinetic's
+                                <button className="raceSim" onClick={() => history.push("/race-simulator")}>
+                                    Race Simulator</button>
+                            </h3>
+                        </div>
+
                         <div>
                             Training or racing by heart rate zones, combined with perceived exertion is a more objective way of gauging exercise intensity.
                         </div>
