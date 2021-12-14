@@ -1,0 +1,172 @@
+.race-sim-title {
+    text-align: center;
+}
+
+.race-sim-desc {
+    margin:2em;
+}
+
+.hydration-form {
+    background-color: rgb(24, 40, 88);
+    display: flex;
+}
+.form-data {
+    width: 65%;
+}
+.form-title {
+    width: 35%;
+    font-size: 2.5em;
+    align-self: center;
+}
+
+.hydration-form fieldset {
+    display: flex;
+    flex-direction: column;
+    width: 33%;
+    /* border: 1px solid rgb(255, 125, 123); */
+}
+.hydration-form input {
+    width: fit-content;
+    border-radius: 5px;
+    font-size: 1.5em;
+    width: 50%;
+}
+
+.form-row {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+.submit-reset {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-evenly;
+    width: 33%; 
+    /* border: 1px solid rgb(255, 125, 123); */
+}
+.submit-reset button {
+    margin-right:2em;
+    width: 5em;
+    background-color: orange;
+    color: black;
+    font-size: 1em;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.result {
+    display: flex;
+    font-size: 1.5em;
+    margin-bottom: 0.5em;
+}
+
+.hour {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    font-size: 1.17em;
+    width: 3em;
+    height: 3em;
+    padding: 0.5em;
+    background-color: royalblue;
+    border: 1px solid white;
+    margin-right: 0.5em;
+}
+
+.values {
+    height: 100%;
+}
+
+.good {
+    background-color: rgb(200, 255, 117);
+    color: black;
+    border: 2px solid whitesmoke;
+    padding: 0.25em;
+    width: 11em;
+}
+
+.caution {
+    background-color: rgb(255, 255, 125);
+    color: black;
+    border: 2px solid whitesmoke;
+    padding: 0.25em;
+    width: 11em;
+}
+
+.danger {
+    background-color: rgb(255, 125, 123);
+    color: black;
+    border: 2px solid whitesmoke;
+    padding: 0.25em;
+    width: 11em;
+}
+
+.results-container {
+    display: flex;
+    justify-content: space-around;
+}
+
+.results-h2{
+    margin: 2em 0 2em 0;
+    text-align: center;
+    background-color: rgb(24, 40, 88);
+}
+
+.pre-req {
+    margin: 0px;
+    margin-left: 2em;
+    display: flex;
+}
+.pre-req h3 {
+    width: 50%;
+}
+
+.tdg {
+    background-color: rgb(200, 255, 117);
+    color: black;
+    border-radius: 5px;
+    padding: 5px;
+}
+.tdc {
+    background-color: rgb(255, 255, 125);
+    color: black;
+    border-radius: 5px;
+    padding: 5px;
+}
+.tdd {
+    background-color: rgb(255, 125, 123);
+    color: black;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.ref-ranges {
+    background-color: gray;
+    color: white;
+    border-radius: 10px;
+    padding: 5px;
+    margin-bottom: 2em;
+}
+
+.levelen {
+    margin-left:2em;
+}
+.levelen img {
+    width: 10em;
+}
+
+.acknowledgements{
+    margin:2em;
+}
+
+.saltStick {
+    width:25%;
+}
+
+.saltStick img{
+    width: 100%;
+}
