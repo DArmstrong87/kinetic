@@ -29,7 +29,7 @@ export const AthleteEvents = ({ athleteEvents }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {athleteEvents.map(ae => {
+                        {athleteEvents?.map(ae => {
                             const [date, time] = ae.event.date?.split(" ")
                             return <>
                                 <tr>
@@ -41,10 +41,10 @@ export const AthleteEvents = ({ athleteEvents }) => {
                                     <td>{
                                         ae.event.event_sports.length > 1 ?
                                             ae.event.event_sports.map(es => {
-                                                return es.sport?.name
+                                                return es.sport.name
                                             }).join(", ")
                                             :
-                                            ae.event.event_sport[0]?.sport.name
+                                            ae.event.event_sports[0].sport?.name
                                     }  </td>
                                     <td>{ae.event.total_distance}mi</td>
                                     <td>{ae.event.total_elev_gain}ft</td>
