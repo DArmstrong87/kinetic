@@ -11,7 +11,15 @@
     font-size: 1.5em;
     margin-right: 1.5em;
 }
+.navbar a{
+color: orange;
 
+}
+.navbar a:hover {
+  background-color: orange;
+  color:rgb(46, 46, 46);
+  border-radius: 10px;
+}
 .navbar__item {
     list-style-type: none;
 }

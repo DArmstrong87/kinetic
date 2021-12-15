@@ -1,3 +1,13 @@
 .event-calendar {
     margin: 0 3em 0 3em;
 }
+
+.event-calendar a {
+    color: orange;
+}
+
+.event-calendar a:hover {
+    text-decoration: underline;
+    display: list-item;
+    list-style-type: '➔';
+}

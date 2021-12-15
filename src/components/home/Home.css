@@ -1,7 +1,85 @@
 .home {
     display: flex;
     flex-direction: column;
-    height: 20vw;
+    height: 100%;
     align-items: center;
     justify-content: center;
+}
+
+.h {
+    padding: 0px;
+    margin: 0px;
+    margin-bottom: 1em;
+}
+
+.home-section {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+    height: 100%;
+}
+
+.home-section h1 {
+    font-family: 'Permanent Marker', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    color: white;
+    margin: 0 0 0.5em 0;
+    font-size: 3em;
+}
+
+.train-item {
+    width: 50%;
+    background-color: royalblue;
+    border-radius: 10px;
+    font-size: 1.5em;
+    cursor: pointer;
+    margin-bottom: 1em;
+}
+
+.race-item {
+    background-color: orange;
+    width: 50%;
+    border-radius: 10px;
+    font-size: 1.5em;
+    cursor: pointer;
+    margin-bottom: 1em;
+}
+
+.train {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: gray;
+    width: 40%;
+    border-radius: 1em;
+    min-height: 20em;
+    color: whitesmoke;
+    text-align: center;
+}
+
+.train a {
+    color: whitesmoke;
+}
+
+.train a:hover {
+    color: orange;
+}
+
+.race {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: gray;
+    width: 40%;
+    border-radius: 1em;
+    height: 20em;
+    color: whitesmoke;
+    text-align: center;
+}
+
+.race a {
+    color: whitesmoke;
+}
+
+.race a:hover {
+    color: black;
 }

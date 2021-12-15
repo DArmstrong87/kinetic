@@ -1,0 +1,38 @@
+.editProfile {
+    width: 75%;
+    margin: auto;
+    display: flex;
+    border-radius: 1em;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    background-color: rgb(24, 40, 88);
+}
+
+.editProfile fieldset {
+    min-width: 40%;
+    max-width: 100%;
+}
+
+.editProfile input, textarea {
+    max-width: 80%;
+}
+
+.edit-h {
+    text-align: center;
+    background-color: rgb(24, 40, 88);
+}
+
+.save-profile {
+    width: 30%;
+    background-color: royalblue;
+    color:whitesmoke;
+    border-radius: 10px;
+    font-size: 1.5em;
+    cursor: pointer;
+    margin-bottom: 1em;
+}
+
+
+.save-profile:hover {
+    color: orange;
+}
