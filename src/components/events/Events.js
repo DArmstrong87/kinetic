@@ -2,21 +2,30 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getEvents, monthsList, searchEvents, statesList } from "./EventsProvider";
 import "./Events.css"
+import { debounce } from "debounce";
 
 export const Events = () => {
     const [events, setEvents] = useState([])
     const [filters, toggleFilters] = useState(false)
+    const [searchTerm, setSearchTerm] = useState({})
     const states = statesList()
     const months = monthsList()
+
     useEffect(
         () => {
             getEvents().then(events => setEvents(events))
         }, []
     )
 
+    useEffect(() => {
+        debounce(searchEvents('q', searchTerm).then(e => setEvents(e)), 1000)
+    }, [searchTerm])
+
     const handleFilter = (e) => {
         searchEvents(e.target.name, e.target.value).then(events => setEvents(events))
     }
+
+    const handleSearch = (e) => { setSearchTerm(e.target.value) }
 
     const renderFilters = () => {
         if (filters === false) { toggleFilters(true) }
@@ -74,7 +83,7 @@ export const Events = () => {
                     : ""}
                 <fieldset className="search">
                     <label htmlFor="q">Search</label>
-                    <input name="q" type="text" onChange={handleFilter} />
+                    <input name="q" type="text" onChange={handleSearch} />
                 </fieldset>
             </div>
 
