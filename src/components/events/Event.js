@@ -90,7 +90,7 @@ export const Event = () => {
                         Start time: {time}{time >= 12 ? 'pm' : 'am'}
                     </p>
                     <p>Distance: {event.total_distance?.toFixed(1).toLocaleString()}mi || 
-                    Elevation Gain: {event.total_elev_gain.toLocaleString()}ft</p>
+                    Elevation Gain: {event.total_elev_gain?.toLocaleString()}ft</p>
 
                     {event.event_sports?.length > 1 ? <>
                         <h4>Multi-Sport Event</h4>

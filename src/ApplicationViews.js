@@ -9,6 +9,9 @@ import { EditProfile } from "./components/profile/EditProfile";
 import { VO2maxTest } from "./components/profile/trainingTools/VO2maxTest";
 import { Home } from "./components/home/Home";
 import { RaceSimulator } from "./components/profile/raceSimulator/RaceSimulator";
+import { ActivityForm } from "./components/activities/ActivityForm";
+import { Activity } from "./components/activities/Activity";
+import { Activities } from "./components/activities/Activities";
 
 export const ApplicationViews = () => {
     return <>
@@ -19,7 +22,7 @@ export const ApplicationViews = () => {
             <Event />
         </Route>
         <Route exact path="/editevent/:eventId(\d+)">
-            <EventForm editMode={true}/>
+            <EventForm editMode={true} />
         </Route>
         <Route path="/myevents">
             <EventCalendar />
@@ -41,6 +44,18 @@ export const ApplicationViews = () => {
         </Route>
         <Route exact path="/">
             <Home />
+        </Route>
+        <Route exact path="/createactivity">
+            <ActivityForm />
+        </Route>
+        <Route exact path="/editactivity/:activityId(\d+)">
+            <ActivityForm editMode={true} />
+        </Route>
+        <Route exact path="/activities/:activityId(\d+)">
+            <Activity />
+        </Route>
+        <Route exact path="/activities">
+            <Activities />
         </Route>
     </>
 }
