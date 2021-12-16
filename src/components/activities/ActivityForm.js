@@ -4,7 +4,7 @@ import { getSports } from "../events/EventsProvider";
 import { useParams } from "react-router-dom";
 import { createActivity, createActivitySport, deleteActivitySport, getActivity, updateActivity, updateActivitySport } from "./ActivityProvider";
 import "./ActivityForm.css"
-
+import loading from "../../Infinity.gif"
 
 export const ActivityForm = ({ editMode }) => {
     const [multiSport, setMulti] = useState(false)
@@ -13,6 +13,7 @@ export const ActivityForm = ({ editMode }) => {
     const [activitySport, setActivitySport] = useState({ sportId: 0 })
     const [activitySportIds, setAsIds] = useState([])
     const [activitySports, setActivitySports] = useState([])
+    const [saving, setSaving] = useState(false)
     const { activityId } = useParams()
     const history = useHistory()
 
@@ -36,7 +37,7 @@ export const ActivityForm = ({ editMode }) => {
             })
             // Each existing activity sport is stored in the activity sport array.
             for (const as of aSp) {
-                const index = aSp.indexOf(as)
+                const index = as.sport?.id - 1
                 const copy = activitySports
                 const aSp_Copy = {
                     sportId: as.sport.id,
@@ -133,56 +134,56 @@ export const ActivityForm = ({ editMode }) => {
 
     const handleUpdate = (e) => {
         e.preventDefault()
-        // Determine changes from single sport to multi and vice versa.
+        if (multiSport) { handleMultiUpdate() }
+        else { handleSingleSportUpdate(e) }
+    }
 
-        // Get ids of all current activity sports and mark to keep.
-        const idsToKeep = []
-        if (multiSport) {
-            for (const as of activitySports) { idsToKeep.push(as.id) }
+    const handleSingleSportUpdate = () => {
+        setSaving(true)
+        if (activitySport.hasOwnProperty("id")) {
+            updateActivitySport(activitySport)
+                .then(setTimeout(() => history.push(`/activities/${activityId}`), 1500))
         } else {
-            idsToKeep.push(activitySport.id)
+            activitySport.activityId = parseInt(activityId)
+            deleteActivitySport(activitySportIds[0])
+            createActivitySport(activitySport)
+                .then(setTimeout(() => history.push(`/activities/${activityId}`), 1500))
         }
+    }
+
+    const handleMultiUpdate = () => {
+        setSaving(true)
+
+        // DELETE
+        const idsToKeep = []
+        for (const as of activitySports) { idsToKeep.push(as?.id) }
         // Mark ids to delete from original list that are left out of to keep ids.
         const idsToDelete = activitySportIds.filter(id => !idsToKeep.includes(id))
         // Iterate through the chopping block and delete those activity sports.
-        for (const id of idsToDelete) { deleteActivitySport(id) }
+        for (const id of idsToDelete) {
+            deleteActivitySport(id)
+        }
         // If a new id is not recognized in the keep list, set it to create.
         // Find the object with that id, assign an activityId property, then create it.
-        const idsToCreate = idsToKeep.filter(id => !activitySportIds.includes(id))
-        for (const id of idsToCreate) {
-            let foundAS
-            if (multiSport) {
-                foundAS = activitySports.find(as => as.id === id)
-            } else { foundAS = activitySport }
-            foundAS.activityId = parseInt(activityId)
-            createActivitySport(foundAS)
+
+        // CREATE
+        // If the activity sport has an id and is not undefined, create it.
+        for (const as of activitySports) {
+            if (!as?.hasOwnProperty("id") && as !== undefined) {
+                as.activityId = parseInt(activityId)
+                createActivitySport(as)
+            }
         }
-        updateActivity(newActivity)
+
+        // UPDATE
         // If a kept id is included in the original list, update that sport.
-        if (multiSport) {
-            for (const id of activitySportIds) {
-                const foundAS = activitySports.filter(as => as.id === id)
-                updateActivitySport(foundAS).then(() => {
-                    if (activitySportIds[activitySportIds.length - 1] === foundAS.id) {
-                        setTimeout(history.push(`/activities/${activityId}`), 2000)
-                    }
-                })
-            }
-            // for (const as of activitySports) {
-            //     // PROBLEM HERE !!!
-            //     if (activitySportIds.includes(as.id)) {
-            //         updateActivitySport(as).then(
-            //             history.push(`/activities/${activityId}`)
-            //         )
-            //     }
-            // }
-        } else {
-            if (activitySport.hasOwnProperty("id")) {
-                updateActivitySport(activitySport)
-                    .then(setTimeout(history.push(`/activities/${activityId}`), 1000))
-            }
+        for (const id of activitySportIds) {
+            const foundAS = activitySports.find(as => as?.id === id)
+            updateActivitySport(foundAS)
         }
+        updateActivity(newActivity).then(setTimeout(() => history.push(`/activities/${activityId}`), 1500))
     }
+
 
     return (
         <>
@@ -202,7 +203,7 @@ export const ActivityForm = ({ editMode }) => {
                     </fieldset>
                 </div>
 
-                <fieldset>
+                <fieldset className="ms-radios">
                     <label htmlFor="multiSport">Multi-sport Activity? </label>
                     <input type="radio" checked={multiSport === true} name="yes" onChange={handleMultiSwitch} />Yes
                     <input type="radio" checked={multiSport === false} name="no" onChange={handleMultiSwitch} />No
@@ -211,25 +212,29 @@ export const ActivityForm = ({ editMode }) => {
                 {!multiSport ?
                     <>
                         {/* RADIOS FOR SINGLE SPORT */}
-                        <fieldset>
+
+                        <fieldset className="ms-radios ss">
                             <label htmlFor="sport">Sport: </label>
                             {sports.map(sport => {
                                 return <>
-                                    <input type="radio" checked={activitySport.sportId === sport.id} name='sportId' value={sport.id} required={!multiSport} onChange={(e) => handleSport(e)} />
+                                    <input type="radio" checked={activitySport.sportId === sport.id} name='sportId' value={sport.id} required={!multiSport} onChange={(e) => { handleSport(e) }} />
                                     <label htmlFor="sport">{sport.name}</label>
                                 </>
                             })}
                         </fieldset>
 
-                        <fieldset>
-                            <label htmlFor="distance">Distance</label>
-                            <input type="number" name="distance" step="0.01" required={!multiSport && !activitySport.elevGain} placeholder={activitySport?.distance} onChange={handleSport} />
-                        </fieldset>
-
-                        <fieldset>
-                            <label htmlFor="elevGain">Elevation Gain</label>
-                            <input type="number" name="elevGain" step="0.01" required={!multiSport && !activitySport.elevGain} placeholder={activitySport.elevGain} onChange={handleSport} />
-                        </fieldset>
+                        {/* Single Sport Inputs */}
+                        <div className="single-sport">
+                            <fieldset>
+                                <label htmlFor="distance">Distance</label>
+                                <input type="number" name="distance"
+                                    step="0.01" required={!multiSport && activitySport.distance === null} placeholder={activitySport.hasOwnProperty("distance") ? `${activitySport?.distance}mi` : ""} onChange={handleSport} />
+                            </fieldset>
+                            <fieldset>
+                                <label htmlFor="elevGain">Elevation Gain</label>
+                                <input type="number" name="elevGain" step="0.01" required={!multiSport || activitySport.elevGain === null} placeholder={activitySport.hasOwnProperty("elevGain") ? `${activitySport.elevGain}ft` : ""} onChange={handleSport} />
+                            </fieldset>
+                        </div>
                     </>
                     :
                     <>
@@ -272,7 +277,7 @@ export const ActivityForm = ({ editMode }) => {
                                                 activitySports[sport.id - 1]?.hasOwnProperty("sportId") ?
                                                     <>
                                                         <fieldset className="ms-fields">
-                                                            <input type="number" name="distance" step="0.01" className="create-activity-input ms-input" placeholder={editMode ?
+                                                            <input type="number" name="distance" step="0.01" className="create-activity-input ms-input" placeholder={editMode && activitySports[sport.id - 1].hasOwnProperty("distance") ?
                                                                 activitySports[sport.id - 1]?.distance : "Distance (mi)"
                                                             }
                                                                 required={activitySports.some(as => as?.hasOwnProperty('sportId')
@@ -288,7 +293,7 @@ export const ActivityForm = ({ editMode }) => {
 
                                                         <fieldset className="ms-fields">
                                                             <input type="number" name="elevGain" step="0.01"
-                                                                className="create-activity-input ms-input" placeholder={editMode ?
+                                                                className="create-activity-input ms-input" placeholder={editMode && activitySports[sport.id - 1].hasOwnProperty("elevGain") ?
                                                                     activitySports[sport.id - 1]?.elevGain : "Elevation gain (ft)"
                                                                 } required={activitySports.some(as => as?.hasOwnProperty('sportId')
                                                                     && as.sportId === sport.id)
@@ -310,13 +315,21 @@ export const ActivityForm = ({ editMode }) => {
                                 </>
                             })}
                         </div>
-
                     </>
                 }
-                <fieldset>
-                    <button type="submit">{editMode ? "Save" : "Create"}</button>
-                    <button onClick={() => history.push("/activities")}>Cancel</button>
-                </fieldset>
+                {saving ?
+                    <div className="loading-icon">
+                        <img src={loading} /><br />
+                        <span>Saving</span>
+                    </div>
+                    :
+                    <>
+                        <fieldset>
+                            <button type="submit">{editMode ? "Save" : "Create"}</button>
+                            <button onClick={() => history.push("/activities")}>Cancel</button>
+                        </fieldset>
+                    </>
+                }
             </form>
         </>
     )

@@ -19,3 +19,15 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.loading-icon {
+  width: 5em;
+  height: 5em;
+  margin: auto;
+  text-align: center;
+  padding-bottom: 3em;
+}
+.loading-icon img {
+  width: 100%;
+  height:fit-content;
+}

@@ -53,7 +53,7 @@ export const createActivitySport = (as) => {
 }
 
 export const updateActivitySport = (as) => {
-    return fetch(`https://kinetic--server.herokuapp.com/activitysports/${as.id}`, {
+    return fetch(`https://kinetic--server.herokuapp.com/activitysports/${as?.id}`, {
         headers: {
             "Authorization": `Token ${localStorage.getItem("kinetic_token")}`,
             "Content-Type": "application/json",
@@ -62,7 +62,6 @@ export const updateActivitySport = (as) => {
         method: "PUT",
         body: JSON.stringify(as)
     })
-        .then(res => res.json())
 }
 
 export const getActivity = (id) => {
