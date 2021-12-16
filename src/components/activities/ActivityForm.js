@@ -18,6 +18,7 @@ export const ActivityForm = ({ editMode }) => {
     const history = useHistory()
 
     const convertEventSports = (aSp) => {
+        // For existing data to edit, it will be placed in the same arrays in how they are originally created.
         if (aSp.length === 1) {
             const as = {
                 sportId: aSp[0].sport.id,
@@ -140,6 +141,11 @@ export const ActivityForm = ({ editMode }) => {
 
     const handleSingleSportUpdate = () => {
         setSaving(true)
+        // Handle change from multi to single sport.
+        // Delete all in multisports.
+        for (const as of activitySports) {
+            if (as?.hasOwnProperty("id")) { deleteActivitySport(as?.id) }
+        }
         if (activitySport.hasOwnProperty("id")) {
             updateActivitySport(activitySport)
                 .then(setTimeout(() => history.push(`/activities/${activityId}`), 1500))

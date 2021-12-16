@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { getActivities } from "./ActivityProvider";
+import "./Activities.css"
 
 export const Activities = () => {
     const [activities, setActivities] = useState([])
@@ -15,15 +16,18 @@ export const Activities = () => {
 
     return (
         <>
-            <h1>Activities</h1>
+            <article className="activities">
 
-            <button onClick={() => history.push("/createactivity")}>Log Activity</button>
+                <h1>Activities</h1>
 
-            {activities?.map(a => {
-                return <div>
-                    <Link to={`/activities/${a.id}`}>{a.name}</Link>
-                </div>
-            })}
+                <button onClick={() => history.push("/createactivity")}>Log Activity</button>
+
+                {activities?.map(a => {
+                    return <div>
+                        <Link to={`/activities/${a.id}`}>{a.name}</Link>
+                    </div>
+                })}
+            </article>
         </>
     )
 }
