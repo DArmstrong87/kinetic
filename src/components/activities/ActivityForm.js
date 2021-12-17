@@ -105,6 +105,7 @@ export const ActivityForm = ({ editMode }) => {
     }
 
     const handleActivity = (e) => {
+        setSaving(true)
         // Before activity creation, confirm if a sport has been selected and that all fields are filled out.
         e.preventDefault()
         createActivity(newActivity)
@@ -115,7 +116,9 @@ export const ActivityForm = ({ editMode }) => {
                 if (createdActivity.hasOwnProperty("id") && multiSport === false) {
                     const as = { ...activitySport }
                     as.activityId = createdActivity.id
-                    createActivitySport(as).then(history.push(`/activities/${createdActivity.id}`))
+                    createActivitySport(as).then(
+                        setTimeout(() => history.push(`/activities/${createdActivity.id}`), 1500)
+                    )
                 } else if (createdActivity.hasOwnProperty("id") && multiSport === true) {
                     for (const as of activitySports) {
                         if (as.hasOwnProperty('sportId')) {
@@ -123,9 +126,7 @@ export const ActivityForm = ({ editMode }) => {
                             a.activityId = createdActivity.id
                             // If multi sport, check id wait til last activity sport is created before pushing to activity page.
                             createActivitySport(a).then(createdActivitySport => {
-                                if (createdActivitySport.sport.id === activitySports[activitySports.length - 1].sportId) {
-                                    history.push(`/activities/${createdActivity.id}`)
-                                }
+                                setTimeout(() => history.push(`/activities/${createdActivity.id}`), 1500)
                             })
                         }
                     }
