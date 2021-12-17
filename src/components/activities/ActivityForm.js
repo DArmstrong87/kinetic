@@ -194,7 +194,7 @@ export const ActivityForm = ({ editMode }) => {
 
     return (
         <>
-            <h2 className="create-activity-h">{editMode ? "Edit Activity" : "Create Activity"}</h2>
+            <h2 className="create-activity-h">{editMode ? `Edit Activity` : "Create Activity"}</h2>
 
             <form onSubmit={editMode ? handleUpdate : handleActivity} className="activity-form">
 
@@ -333,7 +333,10 @@ export const ActivityForm = ({ editMode }) => {
                     <>
                         <fieldset>
                             <button type="submit">{editMode ? "Save" : "Create"}</button>
-                            <button onClick={() => history.push("/activities")}>Cancel</button>
+                            <button onClick={() => {
+                                editMode ? history.push(`/activities/${activityId}`) :
+                                    history.push(`/activities`)
+                            }}>Cancel</button>
                         </fieldset>
                     </>
                 }
