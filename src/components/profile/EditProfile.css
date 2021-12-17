@@ -10,7 +10,6 @@
 
 .editProfile fieldset {
     min-width: 40%;
-    max-width: 100%;
 }
 
 .editProfile input, textarea {
@@ -23,7 +22,7 @@
 }
 
 .save-profile {
-    width: 30%;
+    width: 40%;
     background-color: royalblue;
     color:whitesmoke;
     border-radius: 10px;
@@ -31,7 +30,6 @@
     cursor: pointer;
     margin-bottom: 1em;
 }
-
 
 .save-profile:hover {
     color: orange;

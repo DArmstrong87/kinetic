@@ -3,6 +3,9 @@ import { Link, useHistory } from "react-router-dom"
 import "./NavBar.css"
 
 export const NavBar = () => {
+    const [protocol, domain] = window.location.href.split("//")
+    const [, path] = domain.split("/")
+
     const history = useHistory()
     return (<>
         <div className="kinetic-header">
@@ -20,23 +23,28 @@ export const NavBar = () => {
                     }}
                 >Logout</button>
             </div>
-
         </div>
-        <ul className="navbar">
-            <li className="navbar__item">
-                <Link className="navbar__link" to="/">Home</Link>
-            </li>
-            <li className="navbar__item">
-                <Link className="navbar__link" to="/myevents">Event Calendar</Link>
-            </li>
-            <li className="navbar__item">
-                <Link className="navbar__link" to="/events">Events</Link>
-            </li>
-            {localStorage.getItem("is_athlete") === "true" ?
+
+        {path !== "" ?
+            <ul className="navbar">
                 <li className="navbar__item">
-                    <Link className="navbar__link" to="/profile">Profile</Link>
+                    <Link className="navbar__link" to="/">Home</Link>
                 </li>
-                : ""}
-        </ul>
+                <li className="navbar__item">
+                    <Link className="navbar__link" to="/myevents">Event Calendar</Link>
+                </li>
+                <li className="navbar__item">
+                    <Link className="navbar__link" to="/events">Events</Link>
+                </li>
+                <li className="navbar__item">
+                    <Link className="navbar__link" to="/activities">Activities</Link>
+                </li>
+                {localStorage.getItem("is_athlete") === "true" ?
+                    <li className="navbar__item">
+                        <Link className="navbar__link" to="/profile">Profile</Link>
+                    </li>
+                    : ""}
+            </ul>
+            : ""}
     </>)
 }

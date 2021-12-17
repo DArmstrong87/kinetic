@@ -25,6 +25,8 @@ export const Home = () => {
                         <div>Event Calendar</div></Link>
                     <Link className="race-item" to="/events">
                         <div>All Events</div></Link>
+                    <Link className="race-item" to="/activities">
+                        <div>Activities</div></Link>
                 </div>
             </section>
         </article>
