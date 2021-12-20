@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useHistory } from "react-router";
 import { getAthlete, updateAthlete } from "./AthleteProvider";
 import "./EditProfile.css"
+import loading from "../../Infinity.gif"
 
 export const EditProfile = () => {
     const [athlete, setAthlete] = useState({})
-    console.log(athlete)
     const history = useHistory()
+    const savingModal = useRef()
 
     useEffect(() => {
         getAthlete().then(a => setAthlete(
@@ -27,7 +28,9 @@ export const EditProfile = () => {
 
     const handleUser = (e) => {
         const user = { ...athlete }
-        if (e.target.name === "VO2max" || e.target.name === "fluidLoss" || e.target.name === "sodiumLoss") {
+        if (e.target.name === "VO2max"
+            || e.target.name === "fluidLoss"
+            || e.target.name === "sodiumLoss") {
             user[e.target.name] = parseFloat(e.target.value)
         }
         else if (e.target.name === "rhr" || e.target.name === "weight") {
@@ -38,15 +41,20 @@ export const EditProfile = () => {
     }
 
     const handleUpdate = () => {
+        savingModal.current.showModal()
         const a = { ...athlete }
-        updateAthlete(a, a.id).then(res => {
-            if (res.ok) { history.push('/profile') }
-        })
+        updateAthlete(a, a.id)
+            .then(setTimeout(() => history.push('/profile'), 1000))
     }
 
     return (
         <>
-
+            <dialog ref={savingModal} className="fs-modal">
+                <div className="loading-icon">
+                    <img src={loading} /><br />
+                    <span>Saving</span>
+                </div>
+            </dialog>
             <h2 className="edit-h">Edit Profile</h2>
             <div className="editProfile">
                 <fieldset>
@@ -93,7 +101,7 @@ export const EditProfile = () => {
                     textAlign: "center"
                 }}>
                     <button className="save-profile" onClick={handleUpdate}>Save</button>
-                    <button className="save-profile" onClick={()=>history.push("/profile")}>Cancel</button>
+                    <button className="save-profile" onClick={() => history.push("/profile")}>Cancel</button>
                 </fieldset>
             </div>
         </>

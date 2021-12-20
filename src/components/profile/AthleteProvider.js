@@ -19,7 +19,6 @@ export const patchAthlete = (id, obj) => {
 }
 
 export const updateAthlete = (athlete, id) => {
-    // debugger
     return fetch(`https://kinetic--server.herokuapp.com/athletes/${id}`, {
         method: "PUT",
         headers: {
