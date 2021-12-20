@@ -3,6 +3,7 @@ import { useHistory } from "react-router";
 import { createEvent, createEventSport, getSports, statesList, getEvent, updateEvent, updateEventSport, deleteEventSport } from "./EventsProvider";
 import "./CreateEvent.css"
 import { useParams } from "react-router-dom";
+import loading from "../../Infinity.gif"
 
 export const EventForm = ({ editMode }) => {
     const [multiSport, setMulti] = useState(false)
@@ -10,11 +11,11 @@ export const EventForm = ({ editMode }) => {
     const [newEvent, setEvent] = useState({})
     const [eventSport, setEventSport] = useState({ sportId: 0 })
     const [eventSportIds, setEsIds] = useState([])
-    const [fields, toggleFields] = useState({})
     const [eventSports, setEventSports] = useState([])
     const { eventId } = useParams()
     const states = statesList()
     const history = useHistory()
+    const [saving, setSaving] = useState(false)
 
     const convertDate = (eventDate) => {
         const [date, time] = eventDate.split(" ")
@@ -24,30 +25,43 @@ export const EventForm = ({ editMode }) => {
         return newDateTime
     }
 
-    const convertEventSports = (evSp) => {
-        // Each existing event sport is stored in the event sport array.
-        for (const es of evSp) {
-            const index = evSp.indexOf(es)
-            const copy = eventSports
-            const ces = {
-                sportId: es.sport.id,
-                distance: es.distance,
-                elevGain: es.elev_gain,
-                id: es.id
+    const convertEventSports = (eSp) => {
+        // For existing data to edit, it will be placed in the same arrays in how they are originally created.
+        if (eSp.length === 1) {
+            const as = {
+                sportId: eSp[0].sport.id,
+                distance: eSp[0].distance,
+                elevGain: eSp[0].elev_gain,
+                id: eSp[0].id
             }
-            copy[index] = ces
-            setEventSports(copy)
-
-            //Set separate ES id array for updating or deleting based on new input.
             let esid = eventSportIds
-            esid.push(es.id)
+            esid.push(eSp[0].id)
             setEsIds(esid)
+            setEventSport(as)
+        } else {
+            eSp.sort((a, b) => {
+                let first = a.sport.id
+                let second = b.sport.id
+                return first - second
+            })
+            // Each existing activity sport is stored in the activity sport array.
+            for (const as of eSp) {
+                const index = as.sport?.id - 1
+                const copy = eventSports
+                const eSp_Copy = {
+                    sportId: as.sport.id,
+                    distance: as.distance,
+                    elevGain: as.elev_gain,
+                    id: as.id
+                }
+                copy[index] = eSp_Copy
+                setEventSports(copy)
 
-            // Set toggle switches for dist and elevGain fields for each sport.
-            let field = fields
-            let fvalue = `f${es.sport.id}`
-            field[fvalue] = true
-            toggleFields(field)
+                //Set separate ES id array for updating or deleting based on new input.
+                let esid = eventSportIds
+                esid.push(as.id)
+                setEsIds(esid)
+            }
         }
     }
 
@@ -82,13 +96,31 @@ export const EventForm = ({ editMode }) => {
         setEvent(event)
     }
 
-    const handleSports = (e) => {
-        const es = { ...eventSport }
-        es[e.target.name] = parseInt(e.target.value)
-        setEventSport(es)
+    const handleSport = (e) => {
+        if (e.target.name === "sportId") {
+            const es = { sportId: parseInt(e.target.value) }
+            setEventSport(es)
+        } else {
+            const es = { ...eventSport }
+            es[e.target.name] = parseInt(e.target.value)
+            setEventSport(es)
+        }
+    }
+
+    const handleMultiSwitch = () => {
+        if (multiSport) {
+            setMulti(false)
+        } else {
+            setMulti(true)
+            const index = eventSport.sportId - 1
+            const eSports = eventSports
+            eSports[index] = eventSport
+            setEventSports(eSports)
+        }
     }
 
     const handleEvent = (e) => {
+        setSaving(true)
         // Before event creation, confirm if a sport has been selected and that all fields are filled out.
         e.preventDefault()
         createEvent(newEvent)
@@ -99,18 +131,14 @@ export const EventForm = ({ editMode }) => {
                 if (createdEvent.hasOwnProperty("id") && multiSport === false) {
                     const es = { ...eventSport }
                     es.eventId = createdEvent.id
-                    createEventSport(es).then(history.push(`/events/${createdEvent.id}`))
+                    createEventSport(es).then(setTimeout(() => history.push(`/events/${createdEvent.id}`), 1500))
                 } else if (createdEvent.hasOwnProperty("id") && multiSport === true) {
                     for (const es of eventSports) {
                         if (es.hasOwnProperty('sportId')) {
                             const e = { ...es }
                             e.eventId = createdEvent.id
                             // If multi sport, check id wait til last event sport is created before pushing to event page.
-                            createEventSport(e).then(createdEventSport => {
-                                if (createdEventSport.sport.id === eventSports[eventSports.length - 1].sportId) {
-                                    history.push(`/events/${createdEvent.id}`)
-                                }
-                            })
+                            createEventSport(e).then(setTimeout(() => history.push(`/events/${createdEvent.id}`), 1500))
                         }
                     }
                 }
@@ -119,54 +147,83 @@ export const EventForm = ({ editMode }) => {
 
     const handleUpdate = (e) => {
         e.preventDefault()
-        // Determine which event sport ids were left out and delete those event sports
-        const newIds = []
-        for (const es of eventSports) { newIds.push(es.id) }
-        const idsToDelete = eventSportIds.filter(id => !newIds.includes(id))
-        for (const id of idsToDelete) { deleteEventSport(id) }
-        const idsToCreate = newIds.filter(id => !eventSportIds.includes(id))
-        for (const id of idsToCreate) {
-            let foundES = eventSports.find(es => es.id === id)
-            foundES.eventId = parseInt(eventId)
-            createEventSport(foundES)
-        }
-        updateEvent(newEvent, eventId)
-
-        for (const es of eventSports) {
-            if (eventSportIds.includes(es.id)) {
-                updateEventSport(es).then(
-                    history.push(`/events/${eventId}`)
-                )
-            }
-        }
+        if (multiSport) { handleMultiUpdate() }
+        else { handleSingleSportUpdate(e) }
     }
 
+    const handleSingleSportUpdate = () => {
+        setSaving(true)
+        // Handle change from multi to single sport.
+        // Delete all in multisports.
+        for (const es of eventSports) {
+            if (es?.hasOwnProperty("id")) { deleteEventSport(es?.id) }
+        }
+        if (eventSport.hasOwnProperty("id")) {
+            updateEventSport(eventSport)
+        } else {
+            eventSport.eventId = parseInt(eventId)
+            deleteEventSport(eventSportIds[0])
+            createEventSport(eventSport)
+        }
+        updateEvent(newEvent).then(setTimeout(() => history.push(`/events/${eventId}`), 1500))
+    }
 
+    const handleMultiUpdate = () => {
+        setSaving(true)
+
+        // DELETE
+        const idsToKeep = []
+        for (const es of eventSports) { idsToKeep.push(es?.id) }
+        // Mark ids to delete from original list that are left out of to keep ids.
+        const idsToDelete = eventSportIds.filter(id => !idsToKeep.includes(id))
+        // Iterate through the chopping block and delete those activity sports.
+        for (const id of idsToDelete) {
+            deleteEventSport(id)
+        }
+        // If a new id is not recognized in the keep list, set it to create.
+        // Find the object with that id, assign an eventId property, then create it.
+
+        // CREATE
+        // If the activity sport has an id and is not undefined, create it.
+        for (const es of eventSports) {
+            if (!es?.hasOwnProperty("id") && es !== undefined) {
+                es.eventId = parseInt(eventId)
+                createEventSport(es)
+            }
+        }
+
+        // UPDATE
+        // If a kept id is included in the original list, update that sport.
+        for (const id of eventSportIds) {
+            const foundES = eventSports.find(es => es?.id === id)
+            updateEventSport(foundES)
+        }
+        updateEvent(newEvent).then(setTimeout(() => history.push(`/events/${eventId}`), 1500))
+    }
 
     return (
         <>
-            <h2>{editMode ? "Edit Event" : "Create Event"}</h2>
+            <h2 className="create-event-h">{editMode ? "Edit Event" : "Create Event"}</h2>
 
-            <form onSubmit={editMode ? handleUpdate : handleEvent}>
-                <fieldset className="event-field">
-                    <label className="input-label" htmlFor="name">Event Name </label>
+            <form onSubmit={editMode ? handleUpdate : handleEvent} className="event-form">
+                <fieldset className="e-name">
+                    <label htmlFor="name">Event Name </label>
                     <input type="text" name="name" className="create-event-input" placeholder={editMode ? newEvent.name : "Event name"} required={!newEvent.name} autofocus onChange={handleInput} />
                 </fieldset>
-
-                <fieldset className="event-field">
-                    <label className="input-label" htmlFor="date">
+                <fieldset>
+                    <label htmlFor="date">
                         Date and Start Time
                     </label>
                     <input type="datetime-local" defaultValue={newEvent.date} name="date" className="create-event-input" required={!newEvent.date} onChange={handleInput} />
                 </fieldset>
 
-                <fieldset className="event-field">
-                    <label className="input-label" htmlFor="city">City</label>
+                <fieldset>
+                    <label htmlFor="city">City</label>
                     <input type="text" name="city" className="create-event-input" placeholder={editMode ? newEvent.city : "City"} required={!newEvent.city} onChange={handleInput} />
                 </fieldset>
 
-                <fieldset className="event-field">
-                    <label className="input-label" htmlFor="state">
+                <fieldset>
+                    <label htmlFor="state">
                         {editMode ? `Current state: ${newEvent?.state}` : "State"}
                     </label>
                     <select defaultValue={""} name="state" className="create-event-input" required={!newEvent.state} onChange={handleInput}>
@@ -177,164 +234,161 @@ export const EventForm = ({ editMode }) => {
                     </select>
                 </fieldset>
 
-                <fieldset className="event-field">
-                    <label className="input-label" htmlFor="description">Description </label>
+                <fieldset>
+                    <label htmlFor="description">Description </label>
                     <textarea cols={50} name="description" className="create-event-input" placeholder={editMode ? newEvent.description : "Details about the event"} required={!newEvent.description} onChange={handleInput} />
                 </fieldset>
 
-                <fieldset className="event-field">
-                    <label className="input-label" htmlFor="maxParticipants">Participant Limit </label>
+                <fieldset>
+                    <label htmlFor="maxParticipants">Participant Limit </label>
                     <input type="number" name="maxParticipants" className="create-event-input" placeholder={editMode ? newEvent.maxParticipants : ""} required={!newEvent.maxParticipants} onChange={handleInput} />
                 </fieldset>
 
-                <fieldset className="event-field">
-                    <label className="input-label" htmlFor="courseUrl">Course Map URL </label>
+                <fieldset>
+                    <label htmlFor="courseUrl">Course Map URL </label>
                     <input type="text" name="courseUrl" className="create-event-input" placeholder={editMode ? newEvent.courseUrl : ""} required={!newEvent.courseUrl} onChange={handleInput} />
                 </fieldset>
 
-                <fieldset className="event-field">
-                    <label className="input-label" htmlFor="eventLogo">Event Logo URL</label>
+                <fieldset>
+                    <label htmlFor="eventLogo">Event Logo URL</label>
                     <input type="text" name="eventLogo" className="create-event-input" placeholder={editMode ? newEvent.eventLogo : ""} required={!newEvent.eventLogo} onChange={handleInput} />
                 </fieldset>
                 <div>
                     <img src={newEvent.eventLogo} alt={`${newEvent.name} logo`} />
                 </div>
 
-                <fieldset className="event-field">
-                    <label className="input-label" htmlFor="multiSport">Multi-sport Event? </label>
-                    <input type="radio" checked={multiSport === true} name="yes" className="create-event-input" onChange={() => setMulti(true)} />Yes
-                    <input type="radio" checked={multiSport === false || eventSports.length === 0} name="no" className="create-event-input" onChange={() => { setMulti(false) }} />No
+                <fieldset className="ms-radios">
+                    <label htmlFor="multiSport">Multi-sport Event? </label>
+                    <input type="radio" checked={multiSport === true} name="yes" className="create-event-input" onChange={handleMultiSwitch} />Yes
+                    <input type="radio" checked={multiSport === false} name="no" className="create-event-input" onChange={handleMultiSwitch} />No
                 </fieldset>
 
                 {!multiSport ?
                     <>
                         {/* RADIOS FOR SINGLE SPORT */}
-                        <fieldset className="event-field">
-                            <label className="input-label" htmlFor="sport">Sport </label>
+                        <fieldset className="ms-radios ss">
+                            <label htmlFor="sport">Sport </label>
                             {sports.map(sport => {
                                 return <>
-                                    <input type="radio" checked={eventSport.sportId === sport.id} name='sportId' value={sport.id} required={!multiSport} className="create-event-input" onChange={(e) => handleSports(e)} />{sport.name}
+                                    <input type="radio" checked={eventSport.sportId === sport.id} name='sportId' value={sport.id} required={!multiSport} className="create-event-input" onChange={(e) => handleSport(e)} />{sport.name}
                                 </>
                             })}
                         </fieldset>
 
-                        <fieldset className="event-field">
-                            <label className="input-label" htmlFor="distance">Distance</label>
-                            <input type="number" name="distance" step="0.01" className="create-event-input" required={!multiSport} onChange={handleSports} />
-                        </fieldset>
+                        <div className="single-sport">
+                            <fieldset>
+                                <label htmlFor="distance">Distance</label>
+                                <input type="number" name="distance" step="0.01" className="create-event-input"
+                                    required={!multiSport && eventSport.distance === null}
+                                    placeholder={eventSport.hasOwnProperty("distance") ? `${eventSport?.distance}mi` : ""}
+                                    onChange={handleSport} />
+                            </fieldset>
 
-                        <fieldset className="event-field">
-                            <label className="input-label" htmlFor="elevGain">Elevation Gain</label>
-                            <input type="number" name="elevGain" step="0.01" className="create-event-input" required={!multiSport} onChange={handleSports} />
-                        </fieldset>
+                            <fieldset>
+                                <label htmlFor="elevGain">Elevation Gain</label>
+                                <input type="number" name="elevGain" step="0.01" className="create-event-input"
+                                    required={!multiSport && eventSport.elevGain === null}
+                                    placeholder={eventSport.hasOwnProperty("elevGain") ? `${eventSport.elevGain}ft` : ""}
+                                    onChange={handleSport} />
+                            </fieldset>
+                        </div>
                     </>
                     :
                     <>
                         {/* CHECKBOXES FOR MULTI SPORT */}
-                        <div className="input-label" htmlFor="sport">
+                        <div className="sports-label" htmlFor="sport">
                             {multiSport ? "Sports" : "Sport"} </div>
 
-                        {sports?.map(sport => {
+                        <div className="sports-container">
+                            {sports?.map(sport => {
 
-                            const existingSport = (id) => {
-                                const array = []
-                                if (editMode) {
-                                    for (const es of eventSports) {
-                                        array.push(es.sportId)
-                                    }
-                                }
-                                return array.includes(id)
-                            }
-                            return <>
-                                <div className="sport-checkboxes">
-                                    <fieldset className="multisport-fields">
-                                        <input type="checkbox" value={sport.id} checked={fields[`f${sport.id}`] === true}
-                                            name="sport" className="create-event-input"
-                                            required={!Object.values(fields).some(val => val === true)}
-                                            onChange={() => {
-                                                /*
-                                                The fields object controls turning the corresponding sport id distance and elev_gain fields on and off.
-                                                1. Copy fields object
-                                                2. Check if current field key exists, if not, create one and set value to false.
-                                                3. If the value exists and is false, set to true.
-                                                4. If true, set to false and set the eventSport object to empty. 
-                                                5. Set toggle fields.
-                                                */
-                                                const field = { ...fields }
-                                                let fvalue = field[`f${sport.id}`]
-                                                const es = [...eventSports]
-                                                const index = sport.id - 1
-                                                if (!fvalue) {
-                                                    field[`f${sport.id}`] = true
-                                                    es[index] = { sportId: sport.id }
-                                                    setEventSports(es)
-                                                }
-                                                else if (fvalue === false) {
-                                                    field[`f${sport.id}`] = true
-                                                    if (es[index]) {
+                                return <>
+                                    <div className="ms-checkboxes">
+                                        <fieldset className="ms-fields">
+                                            <input type="checkbox" value={sport.id} checked={eventSports[sport.id - 1]?.hasOwnProperty("sportId")}
+                                                name="sport" className="create-event-input"
+                                                required={Object.values(eventSports).some(val => val === sport.id)}
+                                                onChange={() => {
+                                                    /*
+                                                    Distance and elevation fields are controlled by checking for a sportId property on an object in the same index as the sport id.
+                                                    - If there's an existing object with a sportId, reset it.
+                                                    - If there's no object or sportId at that index, create one and set the sportID.
+                                                    */
+                                                    const index = sport.id - 1
+                                                    const es = [...eventSports]
+                                                    if (eventSports[index]?.hasOwnProperty("sportId")) {
+                                                        es[index] = {}
+                                                        setEventSports(es)
+                                                    }
+                                                    else {
                                                         es[index] = { sportId: sport.id }
                                                         setEventSports(es)
                                                     }
-                                                }
-                                                else {
-                                                    field[`f${sport.id}`] = false;
-                                                    es[sport.id - 1] = {}
-                                                    setEventSports(es)
-                                                }
-                                                toggleFields(field)
-                                            }} />
+                                                }} />
 
-                                        <label htmlFor="sport" className="sport-label">{sport.name}</label>
-                                        {
-                                            /* Dynamically render distance and elevation gain fields
-                                            // Each fieldset should save as its own object with distance, elevGain and sportId.*/
-                                            fields[`f${sport.id}`] ?
-                                                <>
-                                                    <fieldset className="multisport-fields">
-                                                        <input type="number" name="distance" step="0.01" className="create-event-input ms-input" placeholder={editMode ?
-                                                            eventSports[sport.id - 1]?.distance : "Distance (mi)"
-                                                        }
-                                                            required={eventSports.some(es => es?.hasOwnProperty('sportId')
-                                                                && es.sportId === sport.id)
-                                                                && !eventSports[sport.id - 1].sportId === sport.id}
-                                                            onChange={(e) => {
-                                                                const es = [...eventSports]
-                                                                const index = sport.id - 1
-                                                                es[index]['distance'] = parseFloat(e.target.value)
-                                                                setEventSports(es)
-                                                            }} />
-                                                    </fieldset>
-
-                                                    <fieldset className="multisport-fields">
-                                                        <input type="number" name="elevGain" step="0.01"
-                                                            className="create-event-input ms-input" placeholder={editMode ?
-                                                                eventSports[sport.id - 1]?.elevGain : "Elevation gain (ft)"
-                                                            } required={eventSports.some(es => es?.hasOwnProperty('sportId')
-                                                                && es.sportId === sport.id)
-                                                                && !eventSports[sport.id - 1].sportId === sport.id
+                                            <label htmlFor="sport" className="sport-label">{sport.name}</label>
+                                            {
+                                                /* Dynamically render distance and elevation gain fields
+                                                // Each fieldset should save as its own object with distance, elevGain and sportId.*/
+                                                eventSports[sport.id - 1]?.hasOwnProperty("sportId") ?
+                                                    <>
+                                                        <fieldset className="ms-fields">
+                                                            <input type="number" name="distance" step="0.01" className="create-event-input ms-input" placeholder={editMode ?
+                                                                eventSports[sport.id - 1]?.distance : "Distance (mi)"
                                                             }
-                                                            onChange={(e) => {
-                                                                const es = [...eventSports]
-                                                                const index = sport.id - 1
-                                                                if (!es[index]) { es[index] = {} }
-                                                                es[index]['elevGain'] = parseFloat(e.target.value)
-                                                                setEventSports(es)
-                                                            }} />
-                                                    </fieldset>
-                                                </>
-                                                : ""
-                                        }
-                                    </fieldset>
-                                </div>
-                            </>
-                        })}
+                                                                required={eventSports.some(es => es?.hasOwnProperty('sportId')
+                                                                    && es.sportId === sport.id)
+                                                                    && !eventSports[sport.id - 1].sportId === sport.id}
+                                                                onChange={(e) => {
+                                                                    const es = [...eventSports]
+                                                                    const index = sport.id - 1
+                                                                    es[index]['distance'] = parseFloat(e.target.value)
+                                                                    setEventSports(es)
+                                                                }} />
+                                                        </fieldset>
 
+                                                        <fieldset className="ms-fields">
+                                                            <input type="number" name="elevGain" step="0.01"
+                                                                className="create-event-input ms-input" placeholder={editMode && eventSports[sport.id - 1].hasOwnProperty("elevGain") ?
+                                                                    eventSports[sport.id - 1]?.elevGain : "Elevation gain (ft)"
+                                                                } required={eventSports.some(as => as?.hasOwnProperty('sportId')
+                                                                    && as.sportId === sport.id)
+                                                                    && !eventSports[sport.id - 1].sportId === sport.id
+                                                                }
+                                                                onChange={(e) => {
+                                                                    const es = [...eventSports]
+                                                                    const index = sport.id - 1
+                                                                    if (!es[index]) { es[index] = {} }
+                                                                    es[index]['elevGain'] = parseFloat(e.target.value)
+                                                                    setEventSports(es)
+                                                                }} />
+                                                        </fieldset>
+                                                    </>
+                                                    : ""
+                                            }
+                                        </fieldset>
+                                    </div>
+                                </>
+                            })}
+                        </div>
                     </>
                 }
-                <fieldset>
-                    <button type="submit">{editMode ? "Save" : "Create"}</button>
-                    <button onClick={() => history.push("/myevents")}>Cancel</button>
-                </fieldset>
+                {saving ?
+                    <div className="loading-icon">
+                        <img src={loading} /><br />
+                        <span>Saving</span>
+                    </div>
+                    :
+                    <>
+                        <fieldset>
+                            <button type="submit">{editMode ? "Save" : "Create"}</button>
+                            <button onClick={() => {
+                                editMode ? history.push(`/events/${eventId}`) :
+                                    history.push(`/events`)
+                            }}>Cancel</button>
+                        </fieldset>
+                    </>
+                }
             </form>
         </>
     )

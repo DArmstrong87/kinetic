@@ -17,7 +17,7 @@ export const ActivityForm = ({ editMode }) => {
     const { activityId } = useParams()
     const history = useHistory()
 
-    const convertEventSports = (aSp) => {
+    const convertActivitySports = (aSp) => {
         // For existing data to edit, it will be placed in the same arrays in how they are originally created.
         if (aSp.length === 1) {
             const as = {
@@ -64,7 +64,7 @@ export const ActivityForm = ({ editMode }) => {
                 if (a.activity_sports?.length > 1) {
                     setMulti(true)
                 }
-                convertEventSports(a.activity_sports)
+                convertActivitySports(a.activity_sports)
                 setActivity({
                     name: a.name,
                     createdOn: a.created_on,
@@ -116,18 +116,14 @@ export const ActivityForm = ({ editMode }) => {
                 if (createdActivity.hasOwnProperty("id") && multiSport === false) {
                     const as = { ...activitySport }
                     as.activityId = createdActivity.id
-                    createActivitySport(as).then(
-                        setTimeout(() => history.push(`/activities/${createdActivity.id}`), 1500)
-                    )
+                    createActivitySport(as).then(setTimeout(() => history.push(`/activities/${createdActivity.id}`), 1500))
                 } else if (createdActivity.hasOwnProperty("id") && multiSport === true) {
                     for (const as of activitySports) {
                         if (as.hasOwnProperty('sportId')) {
                             const a = { ...as }
                             a.activityId = createdActivity.id
                             // If multi sport, check id wait til last activity sport is created before pushing to activity page.
-                            createActivitySport(a).then(createdActivitySport => {
-                                setTimeout(() => history.push(`/activities/${createdActivity.id}`), 1500)
-                            })
+                            createActivitySport(a).then(setTimeout(() => history.push(`/activities/${createdActivity.id}`), 1500))
                         }
                     }
                 }
@@ -149,13 +145,12 @@ export const ActivityForm = ({ editMode }) => {
         }
         if (activitySport.hasOwnProperty("id")) {
             updateActivitySport(activitySport)
-                .then(setTimeout(() => history.push(`/activities/${activityId}`), 1500))
         } else {
             activitySport.activityId = parseInt(activityId)
             deleteActivitySport(activitySportIds[0])
             createActivitySport(activitySport)
-                .then(setTimeout(() => history.push(`/activities/${activityId}`), 1500))
         }
+        updateActivity(newActivity).then(setTimeout(() => history.push(`/activities/${activityId}`), 1500))
     }
 
     const handleMultiUpdate = () => {

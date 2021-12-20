@@ -1,47 +1,97 @@
-.create-event-input {
-    height: 2em;
+.event-form {
+    width: 75%;
+    margin: auto;
+    height: 100%;
+    border-radius: 1em;
+    background-color: rgb(24, 40, 88);
 }
 
-.input-label {
-    width: 10em;
-    text-align: right;
-    margin-right: 1em;
-}
-
-.event-field {
+.event-form fieldset {
     display: flex;
-    padding: 0.5em;
-    align-items: center;
+    align-content: center;
+    justify-content: center;
 }
 
-.event-field textarea {
-    height: 10em;
+.event-form input, label {
+    font-size: 1.3em;
+    border-radius: 0.5em;
+    padding: 0.2em;
 }
 
-.multisport-fields {
+.event-form input[type=radio], input[type=checkbox] {
+    height: 1.2em;
+    width: 1.2em;
+}
+
+.sports-label {
+    text-align: center;
+    font-size: 1.5em;
+}
+
+.create-event-h {
+    background-color: rgb(24, 40, 88);
+    text-align: center;
+}
+
+.e-name input {
+    text-align: center;
+    flex: 1 2 0;
+    max-width: calc(100%);
+}
+
+.name-date {
+    display: flex;
+    justify-content: space-evenly;
+
+}
+
+.sports-container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    padding-left: 10%;
+    background-color: rgb(33, 52, 109);
+}
+
+.ms-checkboxes {
     display: flex;
     flex-wrap: wrap;
-    width: fit-content;
+    width: 100%;
+    align-content: right;
+}
+
+.ms-fields {
+    display: flex;
     align-items: center;
-    /* border: 1px red solid; */
     padding: 0px;
-    margin: 0 0.5em 0.2em 0;
 }
 
-.ms-input {
-    margin-right: 1em;
-    width: 9.5em;
+.ms-fields input,label {
+    max-width: calc(80%);
+    flex: 1 2 0;
+}
+.ms-fields input[type=checkbox] {
+    flex: none;
 }
 
-.sport-label {
-    width: 6em;
-    font-weight: bold;
+.single-sport {
+    width: 50%;
+    margin: auto;
+}
+.single-sport label {
+    max-width: 8em;
+}
+.single-sport input {
+    width: 4em;
 }
 
-.ms-label {
-    margin-right: 0.3em;
+.ms-radios {
+    background-color: rgb(90, 90, 90);
+    align-items: center;
 }
-
-.sport-checkboxes {
-    margin-left: 11em;
+.ss {
+    background-color: rgb(46, 68, 53);
+}
+.ms-radios label {
+    max-width: fit-content
 }
