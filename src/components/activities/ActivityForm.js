@@ -327,11 +327,13 @@ export const ActivityForm = ({ editMode }) => {
                     :
                     <>
                         <fieldset>
-                            <button type="submit">{editMode ? "Save" : "Create"}</button>
-                            <button onClick={() => {
-                                editMode ? history.push(`/activities/${activityId}`) :
-                                    history.push(`/activities`)
-                            }}>Cancel</button>
+                            <div className="e-a-buttons">
+                                <button type="submit">{editMode ? "Save" : "Create"}</button>
+                                <button onClick={() => {
+                                    editMode ? history.push(`/activities/${activityId}`) :
+                                        history.push(`/activities`)
+                                }}>Cancel</button>
+                            </div>
                         </fieldset>
                     </>
                 }

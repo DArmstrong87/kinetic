@@ -1,0 +1,73 @@
+.event-form {
+    width: 75%;
+    margin: auto;
+    margin-bottom: 3em;
+    height: 100%;
+    border-radius: 1em;
+    background-color: rgb(24, 40, 88);
+}
+
+.e-inputs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.e-inputs fieldset {
+    min-width: 50%;
+}
+
+.event-form fieldset {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+
+.part-limit {
+    max-width: fit-content;
+    margin: auto;
+}
+.part-limit input {
+    width: 5em;
+}
+
+.event-form input, label, select, textarea {
+    font-size: 1.3em;
+    border-radius: 0.5em;
+    padding: 0.2em;
+    max-height: 1.5em;
+}
+
+.event-form textarea {
+    font-size: 1.3em;
+    border-radius: 0.5em;
+    padding: 0.2em;
+    min-height: 6em;
+}
+
+.event-form input[type=radio], input[type=checkbox] {
+    height: 1.2em;
+    width: 1.2em;
+}
+
+.create-event-h {
+    background-color: rgb(24, 40, 88);
+    text-align: center;
+}
+
+.e-name input {
+    text-align: center;
+    flex: 1 2 0;
+    max-width: calc(100%);
+}
+
+.e-form-logo {
+    max-width: 50%;
+    overflow: hidden;
+    margin: auto;
+}
+.e-form-logo img {
+    border-radius: 10px;
+    width: 100%;
+    height: 100%;
+}
