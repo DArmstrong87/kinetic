@@ -11,7 +11,6 @@ export const Login = () => {
 
     const handleLogin = (e) => {
         e.preventDefault()
-        console.log('test')
         return fetch("https://kinetic--server.herokuapp.com/login", {
             method: "POST",
             headers: {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { createEvent, createEventSport, getSports, statesList, getEvent, updateEvent, updateEventSport, deleteEventSport } from "./EventsProvider";
-import "./CreateEvent.css"
+import "./EventForm.css"
 import { useParams } from "react-router-dom";
 import loading from "../../Infinity.gif"
 
@@ -206,56 +206,57 @@ export const EventForm = ({ editMode }) => {
             <h2 className="create-event-h">{editMode ? "Edit Event" : "Create Event"}</h2>
 
             <form onSubmit={editMode ? handleUpdate : handleEvent} className="event-form">
-                <fieldset className="e-name">
-                    <label htmlFor="name">Event Name </label>
-                    <input type="text" name="name" className="create-event-input" placeholder={editMode ? newEvent.name : "Event name"} required={!newEvent.name} autofocus onChange={handleInput} />
-                </fieldset>
-                <fieldset>
-                    <label htmlFor="date">
-                        Date and Start Time
-                    </label>
-                    <input type="datetime-local" defaultValue={newEvent.date} name="date" className="create-event-input" required={!newEvent.date} onChange={handleInput} />
-                </fieldset>
+                <div className="name-date">
+                    <fieldset className="e-name">
+                        <input type="text" name="name" className="create-event-input" placeholder={editMode ? newEvent.name : "Event name"} required={!newEvent.name} autofocus onChange={handleInput} />
+                    </fieldset>
+
+                    <fieldset>
+                        <label htmlFor="date">
+                            Date and Start Time
+                        </label>
+                        <input type="datetime-local" defaultValue={newEvent.date} name="date" className="create-event-input" required={!newEvent.date} onChange={handleInput} />
+                    </fieldset>
+                </div>
+
+                <div className="e-inputs">
+
+                    <fieldset>
+                        <input type="text" name="city" className="create-event-input" placeholder={editMode ? newEvent.city : "City"} required={!newEvent.city} onChange={handleInput} />
+                    </fieldset>
+
+                    <fieldset>
+                        <select defaultValue={""} name="state" className="create-event-input" required={!newEvent.state} onChange={handleInput}>
+                            <option value="" disabled>{editMode ? "Change State" : "Select State"}</option>
+                            {states.map(state => {
+                                return <option name="state" value={state}>{state}</option>
+                            })}
+                        </select>
+                    </fieldset>
+
+                    <fieldset>
+                        <input type="text" name="courseUrl" className="create-event-input" placeholder={editMode ? newEvent.courseUrl : "Course Map URL"} required={!newEvent.courseUrl} onChange={handleInput} />
+                    </fieldset>
+
+                    <fieldset>
+                        <input type="text" name="eventLogo" className="create-event-input" placeholder={editMode ? newEvent.eventLogo : "Event Logo URL"} required={!newEvent.eventLogo} onChange={handleInput} />
+                    </fieldset>
+                </div>
+                {!newEvent.eventLogo ? "" :
+                    <div className="e-form-logo">
+                        <img src={newEvent.eventLogo} alt={`${newEvent.name} logo`} />
+                    </div>
+                }
 
                 <fieldset>
-                    <label htmlFor="city">City</label>
-                    <input type="text" name="city" className="create-event-input" placeholder={editMode ? newEvent.city : "City"} required={!newEvent.city} onChange={handleInput} />
-                </fieldset>
-
-                <fieldset>
-                    <label htmlFor="state">
-                        {editMode ? `Current state: ${newEvent?.state}` : "State"}
-                    </label>
-                    <select defaultValue={""} name="state" className="create-event-input" required={!newEvent.state} onChange={handleInput}>
-                        <option value="" disabled>{editMode ? "Change State" : "Select State"}</option>
-                        {states.map(state => {
-                            return <option name="state" value={state}>{state}</option>
-                        })}
-                    </select>
-                </fieldset>
-
-                <fieldset>
-                    <label htmlFor="description">Description </label>
                     <textarea cols={50} name="description" className="create-event-input" placeholder={editMode ? newEvent.description : "Details about the event"} required={!newEvent.description} onChange={handleInput} />
                 </fieldset>
 
-                <fieldset>
+                <fieldset className="part-limit">
                     <label htmlFor="maxParticipants">Participant Limit </label>
                     <input type="number" name="maxParticipants" className="create-event-input" placeholder={editMode ? newEvent.maxParticipants : ""} required={!newEvent.maxParticipants} onChange={handleInput} />
                 </fieldset>
 
-                <fieldset>
-                    <label htmlFor="courseUrl">Course Map URL </label>
-                    <input type="text" name="courseUrl" className="create-event-input" placeholder={editMode ? newEvent.courseUrl : ""} required={!newEvent.courseUrl} onChange={handleInput} />
-                </fieldset>
-
-                <fieldset>
-                    <label htmlFor="eventLogo">Event Logo URL</label>
-                    <input type="text" name="eventLogo" className="create-event-input" placeholder={editMode ? newEvent.eventLogo : ""} required={!newEvent.eventLogo} onChange={handleInput} />
-                </fieldset>
-                <div>
-                    <img src={newEvent.eventLogo} alt={`${newEvent.name} logo`} />
-                </div>
 
                 <fieldset className="ms-radios">
                     <label htmlFor="multiSport">Multi-sport Event? </label>
@@ -381,11 +382,13 @@ export const EventForm = ({ editMode }) => {
                     :
                     <>
                         <fieldset>
+                            <div className="e-a-buttons">
                             <button type="submit">{editMode ? "Save" : "Create"}</button>
                             <button onClick={() => {
                                 editMode ? history.push(`/events/${eventId}`) :
-                                    history.push(`/events`)
+                                history.push(`/events`)
                             }}>Cancel</button>
+                            </div>
                         </fieldset>
                     </>
                 }
