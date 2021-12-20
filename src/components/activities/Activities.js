@@ -37,38 +37,32 @@ export const Activities = () => {
             <article className="activities">
 
                 {activities?.map(a => {
-                    a.activity_sports.sort((a, b) => {
-                        let first = a.sport.name
-                        let second = b.sport.name
-                        return first - second
+                    a.activity_sports?.sort((a, b) => {
+                        if (a.sport.name > b.sport.name) { return 1 }
+                        else if (a.sport.name < b.sport.name) { return -1 }
+                        else return 0
                     })
                     const date = new Date(a.created_on).toDateString()
-                    return <section className="activity">
-                        <section className="act-sports">
-                            {a.activity_sports?.map(as => {
-                                return <h2 className="act-sport-label">
-                                    {as.sport.name}
-                                </h2>
-                            })}
-                        </section>
-                        {deleting && delId === a.id ?
-                            <div className="loading-icon">
-                                <img src={icon} /><br />
-                                <span>Deleting</span>
-                            </div>
-                            :
-                            <div className="act-details">
-                                <h1 className="act-title">
-                                    <Link to={`/activities/${a.id}`}>{a.name}</Link>
-                                </h1>
-                                <div className="act-date">{date}</div>
-                                <div className="act-dist-gain">
-                                    <span>Total distance: {a.total_distance}mi</span>
-                                    <span>Total elevation gain: {a.total_elev_gain}ft</span>
+                    return <>
+
+                        <section className="activity">
+                            {deleting && delId === a.id ?
+                                <div className="loading-icon">
+                                    <img src={icon} /><br />
+                                    <span>Deleting</span>
                                 </div>
-                                {a.activity_sports?.length > 1 ?
+                                :
+                                <div className="act-details">
+                                    <h1 className="act-title">
+                                        <Link to={`/activities/${a.id}`}>{a.name}</Link>
+                                    </h1>
+                                    <div className="act-date">{date}</div>
+                                    <div className="act-dist-gain">
+                                        <span>Total distance: {a.total_distance}mi</span>
+                                        <span>Total elevation gain: {a.total_elev_gain}ft</span>
+                                    </div>
                                     <div className="sports-table-div">
-                                        {a.activity_sports?.map(as => {
+                                        {a.activity_sports.map(as => {
                                             return <>
                                                 <table className="sports-table">
                                                     <tr>
@@ -84,14 +78,14 @@ export const Activities = () => {
                                             </>
                                         })}
                                     </div>
-                                    : ""}
-                                <div className="act-buttons">
-                                    <button onClick={() => history.push(`/editactivity/${a.id}`)}>⚙️</button>
-                                    <button onClick={() => delAct(a.id)}>🗑️</button>
+                                    <div className="act-buttons">
+                                        <button onClick={() => history.push(`/editactivity/${a.id}`)}>⚙️</button>
+                                        <button onClick={() => delAct(a.id)}>🗑️</button>
+                                    </div>
                                 </div>
-                            </div>
-                        }
-                    </section>
+                            }
+                        </section>
+                    </>
                 })}
             </article>
         </>

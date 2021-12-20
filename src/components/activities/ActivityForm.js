@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useHistory } from "react-router";
 import { getSports } from "../events/EventsProvider";
 import { useParams } from "react-router-dom";
@@ -13,9 +13,9 @@ export const ActivityForm = ({ editMode }) => {
     const [activitySport, setActivitySport] = useState({ sportId: 0 })
     const [activitySportIds, setAsIds] = useState([])
     const [activitySports, setActivitySports] = useState([])
-    const [saving, setSaving] = useState(false)
     const { activityId } = useParams()
     const history = useHistory()
+    const savingModal = useRef()
 
     const convertActivitySports = (aSp) => {
         // For existing data to edit, it will be placed in the same arrays in how they are originally created.
@@ -105,9 +105,9 @@ export const ActivityForm = ({ editMode }) => {
     }
 
     const handleActivity = (e) => {
-        setSaving(true)
-        // Before activity creation, confirm if a sport has been selected and that all fields are filled out.
         e.preventDefault()
+        savingModal.current.showModal()
+        // Before activity creation, confirm if a sport has been selected and that all fields are filled out.
         createActivity(newActivity)
             .then(res => res.json())
             .then(createdActivity => {
@@ -137,7 +137,7 @@ export const ActivityForm = ({ editMode }) => {
     }
 
     const handleSingleSportUpdate = () => {
-        setSaving(true)
+        savingModal.current.showModal()
         // Handle change from multi to single sport.
         // Delete all in multisports.
         for (const as of activitySports) {
@@ -154,7 +154,7 @@ export const ActivityForm = ({ editMode }) => {
     }
 
     const handleMultiUpdate = () => {
-        setSaving(true)
+        savingModal.current.showModal()
 
         // DELETE
         const idsToKeep = []
@@ -189,6 +189,12 @@ export const ActivityForm = ({ editMode }) => {
 
     return (
         <>
+            <dialog ref={savingModal} className="fs-modal">
+                <div className="loading-icon">
+                    <img src={loading} /><br />
+                    <span>Saving</span>
+                </div>
+            </dialog>
             <h2 className="create-activity-h">{editMode ? `Edit Activity` : "Create Activity"}</h2>
 
             <form onSubmit={editMode ? handleUpdate : handleActivity} className="activity-form">
@@ -319,24 +325,15 @@ export const ActivityForm = ({ editMode }) => {
                         </div>
                     </>
                 }
-                {saving ?
-                    <div className="loading-icon">
-                        <img src={loading} /><br />
-                        <span>Saving</span>
+                <fieldset>
+                    <div className="e-a-buttons">
+                        <button type="submit">{editMode ? "Save" : "Create"}</button>
+                        <button onClick={() => {
+                            editMode ? history.push(`/activities/${activityId}`) :
+                                history.push(`/activities`)
+                        }}>Cancel</button>
                     </div>
-                    :
-                    <>
-                        <fieldset>
-                            <div className="e-a-buttons">
-                                <button type="submit">{editMode ? "Save" : "Create"}</button>
-                                <button onClick={() => {
-                                    editMode ? history.push(`/activities/${activityId}`) :
-                                        history.push(`/activities`)
-                                }}>Cancel</button>
-                            </div>
-                        </fieldset>
-                    </>
-                }
+                </fieldset>
             </form>
         </>
     )

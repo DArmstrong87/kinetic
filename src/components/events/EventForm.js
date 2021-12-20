@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useHistory } from "react-router";
 import { createEvent, createEventSport, getSports, statesList, getEvent, updateEvent, updateEventSport, deleteEventSport } from "./EventsProvider";
 import "./EventForm.css"
@@ -15,7 +15,7 @@ export const EventForm = ({ editMode }) => {
     const { eventId } = useParams()
     const states = statesList()
     const history = useHistory()
-    const [saving, setSaving] = useState(false)
+    const savingModal = useRef()
 
     const convertDate = (eventDate) => {
         const [date, time] = eventDate.split(" ")
@@ -120,9 +120,9 @@ export const EventForm = ({ editMode }) => {
     }
 
     const handleEvent = (e) => {
-        setSaving(true)
-        // Before event creation, confirm if a sport has been selected and that all fields are filled out.
         e.preventDefault()
+        savingModal.current.showModal()
+        // Before event creation, confirm if a sport has been selected and that all fields are filled out.
         createEvent(newEvent)
             .then(res => res.json())
             .then(createdEvent => {
@@ -147,12 +147,12 @@ export const EventForm = ({ editMode }) => {
 
     const handleUpdate = (e) => {
         e.preventDefault()
+        savingModal.current.showModal()
         if (multiSport) { handleMultiUpdate() }
         else { handleSingleSportUpdate(e) }
     }
 
     const handleSingleSportUpdate = () => {
-        setSaving(true)
         // Handle change from multi to single sport.
         // Delete all in multisports.
         for (const es of eventSports) {
@@ -169,8 +169,6 @@ export const EventForm = ({ editMode }) => {
     }
 
     const handleMultiUpdate = () => {
-        setSaving(true)
-
         // DELETE
         const idsToKeep = []
         for (const es of eventSports) { idsToKeep.push(es?.id) }
@@ -203,6 +201,12 @@ export const EventForm = ({ editMode }) => {
 
     return (
         <>
+            <dialog ref={savingModal} className="fs-modal">
+                <div className="loading-icon">
+                    <img src={loading} /><br />
+                    <span>Saving</span>
+                </div>
+            </dialog>
             <h2 className="create-event-h">{editMode ? "Edit Event" : "Create Event"}</h2>
 
             <form onSubmit={editMode ? handleUpdate : handleEvent} className="event-form">
@@ -374,24 +378,15 @@ export const EventForm = ({ editMode }) => {
                         </div>
                     </>
                 }
-                {saving ?
-                    <div className="loading-icon">
-                        <img src={loading} /><br />
-                        <span>Saving</span>
-                    </div>
-                    :
-                    <>
-                        <fieldset>
-                            <div className="e-a-buttons">
-                            <button type="submit">{editMode ? "Save" : "Create"}</button>
-                            <button onClick={() => {
-                                editMode ? history.push(`/events/${eventId}`) :
+                <fieldset>
+                    <div className="e-a-buttons">
+                        <button type="submit">{editMode ? "Save" : "Create"}</button>
+                        <button onClick={() => {
+                            editMode ? history.push(`/events/${eventId}`) :
                                 history.push(`/events`)
-                            }}>Cancel</button>
-                            </div>
-                        </fieldset>
-                    </>
-                }
+                        }}>Cancel</button>
+                    </div>
+                </fieldset>
             </form>
         </>
     )

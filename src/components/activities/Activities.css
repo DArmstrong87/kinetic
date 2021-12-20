@@ -5,18 +5,16 @@
 }
 
 .log-act {
-    background-color: rgb(59, 100, 62);
+    background-color: rgb(35, 138, 197);
     border-radius: 10px;
     font-size: 1em;
     color: whitesmoke;
     cursor: pointer;
     font-weight: bold;
 }
-.log-act button {
-}
 
 .act-details {
-    width: 80%;
+    width: 100%;
     background-color: rgb(82, 82, 82);
     border-radius: 1em;
 }
@@ -37,7 +35,7 @@
 .activity {
     background-color: gray;
     color: whitesmoke;
-    width: 75%;
+    width: 60%;
     margin: auto;
     margin-bottom: 2em;
     border-radius: 1em;
@@ -54,26 +52,6 @@
 .act-title a:hover{
     color: white;
 }
-
-.act-sports {
-    display: flex;
-    width: 20%;
-    flex-direction: column;
-    justify-content: space-evenly;
-    align-items: center;
-}
-
-.act-sport-label {
-    background-color: royalblue;
-    min-width: 50%;
-    max-width: 100%;
-    border-radius: 10px;
-    font-size: 2vw;
-    padding: 0.2em;
-    flex: 0 1 0;
-    text-align: center;
-}
-
 
 .act-date {
     text-align: center;
@@ -104,14 +82,13 @@
 .sports-table-div{
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
     align-items: center;
 }
 .sports-table {
     border: 1px solid royalblue;
     border-radius: 10px;
     background-color: gray;
-    width:40%;
+    width:70%;
     margin:1em 0 1em 0;
     text-align: center;
     box-shadow: 4px 4px 8px 1px rgba(0, 0, 0, 0.6);
@@ -120,12 +97,4 @@
     background-color: rgb(71, 88, 104);
     min-width: 5em;
     border-radius: 10px;
-}
-
-.act {
-    display: flex;
-    width: 75%;
-    margin: auto;
-    justify-content: center;
-    color:white;
 }
