@@ -16,8 +16,7 @@ export const Login = () => {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Accept": "application/json",
-                "Access-Control-Allow-Origin": "https://kinetic-da.herokuapp.com/"
+                "Accept": "application/json"
             },
             body: JSON.stringify({
                 username: username.current.value,
