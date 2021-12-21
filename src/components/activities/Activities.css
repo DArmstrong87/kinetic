@@ -24,6 +24,12 @@
     margin-left: 1em;
 }
 
+.act {
+    color: whitesmoke;
+    width: 80%;
+    margin: auto;
+}
+
 .act-stats {
     display: flex;
     justify-content: space-evenly;
@@ -46,6 +52,7 @@
     text-align: center;
     margin: 0px;
     background-color: rgb(71, 88, 104);
+    color: orange;
     border-top-right-radius: 14px;
     border-top-left-radius: 14px;
 }
