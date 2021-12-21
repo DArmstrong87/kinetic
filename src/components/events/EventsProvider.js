@@ -43,6 +43,18 @@ export const leaveEvent = (id) => {
     })
 }
 
+export const incompleteEvent = (id) => {
+    return fetch(`https://kinetic--server.herokuapp.com/athleteevents/${id}`, {
+        headers: {
+            "Authorization": `Token ${localStorage.getItem("kinetic_token")}`,
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        method: "PATCH",
+        body: JSON.stringify({completed: false})
+    })
+}
+
 export const getSports = () => {
     return fetch(`https://kinetic--server.herokuapp.com/sports`, {
         headers: {
