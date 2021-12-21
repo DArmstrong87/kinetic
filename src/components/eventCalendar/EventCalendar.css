@@ -11,3 +11,48 @@
     display: list-item;
     list-style-type: '➔';
 }
+
+.events-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.events-header button {
+    font-size: 1.5em;
+    background-color: royalblue;
+    border-radius: 10px;
+    cursor: pointer;
+    color:whitesmoke;
+}
+.events-header button:hover {
+    color: orange;
+}
+
+/* Table */
+.user-events {
+    background-color: rgb(24, 40, 88);
+    color: whitesmoke;
+    border: 1px solid gray;
+    border-collapse: collapse;
+    margin-bottom: 2em;
+}
+
+.user-events td {
+    border: 1px solid gray;
+    min-width: 4em;
+    max-width: 10em;
+    padding: 0.3em;
+}
+.user-events button{
+    background: none;
+    border: none;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+.view-past {
+    background: rgb(88, 88, 88);
+    color: whitesmoke;
+    border-radius: 10px;
+    cursor: pointer;
+}
