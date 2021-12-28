@@ -22,7 +22,7 @@ export const ApplicationViews = () => {
             <Event />
         </Route>
         <Route exact path="/editevent/:eventId(\d+)">
-            <EventForm editMode={true} />
+            <EventForm />
         </Route>
         <Route path="/myevents">
             <EventCalendar />
@@ -49,10 +49,10 @@ export const ApplicationViews = () => {
             <ActivityForm />
         </Route>
         <Route exact path="/editactivity/:activityId(\d+)">
-            <ActivityForm editMode={true} />
+            <ActivityForm />
         </Route>
         <Route exact path="/createactivity/:eventId(\d+)">
-            <ActivityForm fromEvent={true} editMode={true}/>
+            <ActivityForm fromEvent={true} />
         </Route>
         <Route exact path="/activities/:activityId(\d+)">
             <Activity />
