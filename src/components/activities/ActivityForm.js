@@ -6,7 +6,7 @@ import { createActivity, createActivitySport, deleteActivitySport, getActivity, 
 import "./ActivityForm.css"
 import loading from "../../Infinity.gif"
 
-export const ActivityForm = ({ editMode }) => {
+export const ActivityForm = () => {
     const [multiSport, setMulti] = useState(false)
     const [sports, setSports] = useState([])
     const [newActivity, setActivity] = useState({})
@@ -59,7 +59,7 @@ export const ActivityForm = ({ editMode }) => {
 
     useEffect(() => {
         getSports().then(sports => setSports(sports))
-        if (editMode) {
+        if (activityId) {
             getActivity(activityId).then(a => {
                 if (a.activity_sports?.length > 1) {
                     setMulti(true)
@@ -73,9 +73,9 @@ export const ActivityForm = ({ editMode }) => {
             })
 
         }
-    }, [activityId, editMode])
+    }, [activityId])
 
-    const handleInput = (e) => {
+    const handleActivityInput = (e) => {
         const activity = { ...newActivity }
         activity[e.target.name] = e.target.value
         setActivity(activity)
@@ -83,25 +83,53 @@ export const ActivityForm = ({ editMode }) => {
 
     const handleSport = (e) => {
         if (e.target.name === "sportId") {
-            const as = { sportId: parseInt(e.target.value) }
-            setActivitySport(as)
+            let aS = {}
+            if (e.target.value === '3') {
+                aS = { sportId: parseInt(e.target.value), elevGain: 0 }
+            }
+            else {
+                aS = { sportId: parseInt(e.target.value) }
+            }
+            setActivitySport(aS)
         } else {
-            const as = { ...activitySport }
-            as[e.target.name] = parseInt(e.target.value)
-            setActivitySport(as)
+            const aS = { ...activitySport }
+            aS[e.target.name] = parseInt(e.target.value)
+            setActivitySport(aS)
+        }
+    }
+
+    const handleSportsInput = (sportId, e) => {
+        const aS = [...activitySports]
+        const index = sportId - 1
+        if (!aS[index]) { aS[index] = {} }
+        if (e.target.name === 'sport') {
+            /*
+            Distance and elevation fields are controlled by checking for a sportId property on an object in the same index as the sport id.
+            - If there's an existing object with a sportId, reset it.
+            - If there's no object or sportId at that index, create one and set the sportID.
+            */
+            if (activitySports[index]?.hasOwnProperty("sportId")) {
+                aS[index] = {}
+                setActivitySports(aS)
+            }
+            else {
+                if (sportId === 3) {
+                    aS[index] = { sportId: sportId, elevGain: 0 }
+                }
+                else {
+                    aS[index] = { sportId: sportId }
+                }
+                setActivitySports(aS)
+            }
+        } else {
+            aS[index][e.target.name] = parseFloat(e.target.value)
+            setActivitySports(aS)
         }
     }
 
     const handleMultiSwitch = () => {
-        if (multiSport) {
-            setMulti(false)
-        } else {
-            setMulti(true)
-            const index = activitySport.sportId - 1
-            const aSports = activitySports
-            aSports[index] = activitySport
-            setActivitySports(aSports)
-        }
+        if (multiSport) { setMulti(false); setActivitySport({}) }
+        else { setMulti(true) }
     }
 
     const handleActivity = (e) => {
@@ -111,8 +139,7 @@ export const ActivityForm = ({ editMode }) => {
         createActivity(newActivity)
             .then(res => res.json())
             .then(createdActivity => {
-                // Confirm activity was created by checking for an id.
-                // If single sport, check id and push to activity page.
+                // Confirm activity was created by checking for an id before assigning activityId to activity Sport objects.
                 if (createdActivity.hasOwnProperty("id") && multiSport === false) {
                     const as = { ...activitySport }
                     as.activityId = createdActivity.id
@@ -122,7 +149,6 @@ export const ActivityForm = ({ editMode }) => {
                         if (as.hasOwnProperty('sportId')) {
                             const a = { ...as }
                             a.activityId = createdActivity.id
-                            // If multi sport, check id wait til last activity sport is created before pushing to activity page.
                             createActivitySport(a).then(setTimeout(() => history.push(`/activities/${createdActivity.id}`), 1500))
                         }
                     }
@@ -195,19 +221,21 @@ export const ActivityForm = ({ editMode }) => {
                     <span>Saving</span>
                 </div>
             </dialog>
-            <h2 className="create-activity-h">{editMode ? `Edit Activity` : "Create Activity"}</h2>
+            <h2 className="create-activity-h">{activityId ? `Edit Activity` : "Create Activity"}</h2>
 
-            <form onSubmit={editMode ? handleUpdate : handleActivity} className="activity-form">
+            <form onSubmit={activityId ? handleUpdate : handleActivity} className="activity-form">
 
                 <div className="name-date">
                     <fieldset className="a-name">
-                        <input type="text" name="name" placeholder={editMode ? newActivity.name : "Activity name"} required={!newActivity.name} autofocus onChange={handleInput} />
+                        <input type="text" name="name" placeholder={activityId ? newActivity.name : "Activity name"}
+                        value={newActivity.hasOwnProperty('name') ? newActivity.name : ""}
+                        required={!newActivity.name} autofocus onChange={handleActivityInput} />
                     </fieldset>
                     <fieldset>
                         <label htmlFor="date">
                             Date
                         </label>
-                        <input type="date" defaultValue={newActivity.createdOn} name="createdOn" required={!newActivity.createdOn} onChange={handleInput} />
+                        <input type="date" defaultValue={newActivity.createdOn} name="createdOn" required={!newActivity.createdOn} onChange={handleActivityInput} />
                     </fieldset>
                 </div>
 
@@ -235,13 +263,17 @@ export const ActivityForm = ({ editMode }) => {
                         <div className="single-sport">
                             <fieldset>
                                 <label htmlFor="distance">Distance</label>
-                                <input type="number" name="distance"
-                                    step="0.01" required={!multiSport && activitySport.distance === null} placeholder={activitySport.hasOwnProperty("distance") ? `${activitySport?.distance}mi` : ""} onChange={handleSport} />
+                                <input type="number" name="distance" value={activitySport.hasOwnProperty('distance') ? activitySport.distance : ""}
+                                    step="0.01" required={!multiSport} placeholder={"mi"} onChange={handleSport} />
                             </fieldset>
-                            <fieldset>
-                                <label htmlFor="elevGain">Elevation Gain</label>
-                                <input type="number" name="elevGain" step="0.01" required={!multiSport || activitySport.elevGain === null} placeholder={activitySport.hasOwnProperty("elevGain") ? `${activitySport.elevGain}ft` : ""} onChange={handleSport} />
-                            </fieldset>
+                            {activitySport.sportId === 3 ? "" :
+                                <fieldset>
+                                    <label htmlFor="elevGain">Elevation Gain</label>
+                                    <input type="number" name="elevGain" step="0.01"
+                                        value={activitySport.hasOwnProperty('elevGain') ? activitySport.elevGain : ""}
+                                        required={!multiSport} placeholder={"ft"} onChange={handleSport} />
+                                </fieldset>
+                            }
                         </div>
                     </>
                     :
@@ -253,68 +285,41 @@ export const ActivityForm = ({ editMode }) => {
                         <div className="sports-container">
 
                             {sports?.map(sport => {
-
+                                const index = sport.id - 1
                                 return <>
                                     <div className="ms-checkboxes">
                                         <fieldset className="ms-fields">
-                                            <input type="checkbox" value={sport.id} checked={activitySports[sport.id - 1]?.hasOwnProperty("sportId")}
+                                            <input type="checkbox" value={sport.id} checked={activitySports[index]?.hasOwnProperty("sportId")}
                                                 name="sport"
-                                                required={Object.values(activitySports).some(val => val === sport.id)}
-                                                onChange={() => {
-                                                    /*
-                                                    Distance and elevation fields are controlled by checking for a sportId property on an object in the same index as the sport id.
-                                                    - If there's an existing object with a sportId, reset it.
-                                                    - If there's no object or sportId at that index, create one and set the sportID.
-                                                    */
-                                                    const index = sport.id - 1
-                                                    const as = [...activitySports]
-                                                    if (activitySports[index]?.hasOwnProperty("sportId")) {
-                                                        as[index] = {}
-                                                        setActivitySports(as)
-                                                    }
-                                                    else {
-                                                        as[index] = { sportId: sport.id }
-                                                        setActivitySports(as)
-                                                    }
-                                                }} />
+                                                required={!activitySports.some(aS => aS.hasOwnProperty('sportId'))}
+                                                onChange={(e) => { handleSportsInput(sport.id, e) }} />
 
                                             <label htmlFor="sport" className="sport-label">{sport.name}</label>
                                             {
                                                 /* Dynamically render distance and elevation gain fields
                                                 // Each fieldset should save as its own object with distance, elevGain and sportId.*/
-                                                activitySports[sport.id - 1]?.hasOwnProperty("sportId") ?
+                                                activitySports[index]?.hasOwnProperty("sportId") ?
                                                     <>
                                                         <fieldset className="ms-fields">
-                                                            <input type="number" name="distance" step="0.01" className="create-activity-input ms-input" placeholder={editMode && activitySports[sport.id - 1].hasOwnProperty("distance") ?
-                                                                activitySports[sport.id - 1]?.distance : "Distance (mi)"
-                                                            }
-                                                                required={activitySports.some(as => as?.hasOwnProperty('sportId')
-                                                                    && as.sportId === sport.id)
-                                                                    && !activitySports[sport.id - 1].sportId === sport.id}
-                                                                onChange={(e) => {
-                                                                    const as = [...activitySports]
-                                                                    const index = sport.id - 1
-                                                                    as[index]['distance'] = parseFloat(e.target.value)
-                                                                    setActivitySports(as)
-                                                                }} />
-                                                        </fieldset>
-
-                                                        <fieldset className="ms-fields">
-                                                            <input type="number" name="elevGain" step="0.01"
-                                                                className="create-activity-input ms-input" placeholder={editMode && activitySports[sport.id - 1].hasOwnProperty("elevGain") ?
-                                                                    activitySports[sport.id - 1]?.elevGain : "Elevation gain (ft)"
-                                                                } required={activitySports.some(as => as?.hasOwnProperty('sportId')
-                                                                    && as.sportId === sport.id)
-                                                                    && !activitySports[sport.id - 1].sportId === sport.id
+                                                            <input type="number" name="distance" step="0.01" 
+                                                            value={activitySports[index].hasOwnProperty('distance') ? activitySports[index].distance : ""}
+                                                            className="create-activity-input ms-input"
+                                                                placeholder={"Distance (mi)"
                                                                 }
-                                                                onChange={(e) => {
-                                                                    const as = [...activitySports]
-                                                                    const index = sport.id - 1
-                                                                    if (!as[index]) { as[index] = {} }
-                                                                    as[index]['elevGain'] = parseFloat(e.target.value)
-                                                                    setActivitySports(as)
-                                                                }} />
+                                                                required={activitySports[index].hasOwnProperty('sportId')}
+                                                                onChange={(e) => { handleSportsInput(sport.id, e) }} />
                                                         </fieldset>
+                                                        {sport.id === 3 ? "" :
+                                                            <fieldset className="ms-fields">
+                                                                <input type="number" name="elevGain" step="0.01"
+                                                                value={activitySports[index].hasOwnProperty('elevGain') ? activitySports[index].elevGain : ""}
+                                                                    className="create-activity-input ms-input" placeholder={activityId && activitySports[index].hasOwnProperty("elevGain") ?
+                                                                        activitySports[index]?.elevGain : "Elevation gain (ft)"
+                                                                    } required={activitySports[index].hasOwnProperty('sportId')
+                                                                    }
+                                                                    onChange={(e) => { handleSportsInput(sport.id, e) }} />
+                                                            </fieldset>
+                                                        }
                                                     </>
                                                     : ""
                                             }
@@ -327,9 +332,9 @@ export const ActivityForm = ({ editMode }) => {
                 }
                 <fieldset>
                     <div className="e-a-buttons">
-                        <button type="submit">{editMode ? "Save" : "Create"}</button>
+                        <button type="submit">{activityId ? "Save" : "Create"}</button>
                         <button onClick={() => {
-                            editMode ? history.push(`/activities/${activityId}`) :
+                            activityId ? history.push(`/activities/${activityId}`) :
                                 history.push(`/activities`)
                         }}>Cancel</button>
                     </div>
