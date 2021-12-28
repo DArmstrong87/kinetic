@@ -79,6 +79,28 @@ export const getActivities = () => {
             "Authorization": `Token ${localStorage.getItem("kinetic_token")}`,
         }
     })
-        .then(res => res.json())
+    .then(res => res.json())
 }
 
+
+export const completeEvent = (id) => {
+    return fetch(`https://kinetic--server.herokuapp.com/athleteevents/${id}`, {
+        headers: {
+            "Authorization": `Token ${localStorage.getItem("kinetic_token")}`,
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        method: "PATCH",
+        body: JSON.stringify({completed: true})
+    })
+}
+
+
+export const getAE = (id) => {
+    return fetch(`https://kinetic--server.herokuapp.com/athleteevents?eventId=${id}`, {
+        headers: {
+            "Authorization": `Token ${localStorage.getItem("kinetic_token")}`,
+        }
+    })
+        .then(res => res.json())
+}

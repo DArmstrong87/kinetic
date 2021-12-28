@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { CourseMap } from "./CourseMap";
-import { getAthleteEvent, getEvent, leaveEvent, signUp } from "./EventsProvider";
+import { getAthleteEvent, getEvent, incompleteEvent, leaveEvent, signUp } from "./EventsProvider";
 import "./Event.css"
+import { useHistory } from "react-router-dom";
 
 export const Event = () => {
     const [event, setEvent] = useState([])
@@ -10,7 +11,7 @@ export const Event = () => {
     const { eventId } = useParams()
     const date = new Date(event.date).toDateString()
     const time = event.date?.split(" ")[1]
-
+    const history = useHistory()
 
     useEffect(
         () => {
@@ -68,10 +69,20 @@ export const Event = () => {
                                             </button>
                                             :
                                             <>
+                                                {event.completed ? <>You completed this event!<br />🏆
+                                                    <br />
+                                                    <span onClick={() => incompleteEvent(athleteEvent.id).then(getEvent(eventId).then(e => setEvent(e)))} style={{ cursor: 'pointer' }}>Mark Incomplete</span>
+                                                </>
 
-                                                You are signed up for<br />{event.name}!<br />
-                                                <button onClick={() => eventLeave(event.id)}>
-                                                    Leave Event</button>
+                                                    :
+                                                    <>
+                                                        You are signed up for<br />{event.name}!<br />
+                                                        <button onClick={() => eventLeave(event.id)}>
+                                                            Leave Event</button>
+                                                        <button onClick={() => history.push(`/createactivity/${event.id}`)}>
+                                                            Complete</button>
+                                                    </>
+                                                }
                                             </>
                                         }
                                     </div>
@@ -82,15 +93,15 @@ export const Event = () => {
                         </>
                         : ""}
                 </section>
-                
+
                 <section className="e-details">
-                    <h1>{event.name}</h1>
+                    <h1>{event.name} {event.completed ? '🏆' : ""}</h1>
                     <p>
                         {date} | {event.city}, {event.state}<br />
                         Start time: {time}{time >= 12 ? 'pm' : 'am'}
                     </p>
-                    <p>Distance: {event.total_distance?.toFixed(1).toLocaleString()}mi || 
-                    Elevation Gain: {event.total_elev_gain?.toLocaleString()}ft</p>
+                    <p>Distance: {event.total_distance?.toFixed(1).toLocaleString()}mi ||
+                        Elevation Gain: {event.total_elev_gain?.toLocaleString()}ft</p>
 
                     {event.event_sports?.length > 1 ? <>
                         <h4>Multi-Sport Event</h4>

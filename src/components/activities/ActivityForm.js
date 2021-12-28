@@ -1,19 +1,21 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useHistory } from "react-router";
-import { getSports } from "../events/EventsProvider";
+import { getEvent, getSports } from "../events/EventsProvider";
 import { useParams } from "react-router-dom";
-import { createActivity, createActivitySport, deleteActivitySport, getActivity, updateActivity, updateActivitySport } from "./ActivityProvider";
+import { completeEvent, createActivity, createActivitySport, deleteActivitySport, getActivity, getAE, updateActivity, updateActivitySport } from "./ActivityProvider";
 import "./ActivityForm.css"
 import loading from "../../Infinity.gif"
 
-export const ActivityForm = () => {
+export const ActivityForm = ({ fromEvent }) => {
     const [multiSport, setMulti] = useState(false)
     const [sports, setSports] = useState([])
     const [newActivity, setActivity] = useState({})
     const [activitySport, setActivitySport] = useState({ sportId: 0 })
     const [activitySportIds, setAsIds] = useState([])
     const [activitySports, setActivitySports] = useState([])
+    const [athleteEvent, setAE] = useState({})
     const { activityId } = useParams()
+    const { eventId } = useParams()
     const history = useHistory()
     const savingModal = useRef()
 
@@ -59,7 +61,7 @@ export const ActivityForm = () => {
 
     useEffect(() => {
         getSports().then(sports => setSports(sports))
-        if (activityId) {
+        if (activityId && !fromEvent) {
             getActivity(activityId).then(a => {
                 if (a.activity_sports?.length > 1) {
                     setMulti(true)
@@ -71,9 +73,21 @@ export const ActivityForm = () => {
                     id: a.id
                 })
             })
-
         }
-    }, [activityId])
+        else if (fromEvent) {
+            getEvent(eventId).then(e => {
+                if (e.event_sports?.length > 1) { setMulti(true) }
+                convertActivitySports(e.event_sports)
+                let date = e.date.split(" ")[0].split("/")
+                date = [date[2], date[0], date[1]].join('-')
+                setActivity({
+                    name: e.name,
+                    createdOn: date,
+                })
+            })
+            getAE(eventId).then(ae => setAE(ae))
+        }
+    }, [activityId, fromEvent])
 
     const handleActivityInput = (e) => {
         const activity = { ...newActivity }
@@ -136,6 +150,7 @@ export const ActivityForm = () => {
         e.preventDefault()
         savingModal.current.showModal()
         // Before activity creation, confirm if a sport has been selected and that all fields are filled out.
+        if (fromEvent) { completeEvent(athleteEvent.id) }
         createActivity(newActivity)
             .then(res => res.json())
             .then(createdActivity => {
@@ -221,9 +236,9 @@ export const ActivityForm = () => {
                     <span>Saving</span>
                 </div>
             </dialog>
-            <h2 className="create-activity-h">{activityId ? `Edit Activity` : "Create Activity"}</h2>
+            <h2 className="create-activity-h">{activityId && !fromEvent ? `Edit Activity` : "Create Activity"}</h2>
 
-            <form onSubmit={activityId ? handleUpdate : handleActivity} className="activity-form">
+            <form onSubmit={activityId && !fromEvent ? handleUpdate : handleActivity} className="activity-form">
 
                 <div className="name-date">
                     <fieldset className="a-name">
@@ -334,8 +349,9 @@ export const ActivityForm = () => {
                     <div className="e-a-buttons">
                         <button type="submit">{activityId ? "Save" : "Create"}</button>
                         <button onClick={() => {
-                            activityId ? history.push(`/activities/${activityId}`) :
-                                history.push(`/activities`)
+                            activityId && !fromEvent ? history.push(`/activities/${activityId}`)
+                                : fromEvent ? history.push(`/events/${eventId}`)
+                                    : history.push(`/activities`)
                         }}>Cancel</button>
                     </div>
                 </fieldset>
