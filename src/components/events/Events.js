@@ -1,21 +1,70 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getEvents, monthsList, searchEvents, statesList } from "./EventsProvider";
+import { filterEvents, getEvents, getSports, monthsList, statesList } from "./EventsProvider";
 import "./Events.css"
 
 export const Events = () => {
     const [events, setEvents] = useState([])
+    const [sports, setSports] = useState([])
     const [filters, toggleFilters] = useState(false)
+    const [request, setRequest] = useState("https://kinetic--server.herokuapp.com/events")
     const states = statesList()
     const months = monthsList()
+
     useEffect(
         () => {
             getEvents().then(events => setEvents(events))
+            getSports().then(sports => {
+                sports.sort((a, b) => {
+                    if (a.name > b.name) { return 1 }
+                    else { return -1 }
+                });
+                setSports(sports)
+            })
         }, []
     )
 
     const handleFilter = (e) => {
-        searchEvents(e.target.name, e.target.value).then(events => setEvents(events))
+        // Function adds a filter if it doesn't exist in the url or alters it if it has been applied.
+
+        // Disallow some special characters in search bar.
+        const disallowed = ['&', '?', '/', ':', '-']
+        if (disallowed.some(char => e.target.value.includes(char))){
+            e.preventDefault()
+            e.target.value = e.target.value.replace(e.target.value, "")
+            return
+        }
+        
+        let req = request
+        if (req.includes('?') && req.includes(e.target.name)) {
+            let [, value] = req.split(e.target.name)
+            if (value.includes('&')) {
+                [value,] = value.split('&')
+            }
+            req = req.replace(value, `=${e.target.value}`)
+        }
+        else if (req.includes('?') && !req.includes(e.target.name)) {
+            req = req = req.concat('&')
+            req = req.concat(`${e.target.name}=${e.target.value}`)
+        }
+        else {
+            req = req.concat('?')
+            req = req.concat(`${e.target.name}=${e.target.value}`)
+        }
+        setRequest(req)
+        filterEvents(req).then(events => setEvents(events))
+    }
+    const handlePast = () => {
+        let req = request
+        if (req.includes('?past&')) { req = req.replace('past&', "") }
+        else if (req.includes('?past')) { req = req.replace('?past', "") }
+        else if (req.includes('&past')) { req = req.replace('&past', "") }
+        else if (req.includes('?') && !req.includes('past')) {
+            req = req.concat('&past')
+        }
+        else { req = req.concat('?past') }
+        setRequest(req)
+        filterEvents(req).then(events => setEvents(events))
     }
 
     const renderFilters = () => {
@@ -23,26 +72,36 @@ export const Events = () => {
         else { toggleFilters(false) }
     }
 
-
     return (
         <>
+            {request}
             <div className="events-header">
                 <h1>
-                    All Events
+                    Events
                 </h1>
-                <div className="filter-container">
-                    <div>
-                        Filter <button onClick={renderFilters}>{filters ? "➖" : "➕"}</button>
-                    </div>
-                </div>
-
 
                 {filters ?
                     <>
-                        <div className="filters">
+                        <form className="filters">
+                            <div className="all">
+                                <button type="reset" onClick={() => {
+                                    getEvents().then(events => setEvents(events))
+                                }}>Reset</button>
+                            </div>
+
                             <fieldset>
-                                <select name="dist" defaultValue={0} onChange={handleFilter}>
-                                    <option value={0}>Distance</option>
+                                <select name="sport"
+                                    defaultValue={0} onChange={handleFilter}>
+                                    <option value={0} disabled>Sport</option>
+                                    {sports.map(sport => {
+                                        return <option value={sport.name}>{sport.name}</option>
+                                    })}
+                                </select>
+                            </fieldset>
+                            <fieldset>
+                                <select name="dist"
+                                    defaultValue={0} onChange={handleFilter}>
+                                    <option value={0} disabled>Distance</option>
                                     <option value={3.1}>5k -- 3.1mi</option>
                                     <option value={6.2}>10k -- 6.2mi</option>
                                     <option value={13.1}>Half Marathon -- 13.1mi</option>
@@ -54,7 +113,8 @@ export const Events = () => {
                                 </select>
                             </fieldset>
                             <fieldset>
-                                <select name="state" defaultValue={0} onChange={handleFilter}>
+                                <select name="state"
+                                    defaultValue={0} onChange={handleFilter}>
                                     <option value={0} disabled>State</option>
                                     {states.map(state => {
                                         return <option value={state}>{state}</option>
@@ -62,71 +122,87 @@ export const Events = () => {
                                 </select>
                             </fieldset>
                             <fieldset>
-                                <select name="month" defaultValue={0} onChange={handleFilter}>
+                                <select name="month"
+                                    defaultValue={0} onChange={handleFilter}>
                                     <option value={0} disabled>Month</option>
                                     {months.map(month => {
                                         return <option value={month.num}>{month.name}</option>
                                     })}
                                 </select>
                             </fieldset>
-                        </div>
+                            <fieldset>
+                                <input type="checkbox" onChange={handlePast}
+                                name="past" />
+                                Past Events
+                            </fieldset>
+                        </form>
                     </>
                     : ""}
-                <fieldset className="search">
-                    <label htmlFor="q">Search</label>
-                    <input name="q" type="text" onChange={handleFilter} />
-                </fieldset>
+
+                <div className="filter-container">
+                    <div className="filter">
+                        Filter <button onClick={renderFilters}>{filters ? "➖" : "➕"}</button>
+                    </div>
+                </div>
+
             </div>
+            <fieldset className="search">
+                <input name="q" type="text" placeholder="Search" onChange={handleFilter} />
+            </fieldset>
 
             <article className="events">
-                {events?.map(event => {
-                    const date = new Date(event.date).toDateString()
-                    const time = event.date?.split(" ")[1]
-                    return <>
-                        <section className="event-container">
-                            <div className="event-logo">
-                                <img src={event.event_logo} />
-                            </div>
-                            <div className="event-details-div">
-                                <h2 className="event-title">
-                                    <Link to={`events/${event.id}`}>
-                                        {event.name}
-                                    </Link>
-                                </h2>
-                                <div className="date-location">
-                                    <div>
-                                        {date} @ {time}{time >= 12 ? 'pm' : 'am'}
+                {events.length === 0 ? "No events found." :
+                    <>
+                        {events?.map(event => {
+                            const date = new Date(event.date).toDateString()
+                            const time = event.date?.split(" ")[1]
+                            return <>
+                                <section className="event-container">
+                                    <div className="event-logo">
+                                        <img src={event.event_logo} />
                                     </div>
-                                    <div>{event.city}, {event.state}</div>
-                                </div>
+                                    <div className="event-details-div">
+                                        <h2 className="event-title">
+                                            <Link to={`events/${event.id}`}>
+                                                {event.name}
+                                            </Link>
+                                        </h2>
+                                        <div className="date-location">
+                                            <div>
+                                                {date} @ {time}{time >= 12 ? 'pm' : 'am'}
+                                            </div>
+                                            <div>{event.city}, {event.state}</div>
+                                        </div>
 
-                                <div className="event-details">
-                                    <div>
-                                        <div className="distance">
-                                            <div>Distance: {event.total_distance}mi</div>
-                                            <div>Elevation Gain: {event.total_elev_gain}ft</div>
-                                        </div>
-                                        <div className="sports">
-                                            {
-                                                event.event_sports?.length > 1 ?
-                                                    event.event_sports?.map(es => {
-                                                        return es.sport?.name
-                                                    }).join(", ")
-                                                    :
-                                                    event.event_sports[0]?.sport.name
-                                            }
+                                        <div className="event-details">
+                                            <div>
+                                                <div className="distance">
+                                                    <div>Distance: {event.total_distance}mi</div>
+                                                    <div>Elevation Gain: {event.total_elev_gain}ft</div>
+                                                </div>
+                                                <div className="sports">
+                                                    {
+                                                        event.event_sports?.length > 1 ?
+                                                            event.event_sports?.map(es => {
+                                                                return es.sport?.name
+                                                            }).join(", ")
+                                                            :
+                                                            event.event_sports[0]?.sport.name
+                                                    }
+                                                </div>
+                                            </div>
+                                            <Link className="details-button" to={`events/${event.id}`}>
+                                                <div>
+                                                    Event<br />Details<br />{`>>>`}
+                                                </div>
+                                            </Link>
                                         </div>
                                     </div>
-                                    <Link className="details-button" to={`events/${event.id}`}>
-                                        <div>
-                                            Event<br />Details<br />{`>>>`}
-                                        </div>
-                                    </Link>
-                                </div>
-                            </div>
-                        </section>
+                                </section>
+                            </>
+                        })}
                     </>
-                })}
+                }
             </article>
         </>
     )
