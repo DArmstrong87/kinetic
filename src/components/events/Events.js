@@ -55,6 +55,7 @@ export const Events = () => {
         filterEvents(req).then(events => setEvents(events))
     }
     const handlePast = () => {
+        // Adds or removes ?past based on where it is located in the url.
         let req = request
         if (req.includes('?past&')) { req = req.replace('past&', "") }
         else if (req.includes('?past')) { req = req.replace('?past', "") }
@@ -74,7 +75,6 @@ export const Events = () => {
 
     return (
         <>
-            {request}
             <div className="events-header">
                 <h1>
                     Events
