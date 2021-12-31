@@ -145,8 +145,8 @@ export const monthsList = () => {
     ]
 }
 
-export const searchEvents = (q, term) => {
-    return fetch(`https://kinetic--server.herokuapp.com/events?${q}=${term}`, {
+export const filterEvents = (request) => {
+    return fetch(request, {
         headers: {
             "Authorization": `Token ${localStorage.getItem("kinetic_token")}`
         }
