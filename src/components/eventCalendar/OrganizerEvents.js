@@ -48,9 +48,11 @@ export const OrganizerEvents = ({ events, setEvents }) => {
                             const [date, time] = event.date?.split(" ")
                             return <>
                                 <tr>
-                                    <Link to={`events/${event.id}`}>
-                                        <td>{event.name}</td>
-                                    </Link>
+                                    <td>
+                                        <Link to={`events/${event.id}`}>
+                                            {event.name}
+                                        </Link>
+                                    </td>
                                     <td>{date}</td>
                                     <td>{time}</td>
                                     <td>
@@ -121,9 +123,11 @@ export const OrganizerEvents = ({ events, setEvents }) => {
                                     const [date, time] = event.date?.split(" ")
                                     return <>
                                         <tr>
-                                            <Link to={`events/${event.id}`}>
-                                                <td>{event.name}</td>
-                                            </Link>
+                                            <td>
+                                                <Link to={`events/${event.id}`}>
+                                                    {event.name}
+                                                </Link>
+                                            </td>
                                             <td>{date}</td>
                                             <td>{time}</td>
                                             <td>

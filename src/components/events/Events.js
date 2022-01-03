@@ -29,12 +29,12 @@ export const Events = () => {
 
         // Disallow some special characters in search bar.
         const disallowed = ['&', '?', '/', ':', '-']
-        if (disallowed.some(char => e.target.value.includes(char))){
+        if (disallowed.some(char => e.target.value.includes(char))) {
             e.preventDefault()
             e.target.value = e.target.value.replace(e.target.value, "")
             return
         }
-        
+
         let req = request
         if (req.includes('?') && req.includes(e.target.name)) {
             let [, value] = req.split(e.target.name)
@@ -54,16 +54,15 @@ export const Events = () => {
         setRequest(req)
         filterEvents(req).then(events => setEvents(events))
     }
-    const handlePast = () => {
-        // Adds or removes ?past based on where it is located in the url.
+    const handleCheck = (e) => {
+        const name = e.target.name
+        // Adds or removes ?past or ?multi based on where it is located in the url.
         let req = request
-        if (req.includes('?past&')) { req = req.replace('past&', "") }
-        else if (req.includes('?past')) { req = req.replace('?past', "") }
-        else if (req.includes('&past')) { req = req.replace('&past', "") }
-        else if (req.includes('?') && !req.includes('past')) {
-            req = req.concat('&past')
-        }
-        else { req = req.concat('?past') }
+        if (req.includes(`?${name}&`)) { req = req.replace(`${name}&`, "") }
+        else if (req.includes(`?${name}`)) { req = req.replace(`?${name}`, "") }
+        else if (req.includes(`&${name}`)) { req = req.replace(`&${name}`, "") }
+        else if (req.includes(`?`) && !req.includes(`${name}`)) { req = req.concat(`&${name}`) }
+        else { req = req.concat(`?${name}`) }
         setRequest(req)
         filterEvents(req).then(events => setEvents(events))
     }
@@ -85,6 +84,7 @@ export const Events = () => {
                         <form className="filters">
                             <div className="all">
                                 <button type="reset" onClick={() => {
+                                    setRequest('https://kinetic--server.herokuapp.com/events');
                                     getEvents().then(events => setEvents(events))
                                 }}>Reset</button>
                             </div>
@@ -98,20 +98,36 @@ export const Events = () => {
                                     })}
                                 </select>
                             </fieldset>
-                            <fieldset>
-                                <select name="dist"
-                                    defaultValue={0} onChange={handleFilter}>
-                                    <option value={0} disabled>Distance</option>
-                                    <option value={3.1}>5k -- 3.1mi</option>
-                                    <option value={6.2}>10k -- 6.2mi</option>
-                                    <option value={13.1}>Half Marathon -- 13.1mi</option>
-                                    <option value={26.2}>Marathon -- 26.2mi</option>
-                                    <option value={62}>Metric Century -- 62mi</option>
-                                    <option value={70.3}>Half Iron Man -- 70.3mi</option>
-                                    <option value={100}>Century -- 100mi</option>
-                                    <option value={140.6}>Full Iron Man -- 140.6mi</option>
-                                </select>
-                            </fieldset>
+                            <div className="min-max-dist">
+                                <fieldset>
+                                    <select name="maxdist"
+                                        defaultValue={0} onChange={handleFilter}>
+                                        <option value={0} disabled>Max. Distance</option>
+                                        <option value={3.1}>5k -- 3.1mi</option>
+                                        <option value={6.2}>10k -- 6.2mi</option>
+                                        <option value={13.1}>Half Marathon -- 13.1mi</option>
+                                        <option value={26.2}>Marathon -- 26.2mi</option>
+                                        <option value={62}>Metric Century -- 62mi</option>
+                                        <option value={70.3}>Half Iron Man -- 70.3mi</option>
+                                        <option value={100}>Century -- 100mi</option>
+                                        <option value={140.6}>Full Iron Man -- 140.6mi</option>
+                                    </select>
+                                </fieldset>
+                                <fieldset>
+                                    <select name="mindist"
+                                        defaultValue={0} onChange={handleFilter}>
+                                        <option value={0} disabled>Min. Distance</option>
+                                        <option value={3.1}>5k -- 3.1mi</option>
+                                        <option value={6.2}>10k -- 6.2mi</option>
+                                        <option value={13.1}>Half Marathon -- 13.1mi</option>
+                                        <option value={26.2}>Marathon -- 26.2mi</option>
+                                        <option value={62}>Metric Century -- 62mi</option>
+                                        <option value={70.3}>Half Iron Man -- 70.3mi</option>
+                                        <option value={100}>Century -- 100mi</option>
+                                        <option value={140.6}>Full Iron Man -- 140.6mi</option>
+                                    </select>
+                                </fieldset>
+                            </div>
                             <fieldset>
                                 <select name="state"
                                     defaultValue={0} onChange={handleFilter}>
@@ -130,11 +146,16 @@ export const Events = () => {
                                     })}
                                 </select>
                             </fieldset>
-                            <fieldset>
-                                <input type="checkbox" onChange={handlePast}
-                                name="past" />
-                                Past Events
-                            </fieldset>
+                            <div className="min-max-dist">
+                                <fieldset>
+                                    <input type="checkbox" name="past" onChange={handleCheck} />
+                                    Past Events
+                                </fieldset>
+                                <fieldset>
+                                    <input type="checkbox" name="multi" onChange={handleCheck} />
+                                    Multisport
+                                </fieldset>
+                            </div>
                         </form>
                     </>
                     : ""}
@@ -151,8 +172,9 @@ export const Events = () => {
             </fieldset>
 
             <article className="events">
-                {events.length === 0 ? "No events found." :
+                {events.length === 0 ? <h3>No events found.</h3> :
                     <>
+                        <h3>{events.length} {events.length === 1 ? 'Event' : 'Events'}</h3>
                         {events?.map(event => {
                             const date = new Date(event.date).toDateString()
                             const time = event.date?.split(" ")[1]

@@ -96,30 +96,64 @@ export const Event = () => {
 
                 <section className="e-details">
                     <h1>{event.name} {event.completed ? '🏆' : ""}</h1>
-                    <p>
-                        {date} | {event.city}, {event.state}<br />
-                        Start time: {time}{time >= 12 ? 'pm' : 'am'}
-                    </p>
-                    <p>Distance: {event.total_distance?.toFixed(1).toLocaleString()}mi ||
-                        Elevation Gain: {event.total_elev_gain?.toLocaleString()}ft</p>
+
+                    <div className="e-sub-details">
+                        <p>
+                            {date} | {event.city}, {event.state}<br />
+                            Start time: {time}{time >= 12 ? 'pm' : 'am'}
+                        </p>
+                        <table className="event-sports-table">
+                            <thead>
+                                <tr>
+                                    {event.event_sports?.length > 1 ? "" :
+                                        <td>Sport</td>}
+                                    <td>Distance (mi)</td>
+                                    <td>Elevation gain (ft)</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    {event.event_sports?.length > 1 ? "" :
+                                        <td>{event.event_sports ? event.event_sports[0].sport.name : ""} </td>
+                                    }
+                                    <td>{event.total_distance?.toFixed(1).toLocaleString()}</td>
+                                    <td>{event.total_elev_gain?.toLocaleString()}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>{event.description}</p>
 
                     {event.event_sports?.length > 1 ? <>
-                        <h4>Multi-Sport Event</h4>
-                        {event.event_sports?.map(es => {
-                            return <>
-                                <div>
-                                    {es.sport.name} | Distance: {es.distance}mi | Elevation Gain: {es.elev_gain}ft
-                                </div>
-                            </>
-                        })}
+                        <h4>Multi-Sport Breakdown</h4>
+
+                        <table className="event-sports-table">
+                            <thead>
+                                <tr>
+                                    <td>Sport</td>
+                                    <td>Distance (mi)</td>
+                                    <td>Elevation gain (ft)</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {event.event_sports?.map(es => {
+                                    return <>
+                                        <tr>
+                                            <td>{es.sport.name}</td>
+                                            <td>{es.distance}</td>
+                                            <td>{es.sport.name === "Swimming" ? "--" : es.elev_gain}</td>
+                                        </tr>
+                                    </>
+                                })}
+                            </tbody>
+                        </table>
                     </>
                         : ""}
 
-                    <p>{event.description}</p>
 
 
 
-                    <div>
+                    <div className="course">
                         {event?.course_url ?
                             <>
                                 Course Map

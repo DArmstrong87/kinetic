@@ -31,7 +31,7 @@ export const NavBar = () => {
                     <Link className="navbar__link" to="/">Home</Link>
                 </li>
                 <li className="navbar__item">
-                    <Link className="navbar__link" to="/myevents">Event Calendar</Link>
+                    <Link className="navbar__link" to="/myevents">Event Manager</Link>
                 </li>
                 <li className="navbar__item">
                     <Link className="navbar__link" to="/events">Events</Link>

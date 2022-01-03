@@ -50,6 +50,7 @@ export const Register = () => {
                     if ("token" in res) {
                         localStorage.setItem("kinetic_token", res.token)
                         localStorage.setItem("is_athlete", true)
+                        localStorage.setItem("kinetic_username", new_user.username)
                         setTimeout(() => history.push("/"), 1500)
                     }
                 })
@@ -63,6 +64,7 @@ export const Register = () => {
                     if ("token" in res) {
                         localStorage.setItem("kinetic_token", res.token)
                         localStorage.setItem("is_athlete", false)
+                        localStorage.setItem("kinetic_username", new_user.username)
                         setTimeout(() => history.push("/"), 1500)
                     }
                 })
