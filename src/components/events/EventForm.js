@@ -105,7 +105,7 @@ export const EventForm = () => {
             setEventSport(es)
         } else {
             const es = { ...eventSport }
-            es[e.target.name] = parseInt(e.target.value)
+            es[e.target.name] = parseFloat(e.target.value)
             setEventSport(es)
         }
     }
@@ -266,8 +266,8 @@ export const EventForm = () => {
                     </fieldset>
 
                     <fieldset>
-                        <select value={newEvent.state} name="state" className="create-event-input" required={!newEvent.state} onChange={handleInput}>
-                            <option value="" disabled>{eventId ? "Change State" : "Select State"}</option>
+                        <select defaultValue={0} value={newEvent.state} name="state" className="create-event-input" required={!newEvent.state} onChange={handleInput}>
+                            <option value={0} disabled>{eventId ? "Change State" : "Select State"}</option>
                             {states.map(state => {
                                 return <option name="state" value={state}>{state}</option>
                             })}
@@ -326,7 +326,7 @@ export const EventForm = () => {
                         <div className="single-sport">
                             <fieldset>
                                 <label htmlFor="distance">Distance</label>
-                                <input type="number" name="distance" step="0.01" className="create-event-input"
+                                <input type="number" name="distance" step="any" className="create-event-input"
                                     required={!multiSport}
                                     value={eventSport.hasOwnProperty('distance') ? eventSport.distance : ""}
                                     placeholder={'mi'}
