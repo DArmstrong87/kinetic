@@ -181,7 +181,7 @@ export const Events = () => {
                             return <>
                                 <section className="event-container">
                                     <div className="event-logo">
-                                        <img src={event.event_logo} />
+                                        <img src={event.event_logo} alt="event=logo"/>
                                     </div>
                                     <div className="event-details-div">
                                         <h2 className="event-title">

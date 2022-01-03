@@ -87,7 +87,7 @@ export const ActivityForm = ({ fromEvent }) => {
             })
             getAE(eventId).then(ae => setAE(ae))
         }
-    }, [activityId, fromEvent])
+    }, [activityId, fromEvent, eventId])
 
     const handleActivityInput = (e) => {
         const activity = { ...newActivity }
@@ -99,15 +99,15 @@ export const ActivityForm = ({ fromEvent }) => {
         if (e.target.name === "sportId") {
             let aS = {}
             if (e.target.value === '3') {
-                aS = { sportId: parseInt(e.target.value), elevGain: 0 }
+                aS = { sportId: parseFloat(e.target.value), elevGain: 0 }
             }
             else {
-                aS = { sportId: parseInt(e.target.value) }
+                aS = { sportId: parseFloat(e.target.value) }
             }
             setActivitySport(aS)
         } else {
             const aS = { ...activitySport }
-            aS[e.target.name] = parseInt(e.target.value)
+            aS[e.target.name] = parseFloat(e.target.value)
             setActivitySport(aS)
         }
     }
@@ -120,7 +120,7 @@ export const ActivityForm = ({ fromEvent }) => {
             /*
             Distance and elevation fields are controlled by checking for a sportId property on an object in the same index as the sport id.
             - If there's an existing object with a sportId, reset it.
-            - If there's no object or sportId at that index, create one and set the sportID.
+            - If there's no object or sportId at that index, create one and set the sportId.
             */
             if (activitySports[index]?.hasOwnProperty("sportId")) {
                 aS[index] = {}
@@ -232,10 +232,11 @@ export const ActivityForm = ({ fromEvent }) => {
         <>
             <dialog ref={savingModal} className="fs-modal">
                 <div className="loading-icon">
-                    <img src={loading} /><br />
+                    <img src={loading} alt="loading"/><br />
                     <span>Saving</span>
                 </div>
             </dialog>
+
             <h2 className="create-activity-h">{activityId && !fromEvent ? `Edit Activity` : "Create Activity"}</h2>
 
             <form onSubmit={activityId && !fromEvent ? handleUpdate : handleActivity} className="activity-form">

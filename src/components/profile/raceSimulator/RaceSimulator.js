@@ -5,7 +5,6 @@ import "./RaceSim.css"
 export const RaceSimulator = () => {
     const [results, setResults] = useState([])
     const [athlete, setAthlete] = useState({})
-    const [losses, setLosses] = useState({})
     const [seeResults, toggleResults] = useState(false)
     const [input, setInput] = useState({})
 
@@ -13,16 +12,17 @@ export const RaceSimulator = () => {
         getAthlete()
             .then(athlete => {
                 setAthlete(athlete)
-                if (athlete.fluid_loss > 0 && athlete.sodium_loss > 0) {
-                    setLosses({
-                        h20Loss: athlete.fluid_loss,
-                        naLoss: athlete.sodium_loss
-                    })
+                const copy = {}
+                if (athlete.fluid_loss > 0) {
+                    copy.h20Loss = athlete.fluid_loss
                 }
+                if (athlete.sodium_loss > 0) {
+                    copy.naLoss = athlete.sodium_loss
+                }
+                setInput(copy)
             })
     }, []
     )
-
 
 
     /* 
@@ -78,7 +78,7 @@ export const RaceSimulator = () => {
         let ecfVol = 0
         let naContent = (ecfVol * 140)
         const naIntake = input.naIntake / 23
-        const naLoss = losses.naLoss / 23
+        const naLoss = input.naLoss / 23
         const respLoss = 0.065
         const glycogenGain = 0.144
         let array = []
@@ -91,7 +91,7 @@ export const RaceSimulator = () => {
                 ecfVol = startECFVol
                 naContent = startNaContent
             }
-            ecfVol = ((ecfVol - losses.h20Loss - respLoss) + (glycogenGain + input.h20Intake))//
+            ecfVol = ((ecfVol - input.h20Loss - respLoss) + (glycogenGain + input.h20Intake))//
             const perDehydration = ((startECFVol - ecfVol) / (athlete.weight / 2.2))
             naContent = (naContent - naLoss + naIntake) //
             const serumNa = (naContent / ecfVol)
@@ -110,7 +110,14 @@ export const RaceSimulator = () => {
 
     const reset = () => {
         setResults([])
-        setInput({})
+        const copy = {}
+        if (athlete.fluid_loss > 0) {
+            copy.h20Loss = athlete.fluid_loss
+        }
+        if (athlete.sodium_loss > 0) {
+            copy.naLoss = athlete.sodium_loss
+        }
+        setInput(copy)
         toggleResults(false)
     }
 
@@ -123,7 +130,7 @@ export const RaceSimulator = () => {
             <div className="pre-req">
                 <h3>Pre-requisites: The Race Simulator requires input of known lab values based on a sweat test. The calculations require an updated weight measurement in the athlete profile.</h3>
                 <p className="levelen">Kinetic recommends<br />
-                    <a href="https://www.levelen.com/shop/sweat-test/" target="_blank"><img src="https://images.squarespace-cdn.com/content/v1/525235ade4b0b9b7feb0b069/1545854133403-D9BOSFI6WVLZZVWH3P6H/levelen.png" alt="Levelen" /></a>
+                    <a href="https://www.levelen.com/shop/sweat-test/" target="_blank" rel="noreferrer" ><img src="https://images.squarespace-cdn.com/content/v1/525235ade4b0b9b7feb0b069/1545854133403-D9BOSFI6WVLZZVWH3P6H/levelen.png" alt="Levelen" /></a>
                 </p>
             </div>
 
@@ -132,12 +139,12 @@ export const RaceSimulator = () => {
                 <div className="form-data">
                     <div className="form-row">
                         <fieldset>
-                            <label htmlFor="fluidLoss">Fluid loss - L/hr</label>
-                            <input name="fluidLoss" type="number" placeholder={losses.h20Loss} onChange={handleInput} step={0.1} />
+                            <label htmlFor="h20Loss">Fluid loss - L/hr</label>
+                            <input name="h20Loss" type="number" value={input.h20Loss} onChange={handleInput} step={0.01} />
                         </fieldset>
                         <fieldset>
                             <label htmlFor="naLoss">Sodium loss - mg/hr</label>
-                            <input name="naLoss" type="number" placeholder={losses.naLoss} onChange={handleInput} step={0.1} />
+                            <input name="naLoss" type="number" value={input.naLoss} onChange={handleInput} step={0.01} />
                         </fieldset>
                     </div>
                     <div className="form-row">
@@ -233,9 +240,9 @@ export const RaceSimulator = () => {
 
             <h2 className="results-h2">Acknowledgements</h2>
             <section className="acknowledgements">
-                <p>Calculations created by Jonathan Toker, Founder of <a href="https://saltstick.com/" target="_blank">SaltStick</a></p>
+                <p>Calculations created by Jonathan Toker, Founder of <a href="https://saltstick.com/" target="_blank" rel="noreferrer" >SaltStick</a></p>
                 <div className="saltStick">
-                    <a href="https://saltstick.com/" target="_blank">
+                    <a href="https://saltstick.com/" target="_blank" rel="noreferrer" >
                         <img src="https://cdn.shopify.com/s/files/1/0510/6660/1644/files/SALT6234_Logo_Primary.png?height=628&pad_color=ffffff&v=1607410346&width=1200" alt="SaltStick" />
                     </a>
                 </div>

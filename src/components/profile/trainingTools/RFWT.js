@@ -1,6 +1,6 @@
 import React from "react"
 
-export const RFWT = ({a, setVo2max, setResults, results}) => {
+export const RFWT = ({ a, setVo2max, setResults, results }) => {
 
     const setResult = (e) => {
         const result = { ...results }
@@ -8,7 +8,8 @@ export const RFWT = ({a, setVo2max, setResults, results}) => {
         setResults(result)
     }
 
-    const getVO2 = () => {
+    const getVO2 = (e) => {
+        e.preventDefault()
         // VO2max 132.853 - (0.0769 * weight(lbs)) - (0.3877 * age) + (6.315 * gender factor) - (3.2649 * time to complete 1min walk) - (0.1565 * 10s hr)
         const sexFactor = () => {
             if (a.sex === "M") { return 1 }
@@ -23,13 +24,13 @@ export const RFWT = ({a, setVo2max, setResults, results}) => {
         <>
             <h3>The Rockport Fitness Walking Test</h3>
             <div>
-                Time to complete: 15-22 minutes
+                Time to complete: <b className="question">15-22 minutes</b>
             </div>
             <div>
-                Equipment: Stopwatch
+                Equipment: <b className="question">Stopwatch</b>
             </div>
             <div>
-                Validation: <a href="https://pubmed.ncbi.nlm.nih.gov/8047707/">Validation of the Rockport Fitness Walking Test in college males and females</a>
+                Validation: <a href="https://pubmed.ncbi.nlm.nih.gov/8047707/" target="_blank" rel="noreferrer"><b>Validation of the Rockport Fitness Walking Test in college males and females</b></a>
             </div>
 
             <h4>Directions</h4>
@@ -39,29 +40,31 @@ export const RFWT = ({a, setVo2max, setResults, results}) => {
                 <li>Count heart rate for 10 seconds and record.</li>
             </ol>
 
-            <fieldset>
-                <label htmlFor="hr">Minutes </label>
-                <input name="min" value={results.min} type="number" onChange={setResult} />
-            </fieldset>
-            <fieldset>
-                <label htmlFor="hr">Seconds </label>
-                <input name="sec" value={results.sec} type="number" onChange={setResult} />
-            </fieldset>
-            <fieldset>
-                <label htmlFor="hr">10s Heart Rate </label>
-                <input name="hr" value={results.hr} type="number" onChange={setResult} />
-            </fieldset>
+            <form className="vo2-form" onSubmit={getVO2} onReset={() => {
+                setResults({ min: 0, sec: 0 });
+                setVo2max("")
+            }}>
+                <fieldset>
+                    <label htmlFor="hr">Minutes </label>
+                    <input name="min" required value={results.min} type="number" onChange={setResult} />
+                </fieldset>
+                <fieldset>
+                    <label htmlFor="hr">Seconds </label>
+                    <input name="sec" required value={results.sec} type="number" onChange={setResult} />
+                </fieldset>
+                <fieldset>
+                    <label htmlFor="hr">10s Heart Rate </label>
+                    <input name="hr" required value={results.hr} type="number" onChange={setResult} />
+                </fieldset>
 
-            <div>
-                <button onClick={getVO2}>
-                    Calculate
-                </button>
-                <button onClick={() => {
-                    setResults({ hr: "", min: "", sec: "" });
-                    setVo2max("")
-                }}>
-                    Reset</button>
-            </div>
+                <fieldset className="vo2-buttons">
+                        <button type="submit">
+                            Calculate
+                        </button>
+                        <button type="reset">
+                            Reset</button>
+                </fieldset>
+            </form>
 
         </>
     )

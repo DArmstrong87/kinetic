@@ -39,13 +39,13 @@ export const AthleteProfile = () => {
                             {athlete.VO2_max !== "" ?
                                 <>
                                     {athlete.VO2_max} mL/kg/min
-                                    <button className="take-test"
+                                    <button className="raceSim"
                                         onClick={() => { history.push("/vo2max") }}>
                                         Take Test
                                     </button>
                                 </>
                                 :
-                                <button>
+                                <button className="raceSim">
                                     Take Test
                                 </button>
                             }

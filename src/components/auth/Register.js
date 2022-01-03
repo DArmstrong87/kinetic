@@ -76,7 +76,7 @@ export const Register = () => {
         <>
             <dialog ref={savingModal} className="fs-modal">
                 <div className="loading-icon">
-                    <img src={loading} /><br />
+                    <img src={loading} alt="loading"/><br />
                     <span>Creating User</span>
                 </div>
             </dialog>

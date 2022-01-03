@@ -51,7 +51,7 @@ export const EditProfile = () => {
         <>
             <dialog ref={savingModal} className="fs-modal">
                 <div className="loading-icon">
-                    <img src={loading} /><br />
+                    <img src={loading} alt="loading"/><br />
                     <span>Saving</span>
                 </div>
             </dialog>
@@ -59,43 +59,43 @@ export const EditProfile = () => {
             <div className="editProfile">
                 <fieldset>
                     <label htmlFor="firstName"> First Name </label>
-                    <input type="text" name="firstName" className="form-control" placeholder={athlete.firstName} required autoFocus onChange={handleUser} />
+                    <input type="text" name="firstName" className="form-control" value={athlete.firstName} required autoFocus onChange={handleUser} />
                 </fieldset>
                 <fieldset>
                     <label htmlFor="lastName"> Last Name </label>
-                    <input type="text" name="lastName" placeholder={athlete.lastName} className="form-control" required onChange={handleUser} />
+                    <input type="text" name="lastName" value={athlete.lastName} className="form-control" required onChange={handleUser} />
                 </fieldset>
                 {/* <fieldset>
                     <label htmlFor="inputPassword">New Password </label>
-                    <input type="password" name="password" className="form-control" placeholder="Password" required onChange={handleUser} />
+                    <input type="password" name="password" className="form-control" value="Password" required onChange={handleUser} />
                 </fieldset>
                 <fieldset>
                     <label htmlFor="verifyPassword">Verify New Password </label>
-                    <input type="password" name="verifyPassword" className="form-control" placeholder="Verify password" required onChange={handleUser} />
+                    <input type="password" name="verifyPassword" className="form-control" value="Verify password" required onChange={handleUser} />
                 </fieldset> */}
                 <fieldset>
                     <label htmlFor="bio">Bio </label>
-                    <textarea name="bio" className="form-control" className="form-control" placeholder={athlete.bio} required onChange={handleUser} />
+                    <textarea name="bio" className="form-control" value={athlete.bio} required onChange={handleUser} />
                 </fieldset>
                 <fieldset>
                     <label htmlFor="rhr">Resting Heart Rate - bpm</label>
-                    <input type="number" name="rhr" className="form-control" placeholder={athlete.rhr} onChange={handleUser} />
+                    <input type="number" name="rhr" className="form-control" value={athlete.rhr} onChange={handleUser} />
                 </fieldset>
                 <fieldset>
                     <label htmlFor="vo2"> Vo2Max - mL/kg/min</label>
-                    <input type="number" placeholder={athlete.VO2max} className="form-control" name="VO2max" step="0.01" onChange={handleUser} />
+                    <input type="number" value={athlete.VO2max} className="form-control" name="VO2max" step="0.01" onChange={handleUser} />
                 </fieldset>
                 <fieldset>
                     <label htmlFor="fluidLoss">Fluid loss - L/hr</label>
-                    <input type="number" placeholder={athlete.fluidLoss} className="form-control" name="fluidLoss" step="0.01" onChange={handleUser} />
+                    <input type="number" value={athlete.fluidLoss} className="form-control" name="fluidLoss" step="0.01" onChange={handleUser} />
                 </fieldset>
                 <fieldset>
                     <label htmlFor="sodiumLoss">Sodium Loss - mg/hr</label>
-                    <input type="number" placeholder={athlete.sodiumLoss} className="form-control" name="sodiumLoss" onChange={handleUser} />
+                    <input type="number" value={athlete.sodiumLoss} className="form-control" name="sodiumLoss" onChange={handleUser} />
                 </fieldset>
                 <fieldset>
                     <label htmlFor="weight">Weight - lbs</label>
-                    <input type="number" placeholder={athlete.weight} className="form-control" name="weight" onChange={handleUser} />
+                    <input type="number" value={athlete.weight} className="form-control" name="weight" onChange={handleUser} />
                 </fieldset>
                 <fieldset style={{
                     textAlign: "center"

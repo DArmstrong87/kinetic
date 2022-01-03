@@ -105,3 +105,8 @@
     min-width: 5em;
     border-radius: 10px;
 }
+
+.bold-orange {
+    color: orange;
+    font-weight: bold;
+}

@@ -20,8 +20,8 @@ export const CourseMap = ({ event }) => {
                     scrolling: 'no'
                 }
                 return <>
-                    <a href={url} target="_blank">{url}</a>
-                    <iframe src={url} style={style}></iframe> </>
+                    <a href={url} target="_blank" rel="noreferrer" >{url}</a>
+                    <iframe src={url} style={style} title="Iframe"></iframe> </>
             }
             else if (hostname === "www.strava.com") {
                 if (!url.includes('embed') && url.slice(-1) !== "/") { url = url.concat('/embed') }
@@ -34,7 +34,7 @@ export const CourseMap = ({ event }) => {
                     scrolling: 'no'
                 }
                 return <>
-                    <a href={url} target="_blank">{url}</a>
+                    <a href={url} target="_blank" rel="noreferrer" >{url}</a>
                     <iframe src={url} style={style} title="Strava"></iframe>
 
                 </>
@@ -53,12 +53,12 @@ export const CourseMap = ({ event }) => {
                     allowtransparency: "true",
                     scrolling: 'no'
                 }
-                return <><iframe src={url} style={style} title="Iron Man"></iframe><a href={url} target="_blank">{url}</a></>
+                return <><iframe src={url} style={style} title="Iron Man"></iframe><a href={url} target="_blank" rel="noreferrer" >{url}</a></>
             }
-            else { return <><a href={url} target="_blank">{url}</a></> }
+            else { return <><a href={url} target="_blank" rel="noreferrer" >{url}</a></> }
         }
         catch (_) {
-            return <a href={url} target="_blank">{url}</a>
+            return <a href={url} target="_blank" rel="noreferrer" >{url}</a>
         }
     }
 

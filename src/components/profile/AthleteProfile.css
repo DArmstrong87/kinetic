@@ -58,14 +58,6 @@
     margin: 1em 0 1em 0;
 }
 
-.take-test {
-    background: none;
-    color: rgb(180, 180, 180);
-    font-size: 1em;
-    border: none;
-    cursor: pointer;
-}
-
 .raceSim {
     font-size: 1em;
     border-radius: 5px;
@@ -74,4 +66,7 @@
     color: whitesmoke;
     cursor: pointer;
     font-weight: bold;
+}
+.raceSim:hover {
+    color: orange;
 }

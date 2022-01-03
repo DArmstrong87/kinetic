@@ -29,9 +29,13 @@ export const Activities = () => {
         <>
             <h1 className="activities-h1">Activities</h1>
             <div className="act-stats">
-                <span>Activities: {activities.length}</span>
-                <span>Total Distance: {activities.reduce((accumulator, a) => { return accumulator + a.total_distance }, 0)}mi</span>
-                <span>Total Elevation Gain: {activities.reduce((accumulator, a) => { return accumulator + a.total_elev_gain }, 0)}ft</span>
+                <span>Activities: <b className="bold-orange">{activities.length}</b></span>
+                <span>Total Distance: <b className="bold-orange">
+                    {activities.reduce((accumulator, a) => { return accumulator + a.total_distance }, 0)}mi
+                </b></span>
+                <span>Total Elevation Gain: <b className="bold-orange">
+                    {activities.reduce((accumulator, a) => { return accumulator + a.total_elev_gain }, 0)}ft
+                </b></span>
                 <button className="log-act" onClick={() => history.push("/createactivity")}>Log Activity</button>
             </div>
             <article className="activities">
@@ -48,7 +52,7 @@ export const Activities = () => {
                         <section className="activity">
                             {deleting && delId === a.id ?
                                 <div className="loading-icon">
-                                    <img src={icon} /><br />
+                                    <img src={icon} alt="loading"/><br />
                                     <span>Deleting</span>
                                 </div>
                                 :

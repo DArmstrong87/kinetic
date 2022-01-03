@@ -1,3 +1,88 @@
 .VO2-container {
-    margin: 0 3em 0 3em;
+    margin: 0 3em 3em 3em;
+}
+
+.vo2max-standards {
+    color: black;
+    background-color: gray;
+    width: 50%;
+    margin-bottom: 1em;
+}
+
+.standards {
+    cursor: pointer;
+    margin: 1em 0 1em 0;
+}
+
+.vo2max-standards td {
+    min-width: 5em;
+    text-align: center;
+}
+
+.question {
+    color: orange;
+}
+
+.vo2-form {
+    background-color: gray;
+    width: 40%;
+    color: white;
+    border-radius: 1em;
+}
+.vo2-form fieldset {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.vo2-form label {
+    min-width: 40%;
+    text-align: right;
+}
+
+.faq {
+    margin: 2em;
+}
+
+.vo2-buttons {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.vo2-buttons button {
+    background-color: royalblue;
+    color: white;
+    font-size: 1.5em;
+    border-radius: 10px;
+    cursor: pointer;
+    margin: 0 1em 0 1em;
+}
+
+/* Very Poor */
+.vo2max-standards td:nth-child(2) {
+    background-color: rgb(255, 125, 123);
+}
+
+/* Poor */
+.vo2max-standards td:nth-child(3) {
+    background-color: rgb(255, 160, 123);
+}
+
+/* Fair */
+.vo2max-standards td:nth-child(4) {
+    background-color: rgb(255, 255, 125);
+}
+
+/* Good */
+.vo2max-standards td:nth-child(5) {
+    background-color: rgb(200, 255, 117);
+}
+
+/* Excellent */
+.vo2max-standards td:nth-child(6) {
+    background-color: rgb(117, 255, 202);
+}
+
+/* Superior */
+.vo2max-standards td:nth-child(7) {
+    background-color: rgb(117, 188, 255);
 }

@@ -3,7 +3,7 @@ import { Link, useHistory } from "react-router-dom"
 import "./NavBar.css"
 
 export const NavBar = () => {
-    const [protocol, domain] = window.location.href.split("//")
+    const [, domain] = window.location.href.split("//")
     const [, path] = domain.split("/")
 
     const history = useHistory()

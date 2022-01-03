@@ -30,7 +30,7 @@ export const Home = () => {
                         {localStorage.getItem("is_athlete") === "true" ? "Race" : "Events"}
                     </h1>
                     <Link className="race-item" to="/myevents">
-                        <div>Event Calendar</div></Link>
+                        <div>Event Manager</div></Link>
                     <Link className="race-item" to="/events">
                         <div>All Events</div></Link>
                     {localStorage.getItem("is_athlete") === "true" ?
