@@ -1,0 +1,82 @@
+.achievements-container {
+    background-color: gray;
+    height: 15em;
+    border-radius: 1em;
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    margin: auto;
+    margin-bottom: 2em;
+    color: white;
+}
+
+.achievements-title {
+    border-top-left-radius: 0.3em;
+    border-top-right-radius: 0.3em;
+    background-color: royalblue;
+    color: white;
+    text-align: center;
+    margin: 0px;
+    height: 1.5em;
+}
+
+.badges {
+    height: 100%;
+    /* width: 100%; */
+    display: flex;
+    align-items: center;
+    /* overflow: scroll; */
+    overflow-y: hidden;
+}
+
+.badges::-webkit-scrollbar {
+    background-color: darkblue;
+    max-height: 0.5em;
+}
+
+.badges::-webkit-scrollbar-thumb {
+    background-color: orange;
+    max-width: 1em;
+}
+
+.badge {
+    display: flex;
+    min-height: 8em;
+    max-height: 8em;
+    min-width: 8em;
+    max-width: 8em;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    background-color: rgb(65, 65, 65);
+    margin-left: 1em;
+    object-fit: contain;
+    overflow: hidden;
+}
+
+.badge img {
+    display: flex;
+    max-height: 80%;
+    max-width: 80%;
+}
+
+.badge-unlocked {
+    display: flex;
+    min-height: 8em;
+    max-height: 8em;
+    min-width: 8em;
+    max-width: 8em;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    background-color: rgb(0, 43, 100);
+    margin-left: 1em;
+    object-fit: contain;
+    overflow: hidden;
+}
+
+.badge-unlocked img {
+    display: flex;
+    max-height: 80%;
+    max-width: 80%;
+}

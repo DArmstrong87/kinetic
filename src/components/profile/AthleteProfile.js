@@ -4,6 +4,7 @@ import { getAthlete } from "./AthleteProvider";
 import { HRZones } from "./trainingTools/HeartRateZones";
 import { HRR } from "./trainingTools/HRR";
 import "./AthleteProfile.css"
+import { Achievements } from "./Achievements";
 
 export const AthleteProfile = () => {
     const [athlete, setAthlete] = useState({})
@@ -24,6 +25,8 @@ export const AthleteProfile = () => {
                     <button className="gear-button" onClick={() => history.push("/editProfile")}> ⚙️
                     </button>
                 </h1>
+
+                <Achievements />
 
                 <div className="profile-div">
                     <h3>About me</h3>
