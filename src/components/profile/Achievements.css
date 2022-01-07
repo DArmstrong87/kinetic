@@ -41,6 +41,7 @@
 
 .badge {
     display: flex;
+    flex-direction: column;
     min-height: 8em;
     max-height: 8em;
     min-width: 8em;
@@ -62,21 +63,84 @@
 
 .badge-unlocked {
     display: flex;
+    flex-direction: column;
     min-height: 8em;
     max-height: 8em;
     min-width: 8em;
     max-width: 8em;
     align-items: center;
-    justify-content: center;
     border-radius: 5px;
-    background-color: rgb(0, 43, 100);
+    background-color: rgb(255, 255, 255);
     margin-left: 1em;
     object-fit: contain;
     overflow: hidden;
+    color: black;
+    padding: 10px;
 }
 
-.badge-unlocked img {
-    display: flex;
+.badge-img-container {
     max-height: 80%;
     max-width: 80%;
+}
+
+.badge-img-container img {
+    display: flex;
+    min-height: 100%;
+    min-width: 100%;
+    max-height: 100%;
+    max-width: 100%;
+}
+
+.achievementModal {
+    width: 80vw;
+    height: fit-content;
+    border-radius: 2vw;
+    background-color: gray;
+    box-sizing: border-box;
+}
+
+.ach-button {
+    width: fit-content;
+    margin: auto;
+}
+
+.ach-button button {
+    background-color: royalblue;
+    font-size: 2em;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 7px 7px 10px black;
+}
+
+.newAchievements {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.achievement-unlocked {
+    margin: 1em;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1 0 25%;
+    color: white;
+    font-size: 1em;
+}
+
+.ach-img {
+    min-height: 7em;
+    max-height: 7em;
+    min-width: 7em;
+    max-width: 7em;
+    object-fit: contain;
+    display: flex;
+    align-items: center;
+}
+
+.ach-img img {
+    max-width: 100%;
+    max-height: 100%;
 }
