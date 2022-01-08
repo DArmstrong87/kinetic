@@ -40,7 +40,8 @@ export const validateAchievements = (values, newBadges, setNew) => {
     let runnerUnlocked = runner(badges, activities, achievements)
     let swimmerUnlocked = swimmer(badges, activities, achievements)
     let hundredUnlocked = oneHundred(badges, activities, achievements)
-    const checkedAchievements = [cyclistUnlocked, runnerUnlocked, swimmerUnlocked, firstUnlocked, hundredUnlocked]
+    let multiUnlocked = multiSport(badges, activities, achievements)
+    const checkedAchievements = [cyclistUnlocked, runnerUnlocked, swimmerUnlocked, firstUnlocked, hundredUnlocked, multiUnlocked]
     for (const checked of checkedAchievements) {
         if (checked) {
             copy.push(checked)
@@ -120,6 +121,19 @@ const oneHundred = (badges, activities, achievements) => {
         const totalMi = activities.reduce((accumulator, a) => { return accumulator + a.total_distance }, 0)
         if (totalMi >= 100) {
             return badges.find(badge => badge.name === "100 Miles")
+        }
+    }
+}
+
+const multiSport = (badges, activities, achievements) => {
+    const foundBadge = achievements?.find(a => {
+        return a?.badge?.name === "Multi-Sport"
+    })
+    if (foundBadge) { return }
+    else {
+        const foundActivity = activities.find(a => a.activity_sports.length > 1)
+        if (foundActivity) {
+            return badges.find(badge => badge.name === "Multi-Sport")
         }
     }
 }

@@ -1,7 +1,9 @@
+import { Tooltip } from "@mui/material"
 import React, { useEffect, useRef, useState } from "react"
 import { getActivities } from "../activities/ActivityProvider"
 import "./Achievements.css"
 import { achievementUnlocked, getAchievements, getBadges, validateAchievements } from "./AchievementsProvider"
+
 
 export const Achievements = () => {
     const [badges, setBadges] = useState([])
@@ -70,17 +72,21 @@ export const Achievements = () => {
             <div className="badges">
                 {achievements.map(a => {
                     return <>
-                        <div className="badge-unlocked">
-                            <div>{a.badge.name}</div>
-                            <div className="badge-img-container"><img src={a.badge.complete_url} /></div>
-                        </div>
+                        <Tooltip title={<h2>{a.badge.description}</h2>} placement="top">
+                            <div className="badge-unlocked">
+                                <div>{a.badge.name}</div>
+                                <div className="badge-img-container"><img src={a.badge.complete_url} /></div>
+                            </div>
+                        </Tooltip>
                     </>
                 })}
                 {badges.map(badge => {
                     return <>
-                        <div className="badge">
-                            <img src={badge.incomplete_url} />
-                        </div>
+                        <Tooltip title={<h2>{badge.description}</h2>} placement="top">
+                            <div className="badge">
+                                <img src={badge.incomplete_url} />
+                            </div>
+                        </Tooltip>
                     </>
                 })}
             </div>
