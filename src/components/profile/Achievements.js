@@ -9,7 +9,6 @@ export const Achievements = () => {
     const [badges, setBadges] = useState([])
     const [achievements, setAchievements] = useState([])
     const [newBadges, setNew] = useState([])
-    const [badgesSet, setBadgesSet] = useState(false)
     const showAchievement = useRef()
 
     useEffect(
@@ -26,17 +25,14 @@ export const Achievements = () => {
                     validateAchievements(values, newBadges, setNew)
                 }).then(
                     () => {
-                        if (newBadges.length > 0) { setBadgesSet(true) }
-                        for (const badge of newBadges) {
-                            achievementUnlocked({ badgeId: badge.id })
+                        if (newBadges.length > 0) {
+                            for (const badge of newBadges) {
+                                achievementUnlocked({ badgeId: badge.id })
+                            }
+                            showAchievement.current.showModal()
                         }
                     }
                 )
-                .then(() => {
-                    if (newBadges.length > 0) {
-                        showAchievement.current.showModal()
-                    }
-                })
         }, []
     )
 
