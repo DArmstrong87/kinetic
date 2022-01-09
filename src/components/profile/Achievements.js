@@ -40,8 +40,6 @@ export const Achievements = () => {
         }, []
     )
 
-    console.log(newBadges)
-
     return (<>
         <dialog className="achievementModal" ref={showAchievement}>
             <h2 style={{ textAlign: "center", color: "white" }}>Achievements Unlocked!</h2>

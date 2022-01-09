@@ -60,7 +60,7 @@ export const Event = () => {
                     {localStorage.getItem("is_athlete") === "true" ?
                         <>
                             <p className="e-signup">Spots remaining:<br />{event.spots_remaining}</p>
-                            {event.spots_remaining !== 0 ?
+                            {event.spots_remaining !== 0 && event.days_until >= 0 ?
                                 <>
                                     <div className="e-signup">
                                         {athleteEvent?.length === 0 ?
@@ -88,7 +88,10 @@ export const Event = () => {
                                     </div>
                                 </>
                                 :
-                                "Event registration closed. Maximum participants met."
+                                event.spots_remaining !== 0 && event.days_until < 0 ?
+                                    "This event has passed."
+                                    :
+                                    "Event registration closed. Maximum participants met."
                             }
                         </>
                         : ""}
@@ -150,15 +153,12 @@ export const Event = () => {
                     </>
                         : ""}
 
-
-
-
                     <div className="course">
                         {event?.course_url ?
                             <>
                                 Course Map
                                 <br />
-                                < CourseMap event={event} />
+                                <CourseMap event={event} />
                             </>
                             : ""}
                     </div>
